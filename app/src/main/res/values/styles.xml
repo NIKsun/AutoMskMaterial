@@ -1,0 +1,113 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/myPrimaryColor</item>
+        <item name="colorPrimaryDark">@color/myPrimaryDarkColor</item>
+        <item name="colorAccent">@color/myAccentColor</item>
+        <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
+        <item name="android:navigationBarColor">@color/myNavigationColor</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+
+        <item name="android:windowBackground">@color/myWindowBackground</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="ToolBarStyle" parent="">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="LightRaiseButtonRippleStyle" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="android:background">@drawable/bg_bt_raise</item>
+        <item name="rd_leftPadding">1dp</item>
+        <item name="rd_topPadding">1dp</item>
+        <item name="rd_rightPadding">1dp</item>
+        <item name="rd_bottomPadding">2dp</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Button</item>
+        <item name="android:textColor">@color/abc_primary_text_material_light</item>
+    </style>
+
+    <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile.MultiLine">
+        <item name="sb_text">Нет удалось подключиться к серверу.\nПроверьте соеденение с интернетом.</item>
+        <item name="sb_actionText">\nОк</item>
+        <item name="sb_duration">4000</item>
+    </style>
+    <style name="Material.Widget.SnackBar.Tablet.MultiLine" parent="Material.Widget.SnackBar.Tablet">
+        <item name="sb_verticalPadding">18dp</item>
+        <item name="sb_height">wrap_content</item>
+        <item name="sb_singleLine">false</item>
+        <item name="sb_maxLines">2</item>
+        <item name="sb_maxHeight">80dp</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/myPrimaryDarkColor</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#c8ffffff</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="MyCustomTabLayout_land" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">1dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+    <style name="MyCustomTabTextAppearance_land" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">4sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="LightFABLine" parent="Material.Widget.FloatingActionButton.Light">
+        <item name="rd_rippleColor">#33000000</item>
+        <item name="fab_backgroundColor">@color/myPrimaryColor</item>
+        <item name="fab_iconLineMorphing">@style/LightFloatingActionButtonIcon</item>
+    </style>
+    <style name="LightFloatingActionButtonIcon" >
+        <item name="lmd_state">@xml/fab_icon_states</item>
+        <item name="lmd_curState">0</item>
+        <item name="lmd_padding">2dp</item>
+        <item name="lmd_animDuration">400</item>
+        <item name="lmd_interpolator">@android:anim/accelerate_decelerate_interpolator</item>
+        <item name="lmd_strokeSize">3dp</item>
+        <item name="lmd_strokeColor">#ffffff</item>
+        <item name="lmd_strokeCap">butt</item>
+        <item name="lmd_strokeJoin">miter</item>
+        <item name="lmd_clockwise">true</item>
+    </style>
+
+    <style name="LightCircularProgressView">
+        <item name="pv_autostart">false</item>
+        <item name="pv_circular">true</item>
+        <item name="pv_progressStyle">@style/LightCircularProgressDrawable</item>
+        <item name="pv_progressMode">indeterminate</item>
+    </style>
+    <style name="LightColorCircularProgressView" parent="LightCircularProgressView">
+        <item name="pv_progressStyle">@style/LightColorCircularProgressDrawable</item>
+    </style>
+    <style name="LightColorCircularProgressDrawable" parent="Material.Drawable.CircularProgress">
+        <item name="cpd_strokeColors">@array/progress_colors_light</item>
+    </style>
+    <style name="LightCircularProgressDrawable" parent="Material.Drawable.CircularProgress">
+        <item name="cpd_strokeColor">@color/colorPrimary</item>
+    </style>
+
+</resources>
