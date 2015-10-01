@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cv_car"
+        card_view:cardUseCompatPadding="true"
         card_view:cardElevation="4dp">
 
         <LinearLayout

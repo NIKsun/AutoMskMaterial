@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/cv"
         card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true"
         >
         <FrameLayout
             android:layout_width="match_parent"
