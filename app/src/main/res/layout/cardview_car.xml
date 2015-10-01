@@ -14,13 +14,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="5dp"
             android:orientation = "horizontal">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation = "vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -28,20 +28,20 @@
                     android:id="@+id/isNew"
                     android:text="NEW!"
                     android:visibility="invisible"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     android:layout_marginLeft="3dp"
                     android:textColor="#e00004" />
 
             <ImageView
                 android:id="@+id/imageViewCarPhoto"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_below="@id/isNew"
                 android:layout_width="170dp"
                 android:padding="5dp"
-                android:layout_below="@id/isNew"
                 android:src="@drawable/car_loading_pic"
                 android:layout_height="125dp" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
