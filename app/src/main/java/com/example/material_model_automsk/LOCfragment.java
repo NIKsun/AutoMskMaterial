@@ -77,7 +77,6 @@ public class LOCfragment extends Fragment {
             else{
                 savedView = inflater.inflate(R.layout.fragment_list_of_cars, container, false);
                 mSwipeRefreshLayout = (SwipeRefreshLayout)savedView.findViewById(R.id.swipe_refresh_layout);
-
                 mSwipeRefreshLayout.setColorSchemeResources(R.color.orange,R.color.green,R.color.blue);
 
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -281,6 +280,7 @@ public class LOCfragment extends Fragment {
                     }
                 };
                 new Thread(runnable).start();
+                mSwipeRefreshLayout.setEnabled(true);
                 mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
                 LinearLayoutManager llm = new LinearLayoutManager(savedView.getContext());

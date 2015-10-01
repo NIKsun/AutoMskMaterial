@@ -8,8 +8,18 @@
         android:id="@+id/toolbar_actionbar"
         style="@style/ToolBarStyle" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:background="?attr/colorPrimary"
-        android:minHeight="@dimen/abc_action_bar_default_height_material" />
+        android:minHeight="@dimen/abc_action_bar_default_height_material">
 
+        <com.rey.material.widget.Button
+            android:id="@+id/toolbar_add_monitor_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_alarm_add_white_36dp"
+            style="@style/LightFlatButtonRippleStyle"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.DrawerLayout android:id="@+id/drawer"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,6 +71,17 @@
         android:layout_height="48dp"
         android:visibility="invisible"
         android:layout_gravity="bottom"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="807dp"
+        android:layout_marginStart="807dp" />
 
 </RelativeLayout>
 
