@@ -26,7 +26,6 @@ public class LOC_FragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.d("Inst","NOW!");
         return LOCfragment.newInstance(position, filterID);
     }
 

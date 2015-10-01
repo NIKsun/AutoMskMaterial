@@ -3,4 +3,6 @@
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Settings</string>
+    <string name="connection_error">Сервис временно не доступен.</string>
+    <string name="connection_error_increase">Возможно не удалось подключиться к серверу источника объявлений. Попробуйте обновить страницу позже. Если проблема не исчезает долгое время напишите об этом в службу поддержки.</string>
 </resources>

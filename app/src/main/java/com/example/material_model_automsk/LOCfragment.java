@@ -15,14 +15,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
 
 import org.jsoup.HttpStatusException;
@@ -43,6 +46,7 @@ public class LOCfragment extends Fragment {
     private int numberOfSite;
     private int filterID;
     ProgressView pvCircular;
+    LinearLayout ll;
     SwipeRefreshLayout mSwipeRefreshLayout;
     Cars cars = null;
     View savedView = null;
@@ -96,7 +100,7 @@ public class LOCfragment extends Fragment {
         return savedView;
     }
 
-    class LoadListView extends AsyncTask<Void, String, Void> {
+    class LoadListView extends AsyncTask<Void, String, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -105,7 +109,7 @@ public class LOCfragment extends Fragment {
         }
 
         @Override
-        protected Void doInBackground(final Void... params) {
+        protected Boolean doInBackground(final Void... params) {
 
             //РАБОТА С БД, ВЫЗОВ onProgressUpdate
 
@@ -235,26 +239,28 @@ public class LOCfragment extends Fragment {
                     }
                     break;
             }
+
+            Log.d("Now!","Now0");
             if(!isNotConnected && !isNotFound)
                 //Нужно не перезаписывать, а добовлять!
                 cars = carsBuf;
-            return null;
+            return isNotConnected || isNotFound;
         }
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
         }
         @Override
-        protected void onPostExecute(final Void result) {
+        protected void onPostExecute(final Boolean result) {
             super.onPostExecute(result);
             mSwipeRefreshLayout.setRefreshing(false);
             pvCircular.stop();
             imageLoaderMayRunning = true;
 
-            if(cars != null) {
+            if(!result && cars != null) { //Учесть состояние НЕ НАЙДЕНО!
                 final Bitmap images[] = new Bitmap[cars.getLength()];
-                Bitmap loadingImage = BitmapFactory.decodeResource(getResources(), R.drawable.car_loading_pic);
-                for(int i=0;i<cars.getLength();i++)
+                final Bitmap loadingImage = BitmapFactory.decodeResource(getResources(), R.drawable.car_loading_pic);
+                for (int i = 0; i < cars.getLength(); i++)
                     images[i] = loadingImage;
 
                 final Handler handler = new Handler();
@@ -262,9 +268,11 @@ public class LOCfragment extends Fragment {
                     public void run() {
                         for (int i = 0; i < cars.getLength(); i++) {
                             try {
-                                if(imageLoaderMayRunning)
+                                if (imageLoaderMayRunning) {
                                     images[i] = getRoundedCornerBitmap(BitmapFactory.decodeStream((InputStream) new URL(cars.getImg(i)).getContent()), RND_PXLS);
-                                else
+                                    if (images[i] == null)
+                                        images[i] = loadingImage;
+                                } else
                                     return;
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -288,10 +296,34 @@ public class LOCfragment extends Fragment {
                 LOCcardAdapter adapter = new LOCcardAdapter(cars, images);
                 rv.setAdapter(adapter);
             }
+            else
+            {
+                RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
+                rv.setAdapter(null);
+                mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
+                Log.d("Now!", "Now2");
+                FloatingActionButton fab = (FloatingActionButton)savedView.findViewById(R.id.fab_sync);
+                fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp),true);
+                ll = (LinearLayout)savedView.findViewById(R.id.layout_connection_error);
+                ll.setVisibility(View.VISIBLE);
+                Log.d("Now!", "Now3");
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ll.setVisibility(View.INVISIBLE);
+                        pvCircular.start();
+                        loader = new LoadListView();
+                        loader.execute();
+                    }
+                });
+                Log.d("Now!", "Now4");
+            }
         }
     }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+        if(bitmap == null)
+            return null;
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
                 .getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);

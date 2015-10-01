@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools">
 
     <com.rey.material.widget.ProgressView
         android:id="@+id/progress_circular"
@@ -11,6 +12,53 @@ android:layout_height="match_parent">
         android:layout_height="48dp"
         android:layout_gravity="center"
         style="@style/LightColorCircularProgressView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_connection_error"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="invisible">
+
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/repair"
+            android:layout_gravity="center_horizontal"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp"
+            android:text="@string/connection_error"
+                android:textColor="#bbbbbb" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:textSize="20dp"
+                android:text="@string/connection_error" />
+
+        </FrameLayout>
+
+
+        <com.rey.material.widget.FloatingActionButton
+            android:id="@+id/fab_sync"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/LightFABLine" />
+
+    </LinearLayout>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"

@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ToolbarManager;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.SnackBar;
 
 import io.fabric.sdk.android.Fabric;
@@ -104,6 +106,8 @@ public class ListOfMonitorsActivity extends ActionBarActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+
 
 
         if(viewPager.getCurrentItem()==0)
