@@ -1,5 +1,6 @@
 package com.example.material_model_automsk;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -65,11 +66,19 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
 
 
     @Override
-    public void onBindViewHolder(final LOCviewHolder monitorViewHolder, int i) {
+    public void onBindViewHolder(final LOCviewHolder monitorViewHolder, final int i) {
         monitorViewHolder.iv.setImageBitmap(images[i]);
         monitorViewHolder.textViewMessage.setText(Html.fromHtml(cars.getMessage(i)));
-        //monitorViewHolder.textViewIsNew.setHeight(0);
+        monitorViewHolder.textViewIsNew.setHeight(0);
         monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+        monitorViewHolder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CarWebPage.class);
+                intent.putExtra("url", cars.getHref(i));
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

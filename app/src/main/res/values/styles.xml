@@ -127,4 +127,21 @@
         <item name="cpd_strokeColor">@color/colorPrimary</item>
     </style>
 
+    <style name="LightColorLinearProgressView" parent="LightLinearProgressView">
+        <item name="pv_progressStyle">@style/LightColorLinearProgressDrawable</item>
+    </style>
+    <style name="LightColorLinearProgressDrawable" parent="LightLinearProgressDrawable">
+        <item name="lpd_strokeColors">@array/progress_colors_light</item>
+    </style>
+    <style name="LightLinearProgressDrawable" parent="Material.Drawable.LinearProgress">
+        <item name="lpd_strokeColor">@color/myAccentColor</item>
+        <item name="lpd_strokeSecondaryColor">#ffffff</item>
+    </style>
+    <style name="LightLinearProgressView">
+        <item name="pv_autostart">true</item>
+        <item name="pv_circular">false</item>
+        <item name="pv_progressStyle">@style/LightLinearProgressDrawable</item>
+        <item name="pv_progressMode">indeterminate</item>
+    </style>
+
 </resources>
