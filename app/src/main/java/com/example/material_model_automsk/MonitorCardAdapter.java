@@ -2,20 +2,26 @@ package com.example.material_model_automsk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Color;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rey.material.widget.SnackBar;
+import com.rey.material.widget.Switch;
 
 import java.util.List;
 
@@ -28,12 +34,63 @@ class Filter {
     String model;
     Integer priceFrom;
     Integer priceTo;
+    Integer yearFrom;
+    Integer yearTo;
+    Integer milleageFrom;
+    Integer milleageTo;
+    Integer volumeFrom;
+    Integer volumeTo;
+    String transmission;
+    String typeOfEngine;
+    String typeOfCarcase;
+    String typeOfWheelDrive;
 
-    Filter(String mark, String model, Integer priceFrom, Integer priceTo) {
+    private String getRangeString(String name, String value, Integer from, Integer to)
+    {
+        String message = "";
+        if(from != null && from == to)
+            return name+":\t только " + from + " " + value + "\n";
+        if(from != null) {
+            message += name+":\t от " + from + " " + value;
+            if (to != null)
+                message += " до " + to + " " + value;
+        }
+        else if (to != null)
+            message += name+":\t до " + to + " " + value;
+        if(!message.isEmpty())
+            message += "\n";
+        return message;
+    }
+    String getMessage()
+    {
+        String message = "";
+        message += getRangeString("Цена", "руб.", priceFrom, priceTo);
+        message += getRangeString("Год", "г.", yearFrom, yearTo);
+        message += getRangeString("Пробег", "км", milleageFrom, milleageTo);
+        message += getRangeString("Объем", "л", volumeFrom, volumeTo);
+        return message;
+    }
+
+    Filter(Integer id, String mark, String model) {
+        this.id = id;
         this.mark = mark;
         this.model = model;
-        this.priceFrom = priceFrom;
-        this.priceTo = priceTo;
+    }
+    void setPrice(Integer from, Integer to){
+        priceFrom = from;
+        priceTo = to;
+    }
+    void setYear(Integer from, Integer to){
+        yearFrom = from;
+        yearTo = to;
+    }
+    void setMilleage(Integer from, Integer to){
+        milleageFrom = from;
+        milleageTo = to;
+    }
+    void setVolume(Integer from, Integer to){
+        volumeFrom = from;
+        volumeTo = to;
     }
 }
 
@@ -59,16 +116,24 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     public static class MonitorViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        TextView monitorMark;
-        TextView monitorModel;
+        TextView monitorStatus;
+        TextView monitorMarkAndModel;
+        TextView monitorFilterInfo;
         TextView monitorCountOfNewCars;
+        Switch monitorSwitch;
+        ImageView iv;
+        LinearLayout ll;
 
         MonitorViewHolder(View itemView) {
             super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.cv);
-            monitorMark = (TextView)itemView.findViewById(R.id.mark);
-            monitorModel = (TextView)itemView.findViewById(R.id.model);
-            monitorCountOfNewCars = (TextView)itemView.findViewById(R.id.count_of_new_cars);
+            cv = (CardView)itemView.findViewById(R.id.cv_mon);
+            monitorStatus = (TextView)itemView.findViewById(R.id.cv_mon_status);
+            monitorMarkAndModel = (TextView)itemView.findViewById(R.id.cv_mon_mark_and_model);
+            monitorFilterInfo = (TextView)itemView.findViewById(R.id.cv_mon_filter_info);
+            monitorCountOfNewCars = (TextView)itemView.findViewById(R.id.cv_mon_count_of_new_cars);
+            monitorSwitch = (Switch)itemView.findViewById(R.id.cv_mon_switch_status);
+            ll = (LinearLayout)itemView.findViewById(R.id.cv_mon_lin_lay_clickable);
+            iv = (ImageView)itemView.findViewById(R.id.cv_mon_popup);
         }
     }
 
@@ -83,6 +148,12 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         return monitors.size();
     }
 
+    boolean visib = false;
+    public void setVisibility()
+    {
+        visib = !visib;
+    }
+
     @Override
     public MonitorViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_monitor, viewGroup, false);
@@ -92,25 +163,69 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     @Override
     public void onBindViewHolder(final MonitorViewHolder monitorViewHolder, final int i) {
-        monitorViewHolder.monitorMark.setText(monitors.get(i).filter.mark);
-        monitorViewHolder.monitorModel.setText(monitors.get(i).filter.model);
+        Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
 
-        if(monitors.get(i).countOfNewCars == 0)
+        monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
+        monitorViewHolder.monitorMarkAndModel.setTypeface(null, Typeface.BOLD);
+        monitorViewHolder.monitorFilterInfo.setText(monitors.get(i).filter.getMessage());
+
+        monitorViewHolder.monitorSwitch.setChecked(monitors.get(i).isActive);
+        monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(Switch aSwitch, boolean b) {
+                Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
+                if (b) {
+                    monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.myPrimaryDarkColor));
+                    monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_active));
+                } else {
+                    monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.colorPrimaryQuarter));
+                    monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_not_active));
+                }
+            }
+        });
+
+
+        monitorViewHolder.iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(monitorViewHolder.iv.getContext(), monitorViewHolder.iv);
+                popup.getMenu().add(R.string.popup_edit);
+                popup.getMenu().add(R.string.popup_delete);
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return false;
+                    }
+                });
+            }
+        });
+
+        if(monitors.get(i).isActive) {
+            monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.myPrimaryDarkColor));
+            monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_active));
+        }
+        else {
+            monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.colorPrimaryQuarter));
+            monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_not_active));
+        }
+
+       if (monitors.get(i).countOfNewCars == 0)
             monitorViewHolder.monitorCountOfNewCars.setVisibility(View.INVISIBLE);
         else {
             monitorViewHolder.monitorCountOfNewCars.setVisibility(View.VISIBLE);
-            if(monitors.get(i).countOfNewCars<10)
-                monitorViewHolder.monitorCountOfNewCars.setText(" " + String.valueOf(monitors.get(i).countOfNewCars)+" ");
-            else if(monitors.get(i).countOfNewCars<100)
+            if (monitors.get(i).countOfNewCars < 10)
+                monitorViewHolder.monitorCountOfNewCars.setText(" " + String.valueOf(monitors.get(i).countOfNewCars) + " ");
+            else if (monitors.get(i).countOfNewCars < 100)
                 monitorViewHolder.monitorCountOfNewCars.setText(String.valueOf(monitors.get(i).countOfNewCars));
             else {
                 monitorViewHolder.monitorCountOfNewCars.setTextSize(23);
-                monitorViewHolder.monitorCountOfNewCars.setPadding(7,10,7,10);
+                monitorViewHolder.monitorCountOfNewCars.setPadding(7, 10, 7, 10);
                 monitorViewHolder.monitorCountOfNewCars.setText("99+");
             }
         }
 
-        monitorViewHolder.cv.setOnClickListener(new View.OnClickListener() {
+        monitorViewHolder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConnectivityManager cm =

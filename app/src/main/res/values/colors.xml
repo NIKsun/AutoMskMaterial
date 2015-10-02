@@ -25,6 +25,9 @@
         <item>@color/myAccentColor</item>
     </array>
 
+    <color name="colorControlNormalHalf">#9078909C</color>
+    <color name="colorControlActivatedHalf">#9003A9F4</color>
+    <color name="colorSwitchThumbNormal">#FF78909C</color>
 
     <color name="orange">#FF9900</color>
     <color name="green">#009900</color>

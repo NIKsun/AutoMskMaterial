@@ -5,10 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.rey.material.widget.Button;
@@ -29,35 +32,81 @@ public class MonitorsFragment extends Fragment {
 
     private List<Monitor> monitors;
     FloatingActionButton fab;
+    Boolean isHidden = false;
+    LinearLayoutManager llm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_monitors, container, false);
-        RecyclerView rv = (RecyclerView)view.findViewById(R.id.rv);
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
+        final RecyclerView rv = (RecyclerView)view.findViewById(R.id.rv);
+        llm = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(llm);
         initializeData();
         MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
         rv.setAdapter(adapter);
 
+        fab = (FloatingActionButton)view.findViewById(R.id.fab_line);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MonitorCardAdapter mca = (MonitorCardAdapter)rv.getAdapter();
+                mca.setVisibility();
+                for(int i=0;i<mca.getItemCount();i++)
+                    mca.notifyItemChanged(i);
+            }
+        });
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged (RecyclerView recyclerView, int newState){
+                if(newState==0 && isHidden) {
+                    Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
+                    fab.startAnimation(anim);
+                    fab.setVisibility(View.VISIBLE);
+
+                    isHidden = false;
+                }
+                else if(!isHidden) {
+                    Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
+                    fab.startAnimation(anim);
+                    fab.setVisibility(View.INVISIBLE);
+                    isHidden = true;
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled (RecyclerView recyclerView,int dx, int dy){
+                super.onScrolled(recyclerView,dx,dy);
+            }
+
+        });
+
         return view;
     }
 
 
-    // This method creates an ArrayList that has three Person objects
-// Checkout the project associated with this tutorial on Github if
-// you want to use the same images.
+
     private void initializeData(){
         monitors = new ArrayList<>();
-        monitors.add(new Monitor(new Filter("Audi","A3", null, 300000),true,4));
-        monitors.add(new Monitor(new Filter("Audi","A4", 150000, 250000),true,0));
-        monitors.add(new Monitor(new Filter("Ford","Focus", null, null),true,12));
-        monitors.add(new Monitor(new Filter("ВАЗ","Granta", null, 200000),true,42));
-        monitors.add(new Monitor(new Filter("Audi","A3", null, 300000)));
-        monitors.add(new Monitor(new Filter("Audi","A4", 150000, 250000)));
-        monitors.add(new Monitor(new Filter("Ford","Focus", null, null),true,142));
-        monitors.add(new Monitor(new Filter("ВАЗ","Granta", null, 200000)));
+        Filter f = new Filter(1,"Audi","A3");
+        f.setPrice(100, 10000);
+        f.setYear(2010, null);
+        f.setMilleage(null, 100000);
+        f.setVolume(5, 5);
+        monitors.add(new Monitor(f, false, 0));
+        f = new Filter(1,"Audi","A4");
+        f.setYear(2010, 2012);
+        monitors.add(new Monitor(f, true, 4));
+        f = new Filter(1,"Audi","A5");
+        monitors.add(new Monitor(f,true,12));
+        f = new Filter(1,"Audi","A6");
+        f.setPrice(100, 1300000);
+        f.setYear(2010, 2012);
+        f.setMilleage(42000, 100000);
+        f.setVolume(3, 5);
+        monitors.add(new Monitor(f, true, 0));
     }
 
 
