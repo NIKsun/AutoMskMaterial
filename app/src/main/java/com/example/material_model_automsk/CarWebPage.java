@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -155,6 +157,7 @@ public class CarWebPage extends Activity{
 
         mWebView.setWebViewClient(new MyWebViewClient());
         String url = getIntent().getStringExtra("url");
+        mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         mWebView.loadUrl(url);
     }
 

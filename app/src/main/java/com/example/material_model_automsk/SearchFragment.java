@@ -33,8 +33,8 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        TextView textView = (TextView) view;
-        textView.setText("Fragment #" + mPage);
+        //TextView textView = (TextView) view;
+        //textView.setText("Fragment #" + mPage);
         return view;
     }
 }

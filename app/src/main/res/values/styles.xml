@@ -144,4 +144,27 @@
         <item name="pv_progressMode">indeterminate</item>
     </style>
 
+
+
+    <style name="DarkTitleText">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Title</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="DarkBodyText">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+
+    <style name="LightTitleText">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Title</item>
+        <item name="android:textColor">#FF000000</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="LightBodyText">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
 </resources>
