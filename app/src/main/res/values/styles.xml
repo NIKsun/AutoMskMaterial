@@ -167,4 +167,9 @@
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body1</item>
         <item name="android:textColor">#FF000000</item>
     </style>
+    <style name="LightSwitch" parent="Material.Widget.Switch">
+        <item name="sw_trackColor">@drawable/color_track_light</item>
+        <item name="sw_thumbColor">@drawable/color_thumb_light</item>
+    </style>
+
 </resources>

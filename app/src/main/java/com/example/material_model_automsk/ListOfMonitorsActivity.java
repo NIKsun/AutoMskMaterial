@@ -1,30 +1,21 @@
 package com.example.material_model_automsk;
 
-import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 import com.crashlytics.android.Crashlytics;
 import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
-import com.rey.material.app.ToolbarManager;
 import com.rey.material.widget.Button;
-import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.SnackBar;
 
 import io.fabric.sdk.android.Fabric;
@@ -67,14 +58,11 @@ public class ListOfMonitorsActivity extends ActionBarActivity
                 Dialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight){
                     @Override
                     public void onPositiveActionClicked(DialogFragment fragment) {
-                        Log.d("Now","Now");
-                        fragment.dismiss();
                         super.onPositiveActionClicked(fragment);
                     }
 
                     @Override
                     public void onNegativeActionClicked(DialogFragment fragment) {
-                        fragment.dismiss();
                         super.onNegativeActionClicked(fragment);
                     }
                 };
@@ -91,10 +79,17 @@ public class ListOfMonitorsActivity extends ActionBarActivity
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                if (position == 0)
+                if (position == 0) {
+                    Animation anim = AnimationUtils.loadAnimation(ListOfMonitorsActivity.this, R.anim.anim_translate_right);
                     addMonitorButton.setVisibility(View.INVISIBLE);
-                else
+                    addMonitorButton.startAnimation(anim);
+
+                }
+                else {
+                    Animation anim = AnimationUtils.loadAnimation(ListOfMonitorsActivity.this, R.anim.anim_translate_left);
                     addMonitorButton.setVisibility(View.VISIBLE);
+                    addMonitorButton.startAnimation(anim);
+                }
                 mSnackBar.dismiss();
             }
 

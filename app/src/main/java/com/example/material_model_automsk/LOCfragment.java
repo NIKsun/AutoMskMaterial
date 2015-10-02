@@ -1,6 +1,9 @@
 package com.example.material_model_automsk;
 
 import android.annotation.TargetApi;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,17 +16,24 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
@@ -52,6 +62,7 @@ public class LOCfragment extends Fragment {
     View savedView = null;
     LoadListView loader;
     Boolean imageLoaderMayRunning = true;
+    LOCcardAdapter adapter;
 
     public static LOCfragment newInstance(int page, int filterID) {
         LOCfragment fragment = new LOCfragment();
@@ -81,17 +92,21 @@ public class LOCfragment extends Fragment {
             else{
                 savedView = inflater.inflate(R.layout.fragment_list_of_cars, container, false);
                 mSwipeRefreshLayout = (SwipeRefreshLayout)savedView.findViewById(R.id.swipe_refresh_layout);
-                mSwipeRefreshLayout.setColorSchemeResources(R.color.orange,R.color.green,R.color.blue);
+                mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
 
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
-                    public void onRefresh(){
+                    public void onRefresh() {
                         loader.cancel(true);
                         imageLoaderMayRunning = false;
                         loader = new LoadListView();
                         loader.execute();
                     }
                 });
+
+                RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_cars);
+                registerForContextMenu(rv);
+
                 mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
                 pvCircular = (ProgressView)savedView.findViewById(R.id.progress_circular);
                 loader.execute();
@@ -293,7 +308,7 @@ public class LOCfragment extends Fragment {
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
                 LinearLayoutManager llm = new LinearLayoutManager(savedView.getContext());
                 rv.setLayoutManager(llm);
-                LOCcardAdapter adapter = new LOCcardAdapter(cars, images);
+                adapter = new LOCcardAdapter(cars, images);
                 rv.setAdapter(adapter);
             }
             else
@@ -306,7 +321,6 @@ public class LOCfragment extends Fragment {
                 fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp),true);
                 ll = (LinearLayout)savedView.findViewById(R.id.layout_connection_error);
                 ll.setVisibility(View.VISIBLE);
-                Log.d("Now!", "Now3");
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -316,7 +330,6 @@ public class LOCfragment extends Fragment {
                         loader.execute();
                     }
                 });
-                Log.d("Now!", "Now4");
             }
         }
     }
@@ -339,5 +352,38 @@ public class LOCfragment extends Fragment {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        // TODO Auto-generated method stub
+        Context context = getContext();
+        Vibrator vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
+        vibrator.vibrate(50);
+        getActivity().getMenuInflater().inflate(R.menu.ct_menu, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(!this.isMenuVisible())
+            return super.onContextItemSelected(item);
+        switch (item.getItemId())
+        {
+            case R.id.item_web:
+                Intent intent = new Intent(getContext(), CarWebPage.class);
+                intent.putExtra("url", cars.getHref(adapter.getPosition()));
+                getContext().startActivity(intent);break;
+            case R.id.item_copy:
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(getContext().CLIPBOARD_SERVICE);
+                clipboard.setText(cars.getHref(adapter.getPosition()));
+                Toast.makeText(getContext(),"Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.item_in_favorites:
+                Toast.makeText(getContext(),"Еще не реализовано", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }
