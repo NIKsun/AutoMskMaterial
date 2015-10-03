@@ -37,4 +37,6 @@ public class SearchFragment extends Fragment {
         //textView.setText("Fragment #" + mPage);
         return view;
     }
+
+
 }

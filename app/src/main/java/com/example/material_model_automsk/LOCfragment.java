@@ -313,10 +313,10 @@ public class LOCfragment extends Fragment {
             }
             else
             {
+                mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
                 rv.setAdapter(null);
-                mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
-                Log.d("Now!", "Now2");
+
                 FloatingActionButton fab = (FloatingActionButton)savedView.findViewById(R.id.fab_sync);
                 fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp),true);
                 ll = (LinearLayout)savedView.findViewById(R.id.layout_connection_error);

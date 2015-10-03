@@ -4,91 +4,130 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:scrollbarStyle="outsideOverlay">
+    android:scrollbarStyle="outsideOverlay"
+    android:paddingLeft="10dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingRight="10dp"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.rey.material.widget.TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LightTitleText"
-                android:text="Валера"/>
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <com.rey.material.widget.Spinner
-                    android:id="@+id/spinner_label_price_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="128dp"
-                    android:padding="8dp"
-                    app:spn_label="Spinner with arrow"
-                    style="@style/LightSpinner"/>
-                <com.rey.material.widget.Spinner
-                    android:id="@+id/spinner_label_price_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="128dp"
-                    android:padding="8dp"
-                    app:spn_label="Spinner with arrow"
-                    style="@style/LightSpinner"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/search_ll_price"
+                android:onClick="onClickHandlerHidden"
+                android:padding="10dp">
 
+                <com.rey.material.widget.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/LightTitleText"
+                    android:textSize="25sp"
+                    android:text="Цена"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/search_ll_price_hidden"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorPrimaryQuarter"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="7dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                            <com.rey.material.widget.Spinner
+                                android:id="@+id/spinner_label_price_from"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="128dp"
+                                android:padding="8dp"
+                                style="@style/LightSpinner"/>
+
+                            <com.rey.material.widget.Spinner
+                                android:id="@+id/spinner_label_price_to"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="128dp"
+                                android:padding="8dp"
+                                style="@style/LightSpinner"/>
+                        </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
 
+    </android.support.v7.widget.CardView>
 
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.rey.material.widget.TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LightTitleText"
-                android:text="Валера 2"/>
-
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cv_car">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <com.rey.material.widget.CheckBox
-                    android:id="@+id/switches_cb1"
-                    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_ll_engine_type"
+                android:onClick="onClickHandlerHidden"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <com.rey.material.widget.TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Checkbox 1"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    style="@style/LightCheckBoxDrawable"/>
-                <com.rey.material.widget.CheckBox
-                    android:id="@+id/switches_cb11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Checkbox 2"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    style="@style/LightCheckBoxDrawable"/>
+                    style="@style/LightTitleText"
+                    android:textSize="25sp"
+                    android:text="Тип двигателя"/>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/search_ll_engine_type_hidden"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorPrimaryQuarter"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="7dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.rey.material.widget.CheckBox
+                            android:id="@+id/switches_cb1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="бензин"
+                            android:checked="true"
+                            android:gravity="center_vertical"
+                            style="@style/LightCheckBoxDrawable"/>
+                        <com.rey.material.widget.CheckBox
+                            android:id="@+id/switches_cb11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="дизель"
+                            android:checked="true"
+                            android:gravity="center_vertical"
+                            style="@style/LightCheckBoxDrawable"/>
+                        </LinearLayout>
+                    </LinearLayout>
             </LinearLayout>
-
-
-
+        </android.support.v7.widget.CardView>
     </LinearLayout>
-</LinearLayout>
-
-
-
-
 </ScrollView>
