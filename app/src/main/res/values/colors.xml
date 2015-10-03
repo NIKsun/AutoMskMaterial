@@ -12,6 +12,7 @@
     <color name="colorPrimary">#1E88E5</color>
     <color name="myPrimaryColor">#1E88E5</color>
     <color name="colorPrimaryQuarter">#9FA8DA</color>
+    <color name="colorControlNormal">#FF78909C</color>
 
     <color name="myPrimaryDarkColor">#1565C0</color>
     <color name="myAccentColor">#EC407A</color>

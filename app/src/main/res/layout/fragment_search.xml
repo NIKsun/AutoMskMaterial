@@ -6,13 +6,87 @@
     android:gravity="center"
     android:scrollbarStyle="outsideOverlay">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-
-        <com.rey.material.widget.TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/LightTitleText"
-            android:text="Checkbox"/>
+            android:orientation="vertical">
+            <com.rey.material.widget.TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LightTitleText"
+                android:text="Валера"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/spinner_label_price_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="128dp"
+                    android:padding="8dp"
+                    app:spn_label="Spinner with arrow"
+                    style="@style/LightSpinner"/>
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/spinner_label_price_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="128dp"
+                    android:padding="8dp"
+                    app:spn_label="Spinner with arrow"
+                    style="@style/LightSpinner"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.rey.material.widget.TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LightTitleText"
+                android:text="Валера 2"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.rey.material.widget.CheckBox
+                    android:id="@+id/switches_cb1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Checkbox 1"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    style="@style/LightCheckBoxDrawable"/>
+                <com.rey.material.widget.CheckBox
+                    android:id="@+id/switches_cb11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Checkbox 2"
+                    android:checked="true"
+                    android:gravity="center_vertical"
+                    style="@style/LightCheckBoxDrawable"/>
+
+            </LinearLayout>
+
+
+
+    </LinearLayout>
+</LinearLayout>
 
 
 
