@@ -8,6 +8,7 @@ buildscript {
     }
 }
 apply plugin: 'com.android.application'
+repositories { maven { url "https://oss.sonatype.org/content/repositories/snapshots" } }
 apply plugin: 'io.fabric'
 
 repositories {
@@ -41,7 +42,7 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:cardview-v7:23.0.+'
-    compile 'com.github.rey5137:material:1.2.1'
+    compile 'com.github.rey5137:material:1.2.1.6-SNAPSHOT'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.google.android.gms:play-services-ads:7.8.0'
     compile 'com.google.android.gms:play-services-analytics:7.8.0'
