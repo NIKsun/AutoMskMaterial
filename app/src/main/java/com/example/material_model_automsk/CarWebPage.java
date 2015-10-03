@@ -1,7 +1,10 @@
 package com.example.material_model_automsk;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -71,10 +74,16 @@ public class CarWebPage extends Activity{
             // However it could cause a problem if your server load similar links, so fix it if necessary
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                url = removeLastSlash(url);
-                if (!startsWith(url, mUrl) && !mLoadingFinished) {
-                    mUrl = null;
-                    onPageStarted(view, url, null);
+                if (url.startsWith("tel:")) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                }else if(url.startsWith("http:") || url.startsWith("https:")) {
+                    url = removeLastSlash(url);
+                    if (!startsWith(url, mUrl) && !mLoadingFinished) {
+                        mUrl = null;
+                        onPageStarted(view, url, null);
+                    }
                 }
                 return false;
             }
@@ -154,12 +163,16 @@ public class CarWebPage extends Activity{
                 }
             };
         }
-
         mWebView.setWebViewClient(new MyWebViewClient());
         String url = getIntent().getStringExtra("url");
-        mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        if (Build.VERSION.SDK_INT>=21){
+            mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         mWebView.loadUrl(url);
     }
+
+
 
     @Override
     public void onBackPressed() {

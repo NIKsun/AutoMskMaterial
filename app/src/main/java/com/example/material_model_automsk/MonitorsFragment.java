@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,6 +46,22 @@ public class MonitorsFragment extends Fragment {
         initializeData();
         MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
         rv.setAdapter(adapter);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.END | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                Log.d("Swipe", "now");
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(rv);
 
         fab = (FloatingActionButton)view.findViewById(R.id.fab_line);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +124,7 @@ public class MonitorsFragment extends Fragment {
         f.setMilleage(42000, 100000);
         f.setVolume(3, 5);
         monitors.add(new Monitor(f, true, 0));
+        monitors.add(new Monitor());
     }
 
 

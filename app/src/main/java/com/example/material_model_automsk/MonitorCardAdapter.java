@@ -11,11 +11,14 @@ import android.net.NetworkInfo;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -100,6 +103,7 @@ class Monitor {
     Boolean isActive;
     Integer countOfNewCars;
 
+    Monitor() {    }
     Monitor(Filter filter) {
         this.filter = filter;
         this.isActive = false;
@@ -157,12 +161,18 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     @Override
     public MonitorViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_monitor, viewGroup, false);
-        MonitorViewHolder pvh = new MonitorViewHolder(v);
-        return pvh;
+        MonitorViewHolder mvh = new MonitorViewHolder(v);
+        return mvh;
     }
 
     @Override
     public void onBindViewHolder(final MonitorViewHolder monitorViewHolder, final int i) {
+        if(i == getItemCount()-1) {
+            monitorViewHolder.ll.setMinimumHeight(0);
+            monitorViewHolder.ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+            monitorViewHolder.cv.setVisibility(View.INVISIBLE);
+            return;
+        }
         Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
 
         monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
