@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:gravity="center"
     android:scrollbarStyle="outsideOverlay"
     android:paddingLeft="10dp"
@@ -19,7 +20,79 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/search_ll_mark"
+                android:onClick="onClickHandlerHidden"
+                android:padding="10dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Maрка"
+                        android:textSize="25sp"
+                        android:layout_gravity="start"
+                        style="@style/LightTitleText"/>
+                    <com.rey.material.widget.Button
+                        android:id="@+id/search_ll_mark_clear"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/cross_48dp"
+                        style="@style/LightFlatButtonRippleStyle"
+                        android:visibility="invisible"
+                        android:onClick="onClickClearSelection"/>
+                </FrameLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/search_ll_mark_hidden"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorPrimaryQuarter"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="7dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Любая"
+                            android:textSize="15sp"
+                            android:layout_gravity="center"
+                            style="@style/LightTitleText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,7 +164,9 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
