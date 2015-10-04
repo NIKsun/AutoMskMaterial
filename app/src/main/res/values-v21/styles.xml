@@ -180,5 +180,6 @@
     <style name="LightCheckBoxDrawable" parent="Material.Drawable.CheckBox">
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body1</item>
         <item name="android:textColor">#FF000000</item>
+        <item name="cbd_strokeColor">@color/colorPrimary</item>
     </style>
 </resources>

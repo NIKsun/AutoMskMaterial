@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.crashlytics.android.Crashlytics;
@@ -137,14 +138,158 @@ public class MainActivity extends ActionBarActivity
 
     public void onClickHandlerHidden(View v){
         LinearLayout ll;
+        Button b;
         switch (v.getId()){
             case R.id.search_ll_engine_type:
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
+                b = (Button) findViewById(R.id.search_ll_engine_type_clear);
+                b.setVisibility(View.VISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_price:
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
+                b = (Button) findViewById(R.id.search_ll_price_clear);
+                b.setVisibility(View.VISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+            case R.id.search_ll_year:
+                ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
+                b = (Button) findViewById(R.id.search_ll_year_clear);
+                b.setVisibility(View.VISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+            case R.id.search_ll_mileage:
+                ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
+                b = (Button) findViewById(R.id.search_ll_mileage_clear);
+                b.setVisibility(View.VISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+            case R.id.search_ll_engine_volume:
+                ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
+                b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
+                b.setVisibility(View.VISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+            case R.id.search_ll_trans:
+                ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
+                b = (Button) findViewById(R.id.search_ll_trans_clear);
+                b.setVisibility(View.VISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+            case R.id.search_ll_body_type:
+                ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
+                b = (Button) findViewById(R.id.search_ll_body_type_clear);
+                b.setVisibility(View.VISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+            case R.id.search_ll_drive:
+                ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
+                b = (Button) findViewById(R.id.search_ll_drive_clear);
+                b.setVisibility(View.VISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                break;
+        }
+        return;
+    }
+
+    public void onClickClearSelection(View v){
+        LinearLayout ll;
+        Button b;
+        com.rey.material.widget.CheckBox ch;
+        switch (v.getId()){
+            case R.id.search_ll_year_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
+                b = (Button) findViewById(R.id.search_ll_year_clear);
+                b.setVisibility(View.INVISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_price_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
+                b = (Button) findViewById(R.id.search_ll_price_clear);
+                b.setVisibility(View.INVISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_mileage_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
+                b = (Button) findViewById(R.id.search_ll_mileage_clear);
+                b.setVisibility(View.INVISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_engine_volume_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
+                b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
+                b.setVisibility(View.INVISIBLE);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_engine_type_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
+                b = (Button) findViewById(R.id.search_ll_engine_type_clear);
+                b.setVisibility(View.INVISIBLE);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_diesel);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_electro);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_gas);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_gasoline);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_hybrid);
+                ch.setChecked(false);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_trans_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
+                b = (Button) findViewById(R.id.search_ll_trans_clear);
+                b.setVisibility(View.INVISIBLE);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_auto);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_man);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_robot);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_var);
+                ch.setChecked(false);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_body_type_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
+                b = (Button) findViewById(R.id.search_ll_body_type_clear);
+                b.setVisibility(View.INVISIBLE);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_cabrio);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_coupe);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_hatch);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_limus);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_minivan);
+                ch.setChecked(false);
+
+
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_offroad);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_picap);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_sed);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_univ);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_van);
+                ch.setChecked(false);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                break;
+            case R.id.search_ll_drive_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
+                b = (Button) findViewById(R.id.search_ll_drive_clear);
+                b.setVisibility(View.INVISIBLE);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_drive_backward);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_drive_forward);
+                ch.setChecked(false);
+                ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_drive_full);
+                ch.setChecked(false);
+                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 break;
         }
         return;
