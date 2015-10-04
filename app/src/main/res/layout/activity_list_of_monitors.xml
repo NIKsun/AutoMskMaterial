@@ -12,10 +12,10 @@
 
         <com.rey.material.widget.Button
             android:id="@+id/toolbar_add_monitor_button"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="right"
-            android:layout_margin="10dp"
+            android:layout_marginRight="12dp"
             android:background="@drawable/ic_alarm_add_white_36dp"
             style="@style/LightFlatButtonRippleStyle"/>
 
@@ -71,17 +71,6 @@
         android:layout_height="48dp"
         android:visibility="invisible"
         android:layout_gravity="bottom"/>
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="807dp"
-        android:layout_marginStart="807dp" />
 
 </RelativeLayout>
 

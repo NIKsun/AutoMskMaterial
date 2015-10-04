@@ -1,5 +1,6 @@
 package com.example.material_model_automsk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.crashlytics.android.Crashlytics;
@@ -34,12 +34,16 @@ public class MainActivity extends ActionBarActivity
     TabLayout tabLayout;
     private SnackBar mSnackBar;
     Button addMonitorButton;
+    Boolean isAfterOnCreate;
 
     private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        isAfterOnCreate = true;
+
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_list_of_monitors);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
@@ -122,6 +126,19 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        if(isAfterOnCreate)
+        {
+            isAfterOnCreate = false;
+            return;
+        }
+
+        switch (position){
+            case 0:
+                mNavigationDrawerFragment.closeDrawer();
+                Intent intent = new Intent(this, FavoritesFragment.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     public SnackBar getSnackBar(){
