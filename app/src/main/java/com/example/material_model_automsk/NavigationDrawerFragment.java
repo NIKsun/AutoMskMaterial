@@ -2,6 +2,7 @@ package com.example.material_model_automsk;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -187,15 +188,23 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     private void selectItem(int position) {
+
         mCurrentSelectedPosition = position;
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            if (mCurrentSelectedPosition != 1)
+                mCallbacks.onNavigationDrawerItemSelected(position);
+            else
+            {
+                Intent intent = new Intent(getActivity(), Settings.class);
+                startActivity(intent);
+            }
         }
         ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
     }
+
 
     public void openDrawer() {
         mDrawerLayout.openDrawer(mFragmentContainerView);

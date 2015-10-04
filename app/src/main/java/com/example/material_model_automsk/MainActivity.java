@@ -1,6 +1,8 @@
 package com.example.material_model_automsk;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +18,7 @@ import com.crashlytics.android.Crashlytics;
 import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
+import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
 
@@ -38,6 +41,15 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1"))
+            setTheme(R.style.AppTheme);
+         else if (themeName.equals("2"))
+            setTheme(R.style.AppTheme2);
+
+        ThemeManager.init(this, 2, 0, null);
+
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_list_of_monitors);
