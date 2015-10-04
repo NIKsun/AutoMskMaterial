@@ -28,21 +28,22 @@ public class ListOfCarsActivity extends ActionBarActivity
     private Toolbar mToolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
-
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_list_of_cars);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_LOC);
         viewPager.setAdapter(new LOC_FragmentPagerAdapter(getSupportFragmentManager(),
-                ListOfCarsActivity.this, getIntent().getIntExtra("FilterID",0)));
+                ListOfCarsActivity.this, getIntent().getIntExtra("FilterID", 0)));
         // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_LOC);
         tabLayout.setupWithViewPager(viewPager);
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
 

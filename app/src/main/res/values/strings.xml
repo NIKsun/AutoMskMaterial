@@ -8,5 +8,6 @@
     <string name="popup_edit">Изменить</string>
     <string name="monitor_is_not_active">Монитор отключен</string>
     <string name="connection_error">Сервис временно не доступен.</string>
+    <string name="not_found_error">На данном ресурсе по вашему запросу ничего не найдено.</string>
     <string name="connection_error_increase">Возможно не удалось подключиться к серверу источника объявлений. Попробуйте обновить страницу позже. Если проблема не исчезает долгое время напишите об этом в службу поддержки.</string>
 </resources>

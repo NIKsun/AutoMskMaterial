@@ -72,9 +72,21 @@ public class LOCfragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+         super.onSaveInstanceState(outState);
+         Log.v("tabl", "Save " + numberOfSite);
+         outState.putInt("NumberOfSite", numberOfSite);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loader = new LoadListView();
+        setRetainInstance(true);
+        if(savedInstanceState != null)
+            numberOfSite = savedInstanceState.getInt("NumberOfSite", 0);
+
+        Log.d("tabl", String.valueOf(numberOfSite));
     }
     @Override
     public void onDestroy() {
@@ -86,6 +98,7 @@ public class LOCfragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         if(cars == null) {
             if(loader.getStatus()== AsyncTask.Status.RUNNING || loader.getStatus()== AsyncTask.Status.FINISHED)
                 return savedView;
@@ -97,6 +110,7 @@ public class LOCfragment extends Fragment {
                 mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        mSwipeRefreshLayout.setEnabled(false);
                         loader.cancel(true);
                         imageLoaderMayRunning = false;
                         loader = new LoadListView();
@@ -128,7 +142,7 @@ public class LOCfragment extends Fragment {
 
             //РАБОТА С БД, ВЫЗОВ onProgressUpdate
 
-            Document doc = null;
+            Document doc;
             Elements mainElems;
             Boolean isNotFound = false, isNotConnected = false;
             Cars carsBuf = null;
@@ -174,7 +188,7 @@ public class LOCfragment extends Fragment {
                     break;
                 case 1:
                     try {
-                        doc = Jsoup.connect("https://www.avito.ru/moskva/avtomobili/chevrolet/lanos").userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                        doc = Jsoup.connect("https://www.avito.ru/moskva/avtomobili/bmw/m6?pmax=100000").userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                     }
                     catch (HttpStatusException e)
                     {
@@ -211,10 +225,13 @@ public class LOCfragment extends Fragment {
                     while(counter < 20) {
                         try {
                             doc = Jsoup.connect("http://auto.drom.ru/chevrolet/lanos/page@@@page/?go_search=2".replace("page@@@page", "page"+pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
-                        } catch (HttpStatusException e) {
+                        }
+                        catch (HttpStatusException e)
+                        {
                             isNotFound = true;
                             break;
-                        } catch (IOException e) {
+                        }
+                        catch (IOException e) {
                             isNotConnected = true;
                             break;
                         }
@@ -226,7 +243,8 @@ public class LOCfragment extends Fragment {
                             if (counter == 0) {
                                 isNotFound = true;
                                 break;
-                            } else
+                            }
+                            else
                                 break;
                         }
 
@@ -252,27 +270,30 @@ public class LOCfragment extends Fragment {
                             break;
                         }
                     }
+                    if(carsBuf.getLength() == 0)
+                        carsBuf = null;
                     break;
             }
 
-            Log.d("Now!","Now0");
-            if(!isNotConnected && !isNotFound)
-                //Нужно не перезаписывать, а добовлять!
-                cars = carsBuf;
-            return isNotConnected || isNotFound;
+            if(isNotConnected || isNotFound)
+                cars = null;
+            else
+                cars = carsBuf;//Нужно не перезаписывать, а добовлять!
+            return isNotFound;
         }
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
         }
         @Override
-        protected void onPostExecute(final Boolean result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(final Boolean isNotFound) {
+            super.onPostExecute(isNotFound);
             mSwipeRefreshLayout.setRefreshing(false);
             pvCircular.stop();
             imageLoaderMayRunning = true;
 
-            if(!result && cars != null) { //Учесть состояние НЕ НАЙДЕНО!
+            if(cars != null) { //Учесть состояние НЕ НАЙДЕНО!
+                mSwipeRefreshLayout.setEnabled(true);
                 final Bitmap images[] = new Bitmap[cars.getLength()];
                 final Bitmap loadingImage = BitmapFactory.decodeResource(getResources(), R.drawable.car_loading_pic);
                 for (int i = 0; i < cars.getLength(); i++)
@@ -313,23 +334,37 @@ public class LOCfragment extends Fragment {
             }
             else
             {
-                mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
-                RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
-                rv.setAdapter(null);
+                if(isNotFound)
+                {
+                    mSwipeRefreshLayout.setEnabled(false);
+                    mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
+                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
+                    rv.setAdapter(null);
 
-                FloatingActionButton fab = (FloatingActionButton)savedView.findViewById(R.id.fab_sync);
-                fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp),true);
-                ll = (LinearLayout)savedView.findViewById(R.id.layout_connection_error);
-                ll.setVisibility(View.VISIBLE);
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ll.setVisibility(View.INVISIBLE);
-                        pvCircular.start();
-                        loader = new LoadListView();
-                        loader.execute();
-                    }
-                });
+                    ll = (LinearLayout) savedView.findViewById(R.id.layout_not_found_error);
+                    ll.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mSwipeRefreshLayout.setEnabled(false);
+                    mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
+                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
+                    rv.setAdapter(null);
+                    rv.setEnabled(false);
+
+                    FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.fab_sync);
+                    fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp), true);
+                    ll = (LinearLayout) savedView.findViewById(R.id.layout_connection_error);
+                    ll.setVisibility(View.VISIBLE);
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ll.setVisibility(View.INVISIBLE);
+                            pvCircular.start();
+                            loader = new LoadListView();
+                            loader.execute();
+                        }
+                    });
+                }
             }
         }
     }
