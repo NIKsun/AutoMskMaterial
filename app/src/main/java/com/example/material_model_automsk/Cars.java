@@ -102,13 +102,7 @@ public class Cars {
         Matcher matcher = pattern.matcher(elem.attr("data-stat_params"));
         if(matcher.find()){
             currentCar.id = matcher.group(1);
-            //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //try {
-                //currentCar.timeOfCreate = format.parse(matcher.group(2));
-                currentCar.timeOfCreate = new Date(Long.parseLong(matcher.group(2)));
-            //} catch (ParseException e) {
-            //    e.printStackTrace();
-           // }
+            currentCar.timeOfCreate = new Date(Long.parseLong(matcher.group(2)));
         }
         else
             return false;
@@ -139,15 +133,9 @@ public class Cars {
         Pattern pattern = Pattern.compile("created\":([^,]+)");
         Matcher matcher = pattern.matcher(elem.attr("data-stat_params"));
         if(matcher.find()){
-            //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //try {
-            //    Date buf = format.parse(matcher.group(1));
-                Date buf = new Date(Long.parseLong(matcher.group(1)));
-                buf.setSeconds(0);
-                return buf;
-            //} catch (ParseException e) {
-            //    e.printStackTrace();
-            //}
+            Date buf = new Date(Long.parseLong(matcher.group(1)));
+            buf.setSeconds(0);
+            return buf;
         }
         return null;
     }

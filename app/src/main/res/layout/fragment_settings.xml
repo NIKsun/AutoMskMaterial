@@ -1,0 +1,211 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow"
+        android:layout_gravity="top" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:scrollbarStyle="outsideOverlay"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingRight="10dp"
+        android:animateLayoutChanges="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_car">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/change_theme"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <com.rey.material.widget.TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/LightTitleText"
+                        android:textSize="25sp"
+                        android:text="Цветовая схема"
+                        android:paddingLeft="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/change_theme_hidden"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/colorPrimaryQuarter"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="7dp"/>
+                            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:layout_width="match_parent"
+                                android:id="@+id/radio_group1"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <com.rey.material.widget.RadioButton
+                                    android:id="@+id/radio_button_1"
+                                    style="@style/Material.Drawable.RadioButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:text="Синяя тема"
+                                    android:clickable="false"
+                                    android:checked="false" />
+                                <com.rey.material.widget.RadioButton
+                                    android:id="@+id/radio_button_2"
+                                    style="@style/Material.Drawable.RadioButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:text="Зеленая тема"/>
+                            </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_mon"
+                card_view:cardElevation="4dp"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <com.rey.material.widget.Switch
+                            android:id="@+id/cv_mon_switch_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end|center"
+                            style="@style/LightSwitch"
+                            android:layout_gravity="end|bottom" />
+
+                        <com.rey.material.widget.TextView
+                            android:id="@+id/cv_mon_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Активность монитора"
+                            android:textSize="25sp"
+                            android:layout_gravity="left|center_vertical"
+                            style="@style/LightTitleText"
+                            android:paddingLeft="8dp" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_notification"
+                card_view:cardElevation="4dp"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <com.rey.material.widget.Switch
+                            android:id="@+id/cv_notification_switch_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end|center"
+                            style="@style/LightSwitch"
+                            android:layout_gravity="end|bottom" />
+
+                        <com.rey.material.widget.TextView
+                            android:id="@+id/cv_notification_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Нотификация активна"
+                            android:textSize="25sp"
+                            android:layout_gravity="left|center_vertical"
+                            style="@style/LightTitleText"
+                            android:paddingLeft="8dp" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_vibration"
+                card_view:cardElevation="4dp"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp">
+
+                        <com.rey.material.widget.Switch
+                            android:id="@+id/cv_vibration_switch_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end|center"
+                            style="@style/LightSwitch"
+                            android:layout_gravity="end|bottom" />
+
+                        <com.rey.material.widget.TextView
+                            android:id="@+id/cv_vibration_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Звук активен"
+                            android:textSize="25sp"
+                            android:layout_gravity="left|center_vertical"
+                            style="@style/LightTitleText"
+                            android:paddingLeft="8dp" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

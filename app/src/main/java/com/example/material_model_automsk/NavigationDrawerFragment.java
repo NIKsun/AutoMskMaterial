@@ -1,7 +1,7 @@
 package com.example.material_model_automsk;
 
-import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -22,12 +22,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,11 +123,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
+        items.add(new NavigationItem("Поиск", getResources().getDrawable(R.drawable.ic_search_black_48dp)));
+        items.add(new NavigationItem("Мониторы", getResources().getDrawable(R.drawable.ic_desktop_windows_black_48dp)));
         items.add(new NavigationItem("Избранное", getResources().getDrawable(R.drawable.ic_star_border_black_48dp)));
         items.add(new NavigationItem("Настройки", getResources().getDrawable(R.drawable.ic_settings_black_48dp)));
         items.add(new NavigationItem("Обратная связь", getResources().getDrawable(R.drawable.ic_email_black_48dp)));
         items.add(new NavigationItem("Справка", getResources().getDrawable(R.drawable.ic_help_outline_black_48dp)));
-        items.add(new NavigationItem("Выход", getResources().getDrawable(R.drawable.ic_exit_to_app_black_48dp)));
         return items;
     }
 
@@ -187,6 +185,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     private void selectItem(int position) {
+
         mCurrentSelectedPosition = position;
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
@@ -196,6 +195,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
         ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
     }
+
 
     public void openDrawer() {
         mDrawerLayout.openDrawer(mFragmentContainerView);
