@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 Intent email = new Intent(Intent.ACTION_SEND);
-                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"room530@yahoo.com"});
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"room530a@gmail.com"});
                 email.putExtra(Intent.EXTRA_SUBJECT, "Разработчикам приложения");
                 email.putExtra(Intent.EXTRA_TEXT, "");
                 email.setType("message/rfc822");
