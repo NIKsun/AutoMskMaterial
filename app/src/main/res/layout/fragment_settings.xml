@@ -3,28 +3,12 @@
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <LinearLayout
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/toolbar_actionbar"
-            style="@style/ToolBarStyle" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:background="?attr/colorPrimary"
-            android:minHeight="@dimen/abc_action_bar_default_height_material">
-
-            <com.rey.material.widget.Button
-                android:id="@+id/toolbar_return"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="left"
-                android:layout_margin="10dp"
-                android:onClick="onClick"
-                android:background="@drawable/ic_arrow_back_white_36dp"
-                style="@style/LightFlatButtonRippleStyle"/>
-
-        </android.support.v7.widget.Toolbar>
-    </LinearLayout>
+        android:layout_height="8dp"
+        android:background="@drawable/shadow"
+        android:layout_gravity="top" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -52,7 +36,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/change_theme"
                     android:clickable="true"
-                    android:onClick="onClick"
                     android:orientation="vertical"
                     android:padding="10dp">
                     <com.rey.material.widget.TextView
@@ -86,7 +69,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:onClick="onClick"
                                     android:text="Синяя тема"
                                     android:clickable="false"
                                     android:checked="false" />
@@ -96,7 +78,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:onClick="onClick"
                                     android:text="Зеленая тема"/>
                             </RadioGroup>
                     </LinearLayout>

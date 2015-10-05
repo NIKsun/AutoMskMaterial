@@ -127,6 +127,14 @@ public class MainActivity extends ActionBarActivity
                 secondFragment = new FavoritesFragment();
                 fTrans.add(R.id.container, secondFragment);
                 break;
+            case 3:
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new SettingsFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
+
         }
         fTrans.commit();
     }
