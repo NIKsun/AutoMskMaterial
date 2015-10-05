@@ -1,10 +1,14 @@
 package com.example.material_model_automsk;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,9 @@ import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
+import com.rey.material.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -188,6 +195,7 @@ public class MainActivity extends ActionBarActivity
                 b.setVisibility(View.VISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
+
         }
         return;
     }
@@ -196,6 +204,9 @@ public class MainActivity extends ActionBarActivity
         LinearLayout ll;
         Button b;
         com.rey.material.widget.CheckBox ch;
+        android.support.v7.widget.AppCompatTextView t;
+        SharedPreferences sPref;
+        SharedPreferences.Editor ed;
         switch (v.getId()){
             case R.id.search_ll_year_clear:
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
@@ -291,8 +302,57 @@ public class MainActivity extends ActionBarActivity
                 ch.setChecked(false);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 break;
+            case R.id.search_ll_mark_clear:
+                b = (Button) findViewById(R.id.search_ll_mark_clear);
+                b.setVisibility(View.INVISIBLE);
+
+                t = (android.support.v7.widget.AppCompatTextView) findViewById(R.id.search_ll_mark_text);
+                t.setText("Любая");
+
+                sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                ed = sPref.edit();
+                ed.putString("SelectedMark","Любая").commit();
+                ed.putString("SelectedModel","Любая").commit();
+
+                CardView cv = (CardView) findViewById(R.id.search_ll_model_cardview);
+                cv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                break;
+            case R.id.search_ll_model_clear:
+                b = (Button) findViewById(R.id.search_ll_model_clear);
+                b.setVisibility(View.INVISIBLE);
+
+                t = (android.support.v7.widget.AppCompatTextView) findViewById(R.id.search_ll_model_text);
+                t.setText("Любая");
+
+                sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                ed = sPref.edit();
+                ed.putString("SelectedModel","Любая").commit();
+                break;
         }
         return;
     }
+    public void onClickMarkorModel(View v){
+        Intent intent;
+        switch (v.getId()){
+            case R.id.search_ll_mark_cardview :
+                //Button b = (Button) findViewById(R.id.search_ll_mark_clear);
+                //b.setVisibility(View.VISIBLE); //в новое активити перенести это
+                intent = new Intent(this, MarkFilter.class);
+                String[] marks_arr = {"Ауди", "БМВ"};
+                intent.putExtra("Marks",marks_arr);
+                startActivity(intent);
+                break;
+            case R.id.search_ll_model_cardview :
+                //Button b = (Button) findViewById(R.id.search_ll_mark_clear);
+                //b.setVisibility(View.VISIBLE); //в новое активити перенести это
+                intent = new Intent(this, MarkFilter.class);
+                String[] models_arr = {"A4", "A6"};
+                intent.putExtra("Models",models_arr);
+                startActivity(intent);
+                break;
+        }
+    }
+
+
 
 }
