@@ -80,6 +80,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
     }
 
+    public Integer getCurrentItemSelected()
+    {
+        return mCurrentSelectedPosition;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,8 +128,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("Поиск", getResources().getDrawable(R.drawable.ic_search_black_48dp)));
         items.add(new NavigationItem("Мониторы", getResources().getDrawable(R.drawable.ic_desktop_windows_black_48dp)));
+        items.add(new NavigationItem("Поиск", getResources().getDrawable(R.drawable.ic_search_black_48dp)));
         items.add(new NavigationItem("Избранное", getResources().getDrawable(R.drawable.ic_star_border_black_48dp)));
         items.add(new NavigationItem("Настройки", getResources().getDrawable(R.drawable.ic_settings_black_48dp)));
         items.add(new NavigationItem("Обратная связь", getResources().getDrawable(R.drawable.ic_email_black_48dp)));
@@ -184,7 +189,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
 
         mCurrentSelectedPosition = position;
         if (mDrawerLayout != null) {
