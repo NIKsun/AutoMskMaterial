@@ -74,7 +74,6 @@ public class LOCfragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
          super.onSaveInstanceState(outState);
-         Log.v("tabl", "Save " + numberOfSite);
          outState.putInt("NumberOfSite", numberOfSite);
     }
 
@@ -85,8 +84,6 @@ public class LOCfragment extends Fragment {
         setRetainInstance(true);
         if(savedInstanceState != null)
             numberOfSite = savedInstanceState.getInt("NumberOfSite", 0);
-
-        Log.d("tabl", String.valueOf(numberOfSite));
     }
     @Override
     public void onDestroy() {
@@ -119,8 +116,13 @@ public class LOCfragment extends Fragment {
                 });
 
                 RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_cars);
+                rv.setEnabled(false);
+                rv.setVisibility(View.INVISIBLE);
+                LinearLayoutManager llm = new LinearLayoutManager(savedView.getContext());
+                rv.setLayoutManager(llm);
                 registerForContextMenu(rv);
 
+                mSwipeRefreshLayout.setEnabled(false);
                 mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
                 pvCircular = (ProgressView)savedView.findViewById(R.id.progress_circular);
                 loader.execute();
@@ -327,30 +329,25 @@ public class LOCfragment extends Fragment {
                 mSwipeRefreshLayout.setEnabled(true);
                 mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
-                LinearLayoutManager llm = new LinearLayoutManager(savedView.getContext());
-                rv.setLayoutManager(llm);
+                rv.setEnabled(true);
+                rv.setVisibility(View.VISIBLE);
                 adapter = new LOCcardAdapter(cars, images);
                 rv.setAdapter(adapter);
             }
             else
             {
+                mSwipeRefreshLayout.setEnabled(false);
+                mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
+                RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
+                rv.setAdapter(null);
+                rv.setEnabled(false);
+                rv.setVisibility(View.INVISIBLE);
                 if(isNotFound)
                 {
-                    mSwipeRefreshLayout.setEnabled(false);
-                    mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
-                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
-                    rv.setAdapter(null);
-
                     ll = (LinearLayout) savedView.findViewById(R.id.layout_not_found_error);
                     ll.setVisibility(View.VISIBLE);
                 }
                 else {
-                    mSwipeRefreshLayout.setEnabled(false);
-                    mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
-                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
-                    rv.setAdapter(null);
-                    rv.setEnabled(false);
-
                     FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.fab_sync);
                     fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp), true);
                     ll = (LinearLayout) savedView.findViewById(R.id.layout_connection_error);
