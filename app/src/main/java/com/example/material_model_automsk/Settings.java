@@ -122,6 +122,15 @@ public class Settings extends ActionBarActivity implements View.OnClickListener,
                     break;
                 showDialogTheme(2);
                 break;
+            case R.id.cv_notification_switch_status:
+                com.rey.material.widget.Switch Switch = (com.rey.material.widget.Switch) findViewById(R.id.cv_notification_switch_status);
+                if (Switch.isChecked()==true)
+                    //Включть нотификацию
+                    break;
+                else
+                //Отключить нотификацию.
+                    break;
+
         }
         return;
     }

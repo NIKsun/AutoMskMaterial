@@ -61,7 +61,7 @@
                         style="@style/LightTitleText"
                         android:textSize="25sp"
                         android:text="Цветовая схема"
-                        android:paddingLeft="10dp" />
+                        android:paddingLeft="8dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -127,15 +127,16 @@
                             style="@style/LightSwitch"
                             android:layout_gravity="end|bottom" />
 
-                        <TextView
+                        <com.rey.material.widget.TextView
                             android:id="@+id/cv_mon_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Монитор активен"
+                            android:text="Активность монитора"
                             android:textSize="25sp"
                             android:layout_gravity="left|center_vertical"
-                            style="@style/Base.TextAppearance.AppCompat.Title"
+                            style="@style/LightTitleText"
                             android:paddingLeft="8dp" />
+
                     </FrameLayout>
 
                 </LinearLayout>
@@ -166,15 +167,16 @@
                             style="@style/LightSwitch"
                             android:layout_gravity="end|bottom" />
 
-                        <TextView
+                        <com.rey.material.widget.TextView
                             android:id="@+id/cv_notification_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Нотификация активна"
                             android:textSize="25sp"
                             android:layout_gravity="left|center_vertical"
-                            style="@style/Base.TextAppearance.AppCompat.Title"
+                            style="@style/LightTitleText"
                             android:paddingLeft="8dp" />
+
                     </FrameLayout>
 
                 </LinearLayout>
@@ -205,15 +207,16 @@
                             style="@style/LightSwitch"
                             android:layout_gravity="end|bottom" />
 
-                        <TextView
+                        <com.rey.material.widget.TextView
                             android:id="@+id/cv_vibration_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Звук активен"
                             android:textSize="25sp"
                             android:layout_gravity="left|center_vertical"
-                            style="@style/Base.TextAppearance.AppCompat.Title"
+                            style="@style/LightTitleText"
                             android:paddingLeft="8dp" />
+
                     </FrameLayout>
 
                 </LinearLayout>
