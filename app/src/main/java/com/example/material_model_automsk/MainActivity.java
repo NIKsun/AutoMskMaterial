@@ -2,6 +2,9 @@ package com.example.material_model_automsk;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -146,12 +149,14 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 4:
-                Intent email = new Intent(Intent.ACTION_SEND);
-                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"room530a@gmail.com"});
-                email.putExtra(Intent.EXTRA_SUBJECT, "Разработчикам приложения");
-                email.putExtra(Intent.EXTRA_TEXT, "");
-                email.setType("message/rfc822");
-                startActivity(Intent.createChooser(email, "Choose an Email client :"));break;
+                mToolbar.setTitle("Обратная связь");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new FeedbackFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
+
 
         }
         fTrans.commit();
