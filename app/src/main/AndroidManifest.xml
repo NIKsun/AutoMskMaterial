@@ -27,6 +27,11 @@
             android:label="@string/app_name" >
         </activity>
 
+        <activity
+            android:name=".MarkFilter"
+            android:label="@string/app_name" >
+        </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="944cea9a595830f725498cd6d5a58ddf6f0adcf7" />
