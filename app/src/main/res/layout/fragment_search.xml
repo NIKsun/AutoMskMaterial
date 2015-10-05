@@ -93,11 +93,7 @@
             card_view:cardUseCompatPadding="true"
             card_view:cardElevation="4dp"
             android:id="@+id/search_ll_model_cardview"
-            android:onClick="onClickMarkorModel"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:onClick="onClickMarkorModel">
 
             <LinearLayout
                 android:layout_width="match_parent"
