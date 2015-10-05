@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private SnackBar mSnackBar;
     private Button addMonitorButton;
-    private Boolean isFirstLaunch = true;
+    private Boolean isFirstLaunch = true, itemSelectFromTabLayout = false;
     private Toolbar mToolbar;
     private Fragment secondFragment;
     private SearchAndMonitorsFragment mainFragment;
@@ -93,11 +93,17 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+
     }
 
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        if(itemSelectFromTabLayout)
+        {
+            itemSelectFromTabLayout = false;
+            return;
+        }
         if(isFirstLaunch)
         {
             isFirstLaunch = false;
@@ -107,20 +113,23 @@ public class MainActivity extends ActionBarActivity
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         switch (position){
             case 0:
-                mainFragment.setPage(1);
-                if(secondFragment != null) {
-                    fTrans.remove(secondFragment);
-                    fTrans.show(mainFragment);
-                }
-                break;
-            case 1:
+                mToolbar.setTitle("Авто Москва");
                 mainFragment.setPage(0);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);
                     fTrans.show(mainFragment);
                 }
                 break;
+            case 1:
+                mToolbar.setTitle("Авто Москва");
+                mainFragment.setPage(1);
+                if(secondFragment != null) {
+                    fTrans.remove(secondFragment);
+                    fTrans.show(mainFragment);
+                }
+                break;
             case 2:
+                mToolbar.setTitle("Избранное");
                 fTrans.hide(mainFragment);
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
@@ -128,6 +137,7 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 3:
+                mToolbar.setTitle("Настройки");
                 fTrans.hide(mainFragment);
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
@@ -150,8 +160,16 @@ public class MainActivity extends ActionBarActivity
     public void onBackPressed() {
         if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
-        else
-            super.onBackPressed();
+        else{
+            if(mNavigationDrawerFragment.getCurrentItemSelected() > 1)
+                if(mainFragment.getSelectedTabPosition() == 0)
+                    onNavigationDrawerItemSelected(0);
+                else
+                    onNavigationDrawerItemSelected(1);
+            else
+                super.onBackPressed();
+        }
+
     }
 
     public void onClickHandlerHidden(View v){
@@ -313,4 +331,9 @@ public class MainActivity extends ActionBarActivity
         return;
     }
 
+    public void setNavigationDrawerItem(int itemNumber)
+    {
+        itemSelectFromTabLayout = true;
+        mNavigationDrawerFragment.selectItem(itemNumber);
+    }
 }
