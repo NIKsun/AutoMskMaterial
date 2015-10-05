@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.RadioButton;
@@ -66,22 +67,19 @@ public class SettingsFragment extends Fragment
         });
         rb1 = (RadioButton)savedView.findViewById(R.id.radio_button_1);
         rb2 = (RadioButton)savedView.findViewById(R.id.radio_button_2);
-        /*rb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (radio_button_checked == 1)
-                    return;
-                showDialogTheme(1);
-            }
-        });
         rb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (radio_button_checked == 2)
-                    return;
-                showDialogTheme(2);
+                //showDialogTheme(1);
             }
         });
+        rb2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //showDialogTheme(2);
+            }
+        });
+        /*
         Switch sw = (Switch)savedView.findViewById(R.id.cv_notification_switch_status);
         sw.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
@@ -93,12 +91,24 @@ public class SettingsFragment extends Fragment
                     //Отключить нотификацию.
                     return;
             }
-        });*/
+        });
+        */
         CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    if (rb1 == buttonView)
+                    {
+                        if (radio_button_checked != 1)
+                            showDialogTheme(1);
+                    }
+
+                    if (rb2 == buttonView)
+                    {
+                        if (radio_button_checked != 2)
+                            showDialogTheme(2);
+                    }
                     rb1.setChecked(rb1 == buttonView);
                     rb2.setChecked(rb2 == buttonView);
                 }
@@ -129,7 +139,7 @@ public class SettingsFragment extends Fragment
         setRadio_button_checked(themeNumber);
         ad.setTitle("Изменение темы");
         ad.setMessage("Для измененения темы необходимо перезапустить приложение.");
-        ad.setPositiveButton("Перезапустить приложение", new DialogInterface.OnClickListener() {
+        ad.setPositiveButton("Закрыть приложение", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
                 //finish();
                 SharedPreferences pref = PreferenceManager
@@ -152,6 +162,7 @@ public class SettingsFragment extends Fragment
                         break;
                     }
                 }
+                radio_button_checked=themeNumber;
                 ed.commit();
                 System.exit(0);
             }

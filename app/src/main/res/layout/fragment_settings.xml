@@ -71,14 +71,16 @@
                                     android:gravity="center_vertical"
                                     android:text="Синяя тема"
                                     android:clickable="false"
-                                    android:checked="false" />
+                                    android:checked="false"
+                                    android:textSize="20sp" />
                                 <com.rey.material.widget.RadioButton
                                     android:id="@+id/radio_button_2"
                                     style="@style/Material.Drawable.RadioButton"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:text="Зеленая тема"/>
+                                    android:text="Зеленая тема"
+                                    android:textSize="20sp" />
                             </RadioGroup>
                     </LinearLayout>
                 </LinearLayout>

@@ -72,6 +72,7 @@ public class SearchAndMonitorsFragment extends Fragment {
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                myContext.setNavigationDrawerItem(position);
                 Button addMonitorButton = myContext.getAddMonitorButton();
                 if (position == 0)
                 {
@@ -96,11 +97,36 @@ public class SearchAndMonitorsFragment extends Fragment {
             }
         });
 
+
+
         if(viewPager.getCurrentItem()==0)
             myContext.getAddMonitorButton().setVisibility(View.INVISIBLE);
 
-        viewPager.setCurrentItem(getArguments().getInt("pageNumber",0));
+        viewPager.setCurrentItem(getArguments().getInt("pageNumber", 0));
         return v;
 
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        Button addMonitorButton = myContext.getAddMonitorButton();
+        if(getSelectedTabPosition()==1){
+            if(hidden) {
+                Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_right);
+                addMonitorButton.setVisibility(View.INVISIBLE);
+                addMonitorButton.startAnimation(anim);
+            } else
+            {
+                Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_left);
+                addMonitorButton.setVisibility(View.VISIBLE);
+                addMonitorButton.startAnimation(anim);
+            }
+        }
+        super.onHiddenChanged(hidden);
+    }
+
+    public Integer getSelectedTabPosition()
+    {
+        return tabLayout.getSelectedTabPosition();
     }
 }
