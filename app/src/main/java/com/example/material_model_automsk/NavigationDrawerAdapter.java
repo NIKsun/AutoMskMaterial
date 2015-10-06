@@ -52,8 +52,16 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         return viewHolder;
     }
 
+    private Boolean isItemBackgroundTransparent = false;
+    public void setItemBackgroundTransparent()
+    {
+        isItemBackgroundTransparent = true;
+    }
+
     @Override
     public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, int i) {
+        if(isItemBackgroundTransparent)
+            viewHolder.itemView.setBackgroundColor(viewHolder.textView.getContext().getResources().getColor(R.color.myTransparent));
         viewHolder.textView.setText(mData.get(i).getText());
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getDrawable(), null, null, null);
         if (mSelectedPosition == i) {
@@ -71,6 +79,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         mSelectedPosition = position;
         notifyItemChanged(position);
     }
+
 
     @Override
     public int getItemCount() {

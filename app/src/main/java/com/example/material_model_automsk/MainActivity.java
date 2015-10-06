@@ -3,15 +3,10 @@ package com.example.material_model_automsk;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.preference.PreferenceManager;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
@@ -19,11 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -35,9 +26,6 @@ import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.Spinner;
-import com.rey.material.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -52,9 +40,13 @@ public class MainActivity extends ActionBarActivity
     private Toolbar mToolbar;
     private Fragment secondFragment;
     private SearchAndMonitorsFragment mainFragment;
+    private Toast backToast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Fabric.with(this, new Crashlytics());
+        super.onCreate(savedInstanceState);
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
         if (themeName.equals("1"))
@@ -64,15 +56,13 @@ public class MainActivity extends ActionBarActivity
 
         ThemeManager.init(this, 2, 0, null);
 
-        super.onCreate(savedInstanceState);
 
         if(isFirstLaunch) {
             FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
             mainFragment = SearchAndMonitorsFragment.newInstance(1);
             fTrans.add(R.id.container, mainFragment, "MAIN").commit();
         }
-
-        Fabric.with(this, new Crashlytics());
+        backToast = Toast.makeText(this,"Нажмите еще раз для выхода",Toast.LENGTH_SHORT);
         setContentView(R.layout.main_activity);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
@@ -111,6 +101,14 @@ public class MainActivity extends ActionBarActivity
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        onNavigationDrawerItemSelected(pref.getInt("NumberOfCallingFragment", 0));
+        setNavigationDrawerItem(pref.getInt("NumberOfCallingFragment", 0));
+        pref.edit().remove("NumberOfCallingFragment").commit();
+    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -192,15 +190,13 @@ public class MainActivity extends ActionBarActivity
         if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
         else{
-            if(mNavigationDrawerFragment.getCurrentItemSelected() > 1)
-                if(mainFragment.getSelectedTabPosition() == 0)
-                    onNavigationDrawerItemSelected(0);
-                else
-                    onNavigationDrawerItemSelected(1);
-            else
+            if(backToast.getView().getWindowVisibility() == View.VISIBLE) {
+                backToast.getView().setVisibility(View.INVISIBLE);
                 super.onBackPressed();
+            }
+            else
+                backToast.show();
         }
-
     }
 
     public void onClickHandlerHidden(View v){

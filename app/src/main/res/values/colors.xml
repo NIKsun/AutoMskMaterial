@@ -23,6 +23,7 @@
     <color name="myWindowBackground">#FFF</color>
     <color name="myTextPrimaryColor">#212121</color>
     <color name="myNavigationColor">#000</color>
+    <color name="myTransparent">@android:color/transparent</color>
 
     <array name="progress_colors_light">
         <item>@color/myPrimaryColor</item>
