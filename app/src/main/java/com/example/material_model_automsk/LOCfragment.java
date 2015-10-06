@@ -2,8 +2,11 @@ package com.example.material_model_automsk;
 
 import android.annotation.TargetApi;
 import android.content.ClipboardManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -52,7 +55,7 @@ import java.net.URL;
  */
 public class LOCfragment extends Fragment {
 
-    final private static int RND_PXLS = 10;
+    final public static int RND_PXLS = 10;
     private int numberOfSite;
     private int filterID;
     ProgressView pvCircular;
@@ -63,6 +66,7 @@ public class LOCfragment extends Fragment {
     LoadListView loader;
     Boolean imageLoaderMayRunning = true;
     LOCcardAdapter adapter;
+    DbHelper dbHelper;
 
     public static LOCfragment newInstance(int page, int filterID) {
         LOCfragment fragment = new LOCfragment();
@@ -80,6 +84,7 @@ public class LOCfragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbHelper = new DbHelper(getActivity());
         loader = new LoadListView();
         setRetainInstance(true);
         if(savedInstanceState != null)
@@ -413,7 +418,29 @@ public class LOCfragment extends Fragment {
                 Toast.makeText(getContext(),"Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_in_favorites:
-                Toast.makeText(getContext(),"Еще не реализовано", Toast.LENGTH_SHORT).show();
+                int position = adapter.getPosition();
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                Cursor cursor = db.query("favorites", new String[]{"href"}, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex("href");
+                    do {
+                        if(cars.getHref(position).equals(cursor.getString(index)))
+                        {
+                            Log.d("dbIns", "eq");
+                            break;
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if(!cursor.isLast() && !cursor.moveToNext()) {
+                    ContentValues cv = new ContentValues();
+                    cv.put("message", cars.getMessage(position));
+                    cv.put("href", cars.getHref(position));
+                    cv.put("image", cars.getImg(position));
+                    cv.put("dateTime", "12.02.14 14:21");
+                    db.insert("favorites", null, cv);
+                    Toast.makeText(getContext(),"Авто добавлено в избранное", Toast.LENGTH_SHORT).show();
+                }
+                db.close();
                 break;
         }
         return super.onContextItemSelected(item);

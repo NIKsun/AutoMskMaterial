@@ -33,6 +33,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by Никита on 27.09.2015.
@@ -56,10 +57,19 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
 
     Cars cars;
     Bitmap images[];
+    Boolean isFromFavorites;
+    List<CarCard> favorites;
 
     LOCcardAdapter(Cars cars,Bitmap[] images){
         this.cars = cars;
         this.images = images;
+        isFromFavorites = false;
+    }
+
+    LOCcardAdapter(List<CarCard> cc, Bitmap[] images){
+        this.favorites = cc;
+        this.images = images;
+        isFromFavorites = true;
     }
 
     private int position;
@@ -72,7 +82,10 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
 
     @Override
     public int getItemCount() {
-        return cars.getLength();
+        if(isFromFavorites)
+            return favorites.size();
+        else
+            return cars.getLength();
     }
 
     @Override
@@ -84,20 +97,30 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
 
     @Override
     public void onBindViewHolder(final LOCviewHolder monitorViewHolder, final int i) {
+
         monitorViewHolder.iv.setImageBitmap(images[i]);
-        monitorViewHolder.textViewMessage.setText(Html.fromHtml(cars.getMessage(i)));
-        //monitorViewHolder.textViewIsNew.setHeight(0);
-        monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+        String href = null;
+        if (isFromFavorites)
+        {
+            href = favorites.get(i).href;
+            monitorViewHolder.textViewMessage.setText(Html.fromHtml(favorites.get(i).msg));
+        }
+        else {
+            href = cars.getHref(i);
+            monitorViewHolder.textViewMessage.setText(Html.fromHtml(cars.getMessage(i)));
+            //monitorViewHolder.textViewIsNew.setHeight(0);
+            monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+        }
+        final String finalHref = href;
         monitorViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CarWebPage.class);
-                intent.putExtra("url", cars.getHref(i));
+                intent.putExtra("url", finalHref);
                 v.getContext().startActivity(intent);
             }
         });
         monitorViewHolder.cv.setLongClickable(true);
-
         monitorViewHolder.cv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -105,6 +128,7 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
                 return false;
             }
         });
+
     }
 
     @Override
