@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.rey.material.widget.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LightTitleText"
+        android:textSize="40dp"
+        android:text="Связаться со службой поддержки"
+        android:gravity="center"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp" />
+
+    <com.rey.material.widget.TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LightTitleText"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:text="Наши консультанты ответят на ваши вопросы и помогут решить дальнейшие трудности." />
+
+    <com.rey.material.widget.Button
+        android:id="@+id/send_feedback"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="0dp"
+        android:background="@drawable/ic_mode_edit_black_24dp"
+        style="@style/LightFlatButtonRippleStyle"/>
+</LinearLayout>
