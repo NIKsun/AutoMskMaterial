@@ -162,7 +162,14 @@ public class MainActivity extends ActionBarActivity
                 secondFragment = new FeedbackFragment();
                 fTrans.add(R.id.container, secondFragment);
                 break;
-
+            case 5:
+                mToolbar.setTitle("Справка");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new ReferenceFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
 
         }
         fTrans.commit();
