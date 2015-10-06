@@ -90,8 +90,6 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardElevation="4dp"
             android:id="@+id/search_ll_model_cardview"
             android:onClick="onClickMarkorModel">
 
@@ -215,7 +213,8 @@
                             android:layout_height="wrap_content"
                             android:minWidth="128dp"
                             android:padding="8dp"
-                            style="@style/LightSpinner"/>
+                            style="@style/LightSpinner"
+                            android:onClick="onClickSpinner"/>
 
                         <com.rey.material.widget.Spinner
                             android:id="@+id/spinner_label_year_to"
