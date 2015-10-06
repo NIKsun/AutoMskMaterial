@@ -3,6 +3,9 @@ package com.example.material_model_automsk;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +16,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.rey.material.app.Dialog;
@@ -27,6 +34,7 @@ import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
+import com.rey.material.widget.Spinner;
 import com.rey.material.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -152,12 +160,21 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 4:
-                Intent email = new Intent(Intent.ACTION_SEND);
-                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"room530a@gmail.com"});
-                email.putExtra(Intent.EXTRA_SUBJECT, "Разработчикам приложения");
-                email.putExtra(Intent.EXTRA_TEXT, "");
-                email.setType("message/rfc822");
-                startActivity(Intent.createChooser(email, "Choose an Email client :"));break;
+                mToolbar.setTitle("Обратная связь");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new FeedbackFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
+            case 5:
+                mToolbar.setTitle("Справка");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new ReferenceFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
 
         }
         fTrans.commit();
@@ -203,6 +220,16 @@ public class MainActivity extends ActionBarActivity
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_year:
+
+
+                String[] data = new String[36];
+                for(int i = 0; i < data.length; i++)
+                    data[i] = "" + String.valueOf(i + 1980);
+                fillSpinner((Spinner) findViewById(R.id.spinner_label_year_from),data);
+                fillSpinner((Spinner) findViewById(R.id.spinner_label_year_to),data);
+
+
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
                 b = (Button) findViewById(R.id.search_ll_year_clear);
                 b.setVisibility(View.VISIBLE);
@@ -396,10 +423,35 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public void onClickSpinner(View v){
+        Spinner sp;
+        switch (v.getId()){
+            case R.id.spinner_label_year_from :
 
 
-    public void setNavigationDrawerItem(int itemNumber)
-    {
+                break;
+        }
+    }
+
+    public void fillSpinner(Spinner sp,String[] data){
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_spn, data);
+        adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
+        sp.setAdapter(adapter);
+        sp.setEnabled(true);
+
+
+        sp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                Log.d("spinner", (String) spinner.getSelectedItem().toString());
+            }
+        });
+
+
+    }
+
+
+    public void setNavigationDrawerItem(int itemNumber) {
         itemSelectFromTabLayout = true;
         mNavigationDrawerFragment.selectItem(itemNumber);
     }
