@@ -56,12 +56,11 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
         });*/
 
         final FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.send_feedback);
-        final Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
+        final Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_scale);
         fab.startAnimation(anim);
         fab.setVisibility(View.VISIBLE);
-        //ic_mode_edit_black_24dp
-        fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_desktop_windows_black_48dp), true);
-        fab.setBackgroundColor(getResources().getColor(R.color.orange));
+        fab.setIcon(getResources().getDrawable(R.drawable.ic_star_border_white_48dp), false);
+        fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,8 +70,6 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "room530a@gmail.com", null));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке АвтоМосква.");
                 startActivity(Intent.createChooser(intent, "Choose an Email client :"));
-
-
             }
         });
 
