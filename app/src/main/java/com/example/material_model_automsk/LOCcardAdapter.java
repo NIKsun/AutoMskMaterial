@@ -117,6 +117,12 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CarWebPage.class);
                 intent.putExtra("url", finalHref);
+                if(!isFromFavorites) {
+                    intent.putExtra("message", cars.getMessage(i));
+                    intent.putExtra("image", cars.getImg(i));
+                    intent.putExtra("dateTime", "12.21.42");
+                }
+                intent.putExtra("isFromFavorites", isFromFavorites);
                 v.getContext().startActivity(intent);
             }
         });
