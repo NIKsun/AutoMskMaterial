@@ -425,10 +425,7 @@ public class LOCfragment extends Fragment {
                     int index = cursor.getColumnIndex("href");
                     do {
                         if(cars.getHref(position).equals(cursor.getString(index)))
-                        {
-                            Log.d("dbIns", "eq");
                             break;
-                        }
                     } while (cursor.moveToNext());
                 }
                 if(!cursor.isLast() && !cursor.moveToNext()) {

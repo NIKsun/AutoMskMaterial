@@ -105,9 +105,12 @@ public class MainActivity extends ActionBarActivity
     protected void onResume() {
         super.onResume();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        onNavigationDrawerItemSelected(pref.getInt("NumberOfCallingFragment", 0));
-        setNavigationDrawerItem(pref.getInt("NumberOfCallingFragment", 0));
-        pref.edit().remove("NumberOfCallingFragment").commit();
+        int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
+        if(numberOfCallingFragment != -1) {
+            onNavigationDrawerItemSelected(numberOfCallingFragment);
+            setNavigationDrawerItem(numberOfCallingFragment);
+            pref.edit().remove("NumberOfCallingFragment").commit();
+        }
     }
 
     @Override
