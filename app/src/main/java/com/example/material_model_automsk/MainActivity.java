@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -771,24 +773,61 @@ public class MainActivity extends ActionBarActivity
     }
     public void onClickMarkorModel(View v){
         Intent intent;
+        final DbHelper dbHelper = new DbHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         switch (v.getId()){
             case R.id.search_ll_mark_cardview :
                 //Button b = (Button) findViewById(R.id.search_ll_mark_clear);
                 //b.setVisibility(View.VISIBLE); //в новое активити перенести это
+
+                Cursor cursor = db.query("marksTable", null, null, null, null, null, null);
+                String strToParse = "Любая@@@";
+
+                if (cursor.moveToFirst()) {
+                    int MarkColIndex = cursor.getColumnIndex("markauser");
+                    do {
+
+                        strToParse += cursor.getString(MarkColIndex) + "@@@";
+                    } while (cursor.moveToNext());
+                }
+                String[] marks_arr = strToParse.split("@@@");
                 intent = new Intent(this, MarkFilter.class);
-                String[] marks_arr = {"Ауди", "БМВ"};
                 intent.putExtra("Marks",marks_arr);
                 startActivity(intent);
                 break;
             case R.id.search_ll_model_cardview :
                 //Button b = (Button) findViewById(R.id.search_ll_mark_clear);
                 //b.setVisibility(View.VISIBLE); //в новое активити перенести это
+                SharedPreferences sPref2 = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+//тут
+                String pos = sPref2.getString("SelectedMark", "Любая");
+                if(pos.equals("Любая")){
+                    Toast t = Toast.makeText(getApplicationContext(),"Для начала выберите марку",Toast.LENGTH_SHORT);
+                    t.show();
+                    break;
+                }
+
+                Cursor cursor3 = db.query("marksTable", null, "markauser=?", new String[]{pos}, null, null, null);
+                cursor3.moveToFirst();
+                Integer markId = cursor3.getColumnIndex("id");
+                String markIdValue = cursor3.getString(markId);
+                Cursor cursor2 = db.query("modelsTable", null, "marka_id=?", new String[]{markIdValue}, null, null, null);
+                String strToParse2 = "Любая@@@";
+
+                if (cursor2.moveToFirst()) {
+                    int ModelColIndex = cursor2.getColumnIndex("modeluser");
+                    do {
+
+                        strToParse2 += cursor2.getString(ModelColIndex) + "@@@";
+                    } while (cursor2.moveToNext());
+                }
+                String[] models_arr = strToParse2.split("@@@");
                 intent = new Intent(this, MarkFilter.class);
-                String[] models_arr = {"A4", "A6"};
                 intent.putExtra("Models",models_arr);
                 startActivity(intent);
                 break;
         }
+        db.close();
     }
 
 

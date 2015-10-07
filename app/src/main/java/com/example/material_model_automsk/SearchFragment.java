@@ -70,6 +70,8 @@ public class SearchFragment extends Fragment {
             ll.setUseCompatPadding(true);
             ll.setCardElevation(4);
         }
+        else
+            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
         if(!model.equals("Любая"))
         {
             Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);

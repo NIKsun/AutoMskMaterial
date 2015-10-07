@@ -90,7 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/search_ll_model_cardview"
-            android:onClick="onClickMarkorModel">
+            android:onClick="onClickMarkorModel"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
