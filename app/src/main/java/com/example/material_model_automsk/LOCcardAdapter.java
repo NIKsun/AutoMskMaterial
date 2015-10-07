@@ -99,6 +99,21 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
         }
     }
 
+    public void insert(int position, CarCard car, Bitmap img) {
+        favorites.add(position,car);
+        Bitmap temp = images[position];
+        images[position] = img;
+        notifyItemInserted(position);
+        for (int i = favorites.size()-1;i>position+1;i--) {
+            images[i] = images[i-1];
+            notifyItemChanged(i);
+        }
+        if(position+1 != images.length) {
+            images[position + 1] = temp;
+            notifyItemChanged(position + 1);
+        }
+    }
+
     @Override
     public LOCviewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_car, viewGroup, false);

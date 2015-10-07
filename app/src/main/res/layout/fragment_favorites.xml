@@ -20,7 +20,7 @@
         style="@style/LightTitleText"/>
 
     <com.rey.material.widget.SnackBar
-        android:id="@+id/main_sn"
+        android:id="@+id/favorites_sn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:visibility="invisible"
