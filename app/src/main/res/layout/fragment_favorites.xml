@@ -1,11 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.rey.material.widget.ProgressView
+        android:id="@+id/progress_circular_favorites"
+        android:layout_marginBottom="12dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        style="@style/LightColorCircularProgressView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="ПУСТО"
+        android:visibility="invisible"
         android:textSize="25sp"
         android:layout_gravity="start"
         style="@style/LightTitleText"/>
@@ -29,5 +38,5 @@
         android:background="@drawable/shadow"
         android:layout_gravity="top" />
 
-</RelativeLayout>
+</FrameLayout>
 

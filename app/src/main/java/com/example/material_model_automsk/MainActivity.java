@@ -3,6 +3,8 @@ package com.example.material_model_automsk;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -107,8 +109,23 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
         if(numberOfCallingFragment != -1) {
-            onNavigationDrawerItemSelected(numberOfCallingFragment);
-            setNavigationDrawerItem(numberOfCallingFragment);
+            if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
+                    (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))
+            {
+                Waiter waiter = new Waiter();
+                if (Build.VERSION.SDK_INT>=11)
+                        waiter.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, numberOfCallingFragment, 400);
+                else
+                {
+                    onNavigationDrawerItemSelected(numberOfCallingFragment);
+                    setNavigationDrawerItem(numberOfCallingFragment);
+
+                }
+            }
+            else {
+                onNavigationDrawerItemSelected(numberOfCallingFragment);
+                setNavigationDrawerItem(numberOfCallingFragment);
+            }
             pref.edit().remove("NumberOfCallingFragment").commit();
         }
     }
@@ -453,5 +470,33 @@ public class MainActivity extends ActionBarActivity
     public void setNavigationDrawerItem(int itemNumber) {
         itemSelectFromTabLayout = true;
         mNavigationDrawerFragment.selectItem(itemNumber);
+    }
+
+
+    class Waiter extends AsyncTask<Integer, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(final Integer... params) {
+            try {
+                Thread.sleep(params[1]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return params[0];
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Integer values) {
+            super.onPostExecute(values);
+            onNavigationDrawerItemSelected(values);
+            setNavigationDrawerItem(values);
+        }
     }
 }

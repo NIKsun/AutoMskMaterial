@@ -1,6 +1,7 @@
 package com.example.material_model_automsk;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.rey.material.widget.ProgressView;
 
 import io.fabric.sdk.android.Fabric;
 

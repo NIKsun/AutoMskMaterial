@@ -10,7 +10,6 @@
         android:layout_height="wrap_content" android:background="?attr/colorPrimary"
         android:minHeight="@dimen/abc_action_bar_default_height_material" />
 
-
     <android.support.v4.widget.DrawerLayout android:id="@+id/drawer"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent" android:layout_height="match_parent"
@@ -41,7 +40,6 @@
                 android:layout_height="8dp"
                 android:background="@drawable/shadow"
                 android:layout_below="@+id/sliding_tabs_LOC" />
-
         </RelativeLayout>
 
         <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
