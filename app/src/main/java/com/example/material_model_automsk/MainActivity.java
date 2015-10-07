@@ -1,17 +1,20 @@
 package com.example.material_model_automsk;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.preference.PreferenceManager;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
@@ -19,11 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -35,9 +34,13 @@ import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.Spinner;
-import com.rey.material.widget.TextView;
 
-import org.w3c.dom.Text;
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -52,9 +55,17 @@ public class MainActivity extends ActionBarActivity
     private Toolbar mToolbar;
     private Fragment secondFragment;
     private SearchAndMonitorsFragment mainFragment;
+    private Toast backToast = null;
+    final String SAVED_TEXT_WITH_VERSION = "checkVersion";
+    final String DO_NOT_REMIND = "DontRemind";
+    static android.app.Dialog dialogPicker ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Fabric.with(this, new Crashlytics());
+        super.onCreate(savedInstanceState);
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
         if (themeName.equals("1"))
@@ -64,15 +75,13 @@ public class MainActivity extends ActionBarActivity
 
         ThemeManager.init(this, 2, 0, null);
 
-        super.onCreate(savedInstanceState);
 
         if(isFirstLaunch) {
             FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
             mainFragment = SearchAndMonitorsFragment.newInstance(1);
             fTrans.add(R.id.container, mainFragment, "MAIN").commit();
         }
-
-        Fabric.with(this, new Crashlytics());
+        backToast = Toast.makeText(this,"Нажмите еще раз для выхода",Toast.LENGTH_SHORT);
         setContentView(R.layout.main_activity);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
@@ -109,8 +118,177 @@ public class MainActivity extends ActionBarActivity
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
+        Thread threadAvito = new Thread(new Runnable() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            public void run() {
+                Document doc;
+                SharedPreferences sPref;
+                try {
+                    doc = Jsoup.connect("https://play.google.com/store/apps/details?id=com.develop.searchmycarandroid").userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+
+                    PackageManager packageManager;
+                    PackageInfo packageInfo;
+                    packageManager=getPackageManager();
+
+                    packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
+                    Element mainElems = doc.select("#body-content > div > div > div.main-content > div.details-wrapper.apps-secondary-color > div > div.details-section-contents > div:nth-child(4) > div.content").first();
+
+                    if (!packageInfo.versionName.equals(mainElems.text()))
+                    {
+                        sPref = getPreferences(MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sPref.edit();
+                        ed.putBoolean(SAVED_TEXT_WITH_VERSION, false);
+                        ed.commit();
+                    }
+                    else
+                    {
+                        sPref = getPreferences(MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sPref.edit();
+                        ed.putBoolean(SAVED_TEXT_WITH_VERSION, true);
+                        ed.commit();
+
+                    }
+                    //SharedPreferences sPrefRemind;
+                    //sPrefRemind = getPreferences(MODE_PRIVATE);
+                    //sPrefRemind.edit().putBoolean(DO_NOT_REMIND, false).commit();
+                }
+                catch (HttpStatusException e)
+                {
+                    //bulAvito[0] =false;
+                    return;
+                }
+                catch (IOException e)
+                {
+                    //connectionAvitoSuccess[0] = false;
+                    return;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
+        SharedPreferences sPrefVersion;
+        sPrefVersion = getPreferences(MODE_PRIVATE);
+        Boolean isNewVersion;
+        isNewVersion = sPrefVersion.getBoolean(SAVED_TEXT_WITH_VERSION, true);
+        threadAvito.start();
+        boolean remind=true;
+        if (!isNewVersion)
+        {
+
+            Log.d("aaffa", "isNewVersion= "+isNewVersion);
+            Log.d("aaffa", "не новая версия!!! Так записано. Возможно, поток еще не отработал");
+            SharedPreferences sPref12;
+            sPref12 = getPreferences(MODE_PRIVATE);
+            String isNewVersion12;
+
+            PackageManager packageManager;
+            PackageInfo packageInfo;
+            packageManager=getPackageManager();
+
+            try {
+                packageInfo=packageManager.getPackageInfo(getPackageName(), 0);
+                isNewVersion12 = sPref12.getString("OldVersionName", packageInfo.versionName);
+
+                if (!isNewVersion12.equals(packageInfo.versionName))
+                {
+                    Log.d("aaffa", "записанная в shared запись версии НЕ совпадает с действительной=" + isNewVersion12);
+
+                    SharedPreferences sPref;
+                    sPref = getPreferences(MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean(SAVED_TEXT_WITH_VERSION, false);
+                    ed.commit();
+
+                    SharedPreferences sPrefRemind;
+                    sPrefRemind = getPreferences(MODE_PRIVATE);
+                    sPrefRemind.edit().putBoolean(DO_NOT_REMIND, false).commit();
+                }
+                else
+                {
+                    remind = false;
+                    Log.d("aaffa", "записанная в shared запись версии  совпадает с действительной");
+                }
+
+
+                SharedPreferences sPrefRemind;
+                sPrefRemind = getPreferences(MODE_PRIVATE);
+                sPrefRemind.edit().putString("OldVersionName", packageInfo.versionName).commit();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            SharedPreferences sPrefRemind;
+            sPrefRemind = getPreferences(MODE_PRIVATE);
+            Boolean dontRemind;
+            dontRemind = sPrefRemind.getBoolean(DO_NOT_REMIND, false);
+            Log.d("aaffa", "dontRemind= "+dontRemind.toString());
+            Log.d("aaffa", "remind= "+remind);
+
+            if ((!dontRemind) && (!remind)) {
+
+                AlertDialog.Builder ad;
+                ad = new AlertDialog.Builder(this);
+                ad.setTitle("Обновление");
+                ad.setMessage("Вы хотите обновить приложение?");
+                ad.setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.develop.searchmycarandroid"));
+                        startActivity(intent);
+                    }
+                });
+                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                    }
+                });
+                ad.setNeutralButton("Не напоминать", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        SharedPreferences sPrefRemind;
+                        sPrefRemind = getPreferences(MODE_PRIVATE);
+                        sPrefRemind.edit().putBoolean(DO_NOT_REMIND, true).commit();
+                    }
+                });
+                ad.setCancelable(true);
+                ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    public void onCancel(DialogInterface dialog) {
+                    }
+                });
+
+                ad.show();
+            }
+        }
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
+        if(numberOfCallingFragment != -1) {
+            if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
+                    (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))
+            {
+                Waiter waiter = new Waiter();
+                if (Build.VERSION.SDK_INT>=11)
+                        waiter.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, numberOfCallingFragment, 400);
+                else
+                {
+                    onNavigationDrawerItemSelected(numberOfCallingFragment);
+                    setNavigationDrawerItem(numberOfCallingFragment);
+
+                }
+            }
+            else {
+                onNavigationDrawerItemSelected(numberOfCallingFragment);
+                setNavigationDrawerItem(numberOfCallingFragment);
+            }
+            pref.edit().remove("NumberOfCallingFragment").commit();
+        }
+    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -192,15 +370,13 @@ public class MainActivity extends ActionBarActivity
         if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
         else{
-            if(mNavigationDrawerFragment.getCurrentItemSelected() > 1)
-                if(mainFragment.getSelectedTabPosition() == 0)
-                    onNavigationDrawerItemSelected(0);
-                else
-                    onNavigationDrawerItemSelected(1);
-            else
+            if(backToast.getView().getWindowVisibility() == View.VISIBLE) {
+                backToast.getView().setVisibility(View.INVISIBLE);
                 super.onBackPressed();
+            }
+            else
+                backToast.show();
         }
-
     }
 
     public void onClickHandlerHidden(View v){
@@ -626,5 +802,33 @@ public class MainActivity extends ActionBarActivity
     public void setNavigationDrawerItem(int itemNumber) {
         itemSelectFromTabLayout = true;
         mNavigationDrawerFragment.selectItem(itemNumber);
+    }
+
+
+    class Waiter extends AsyncTask<Integer, Void, Integer> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Integer doInBackground(final Integer... params) {
+            try {
+                Thread.sleep(params[1]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return params[0];
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Integer values) {
+            super.onPostExecute(values);
+            onNavigationDrawerItemSelected(values);
+            setNavigationDrawerItem(values);
+        }
     }
 }

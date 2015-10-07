@@ -2,6 +2,7 @@ package com.example.material_model_automsk;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class SettingsFragment extends Fragment
 {
     int radio_button_checked = 1;
     boolean visible = false;
+    boolean visibleNotification = false;
     View savedView;
     RadioButton rb1,rb2;
 
@@ -77,6 +79,73 @@ public class SettingsFragment extends Fragment
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //showDialogTheme(2);
+            }
+
+        });
+
+        final com.rey.material.widget.Switch changeNotification = (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_notification_switch);
+        SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        changeNotification.setChecked(sPref.getBoolean("Notification", false));
+        changeNotification.setOnCheckedChangeListener(new com.rey.material.widget.Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(com.rey.material.widget.Switch aSwitch, boolean b) {
+                LinearLayout Theme = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
+                if (changeNotification.isChecked()) {
+                    SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean("Notification", true);
+                    ed.commit();
+                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                } else {
+                    SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean("Notification", false);
+                    ed.commit();
+                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                }
+            }
+
+        });
+
+        final com.rey.material.widget.Switch switchVibration= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_vibration_switch_status);
+        switchVibration.setChecked(sPref.getBoolean("Vibration", false));
+        switchVibration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switchVibration.isChecked())
+                {
+                    SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean("Vibration", true);
+                    ed.commit();
+                }
+                else {
+                    SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean("Vibration", false);
+                    ed.commit();
+                }
+            }
+        });
+
+        final com.rey.material.widget.Switch switchSound= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_sound_switch);
+        switchSound.setChecked(sPref.getBoolean("Sound", false));
+        switchSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switchSound.isChecked())
+                {
+                    SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean("Sound", true);
+                    ed.commit();
+                }
+                else {
+                    SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = sPref.edit();
+                    ed.putBoolean("Sound", false);
+                    ed.commit();
+                }
             }
         });
         /*

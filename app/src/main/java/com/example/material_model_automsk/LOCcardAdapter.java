@@ -88,6 +88,32 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             return cars.getLength();
     }
 
+
+    public void remove(int position) {
+        favorites.remove(position);
+        notifyItemRemoved(position);
+        for (int i = position;i<favorites.size();i++) {
+            if(i+1<images.length)
+                images[i] = images[i+1];
+            notifyItemChanged(i);
+        }
+    }
+
+    public void insert(int position, CarCard car, Bitmap img) {
+        favorites.add(position,car);
+        Bitmap temp = images[position];
+        images[position] = img;
+        notifyItemInserted(position);
+        for (int i = favorites.size()-1;i>position+1;i--) {
+            images[i] = images[i-1];
+            notifyItemChanged(i);
+        }
+        if(position+1 != images.length) {
+            images[position + 1] = temp;
+            notifyItemChanged(position + 1);
+        }
+    }
+
     @Override
     public LOCviewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_car, viewGroup, false);
@@ -117,6 +143,12 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CarWebPage.class);
                 intent.putExtra("url", finalHref);
+                if(!isFromFavorites) {
+                    intent.putExtra("message", cars.getMessage(i));
+                    intent.putExtra("image", cars.getImg(i));
+                    intent.putExtra("dateTime", "12.21.42");
+                }
+                intent.putExtra("isFromFavorites", isFromFavorites);
                 v.getContext().startActivity(intent);
             }
         });

@@ -48,9 +48,7 @@ public class MarkFilter extends Activity {
 
     LayoutInflater inflater;
     ArrayList<String> searchResults;
-
     ArrayList<String>  originalValues;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

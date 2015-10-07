@@ -189,6 +189,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
+    public void setItemBackgroundTransparent() {
+        ((NavigationDrawerAdapter)mDrawerList.getAdapter()).setItemBackgroundTransparent();
+    }
+
     public void selectItem(int position) {
 
         mCurrentSelectedPosition = position;

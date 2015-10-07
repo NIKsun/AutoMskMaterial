@@ -1,7 +1,11 @@
 package com.example.material_model_automsk;
 
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.rey.material.widget.ProgressView;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -28,6 +33,7 @@ public class ListOfCarsActivity extends ActionBarActivity
     private Toolbar mToolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
+    private Boolean isFirstLaunch = true;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,7 @@ public class ListOfCarsActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
-
+        mNavigationDrawerFragment.setItemBackgroundTransparent();
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
@@ -54,8 +60,15 @@ public class ListOfCarsActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        if(isFirstLaunch)
+        {
+            isFirstLaunch = false;
+            return;
+        }
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref.edit().putInt("NumberOfCallingFragment",position).commit();
+        finish();
     }
-
 
     @Override
     public void onBackPressed() {

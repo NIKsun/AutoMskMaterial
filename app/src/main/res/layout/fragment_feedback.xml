@@ -4,6 +4,12 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow"
+        android:layout_gravity="top" />
+
     <com.rey.material.widget.TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,15 +25,28 @@
         android:layout_height="wrap_content"
         style="@style/LightTitleText"
         android:gravity="center"
-        android:textSize="25sp"
-        android:text="Наши консультанты ответят на ваши вопросы и помогут решить дальнейшие трудности." />
+    android:textSize="25sp"
+    android:text="Наши консультанты ответят на ваши вопросы и помогут решить возникшие трудности." />
 
-    <com.rey.material.widget.Button
+    <com.rey.material.widget.FloatingActionButton
         android:id="@+id/send_feedback"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginRight="0dp"
-        android:background="@drawable/ic_mode_edit_black_24dp"
+        android:visibility="invisible"
+
         style="@style/LightFlatButtonRippleStyle"/>
+
+    <!--com.rey.material.widget.FloatingActionButton
+
+        android:background="@drawable/ic_mode_edit_black_24dp"
+
+        android:id="@+id/fssssab_favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="invisible"
+        style="@style/LightFABLine" /-->
 </LinearLayout>

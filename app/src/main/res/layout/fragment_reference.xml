@@ -4,6 +4,12 @@ android:layout_height="match_parent"
 xmlns:card_view="http://schemas.android.com/apk/res-auto"
 android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow"
+        android:layout_gravity="top" />
+
 <com.rey.material.widget.TextView
     android:id="@+id/text_view_version"
     android:layout_width="match_parent"

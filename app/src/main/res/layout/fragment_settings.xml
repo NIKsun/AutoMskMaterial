@@ -19,7 +19,8 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:paddingRight="10dp"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:layout_gravity="bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,6 +31,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                card_view:cardElevation="4dp"
                 android:id="@+id/cv_car">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,46 +91,6 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/cv_mon"
-                card_view:cardElevation="4dp"
-                card_view:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp">
-
-                        <com.rey.material.widget.Switch
-                            android:id="@+id/cv_mon_switch_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="end|center"
-                            style="@style/LightSwitch"
-                            android:layout_gravity="end|bottom" />
-
-                        <com.rey.material.widget.TextView
-                            android:id="@+id/cv_mon_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Активность монитора"
-                            android:textSize="25sp"
-                            android:layout_gravity="left|center_vertical"
-                            style="@style/LightTitleText"
-                            android:paddingLeft="8dp" />
-
-                    </FrameLayout>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/cv_notification"
                 card_view:cardElevation="4dp"
                 card_view:cardUseCompatPadding="true">
@@ -137,74 +99,102 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp">
+                        android:id="@+id/change_notification"
+                        android:padding="10dp"
+                        android:orientation="vertical">
 
-                        <com.rey.material.widget.Switch
-                            android:id="@+id/cv_notification_switch_status"
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="end|center"
-                            style="@style/LightSwitch"
-                            android:layout_gravity="end|bottom" />
+                            android:padding="10dp"
+                            android:orientation="horizontal">
 
                         <com.rey.material.widget.TextView
                             android:id="@+id/cv_notification_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Нотификация активна"
+                            android:text="Нотификация"
                             android:textSize="25sp"
                             android:layout_gravity="left|center_vertical"
                             style="@style/LightTitleText"
                             android:paddingLeft="8dp" />
-
-                    </FrameLayout>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cv_vibration"
-                card_view:cardElevation="4dp"
-                card_view:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp">
-
                         <com.rey.material.widget.Switch
-                            android:id="@+id/cv_vibration_switch_status"
+                            android:id="@+id/cv_notification_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end|center"
                             style="@style/LightSwitch"
-                            android:layout_gravity="end|bottom" />
+                            android:layout_gravity="center_vertical|end" />
+                        </FrameLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:id="@+id/notification_hidden"
+                            android:orientation="vertical">
 
-                        <com.rey.material.widget.TextView
-                            android:id="@+id/cv_vibration_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Звук активен"
-                            android:textSize="25sp"
-                            android:layout_gravity="left|center_vertical"
-                            style="@style/LightTitleText"
-                            android:paddingLeft="8dp" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorPrimaryQuarter"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="7dp"/>
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/notification_hidden_1"
+                                android:orientation="horizontal">
+                                <com.rey.material.widget.TextView
+                                    android:id="@+id/cv_vibration_status"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Вибрация"
+                                    android:textSize="25sp"
+                                    android:layout_gravity="left|center_vertical"
+                                    style="@style/LightTitleText"
+                                    android:paddingLeft="8dp" />
 
-                    </FrameLayout>
+                                <com.rey.material.widget.Switch
+                                    android:id="@+id/cv_vibration_switch_status"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end|center"
+                                    style="@style/LightSwitch"
+                                    android:layout_gravity="center_vertical|end" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/notification_hidden_2">
+                                <com.rey.material.widget.TextView
+                                    android:id="@+id/cv_sound_status"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Звук"
+                                    android:textSize="25sp"
+                                    android:layout_gravity="left|center_vertical"
+                                    style="@style/LightTitleText"
+                                    android:paddingLeft="8dp" />
+
+                                <com.rey.material.widget.Switch
+                                    android:id="@+id/cv_sound_switch"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end|center"
+                                    style="@style/LightSwitch"
+                                    android:layout_gravity="center_vertical|end" />
+                            </FrameLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+
 
 
 
