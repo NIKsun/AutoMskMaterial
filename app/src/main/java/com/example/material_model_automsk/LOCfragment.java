@@ -401,7 +401,6 @@ public class LOCfragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if(!this.isMenuVisible())
@@ -411,11 +410,19 @@ public class LOCfragment extends Fragment {
             case R.id.item_web:
                 Intent intent = new Intent(getContext(), CarWebPage.class);
                 intent.putExtra("url", cars.getHref(adapter.getPosition()));
-                getContext().startActivity(intent);break;
+                intent.putExtra("message", cars.getMessage(adapter.getPosition()));
+                intent.putExtra("image", cars.getImg(adapter.getPosition()));
+                intent.putExtra("dateTime", "ahfda");
+                intent.putExtra("isFromFavorites", false);
+                getContext().startActivity(intent);
+                break;
             case R.id.item_copy:
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(getContext().CLIPBOARD_SERVICE);
-                clipboard.setText(cars.getHref(adapter.getPosition()));
-                Toast.makeText(getContext(),"Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT>=11) {
+                    ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(getContext().CLIPBOARD_SERVICE);
+                    clipboard.setText(cars.getHref(adapter.getPosition()));
+                    Toast.makeText(getContext(), "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getContext(), "На вашем устройстве функция не доступна", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.item_in_favorites:
                 int position = adapter.getPosition();

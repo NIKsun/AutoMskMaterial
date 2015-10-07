@@ -1,5 +1,7 @@
 package com.example.material_model_automsk;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -7,10 +9,15 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,6 +55,7 @@ public class FavoritesFragment extends Fragment {
     List<CarCard> favorites;
     Bitmap images[];
     View savedView;
+    LOCcardAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,25 @@ public class FavoritesFragment extends Fragment {
         pvCircular = (ProgressView)savedView.findViewById(R.id.progress_circular_favorites);
         LinearLayoutManager llm = new LinearLayoutManager(savedView.getContext());
         rv.setLayoutManager(llm);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+                db.delete("favorites","href = ?", new String[]{favorites.get(viewHolder.getPosition()).href});
+                adapter.remove(viewHolder.getPosition());
+                db.close();
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(rv);
+
         registerForContextMenu(rv);
         LoadListView llv = new LoadListView();
         llv.execute();
@@ -89,7 +116,7 @@ public class FavoritesFragment extends Fragment {
             int indexImage = cursor.getColumnIndex("image");
             int indexMessage = cursor.getColumnIndex("message");
             int indexDate = cursor.getColumnIndex("dateTime");
-            favorites = new ArrayList<CarCard>();
+            favorites = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
                     favorites.add(new CarCard(
@@ -140,8 +167,42 @@ public class FavoritesFragment extends Fragment {
             };
             new Thread(runnable).start();
             RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_favorites);
-            LOCcardAdapter adapter = new LOCcardAdapter(favorites,images);
+            adapter = new LOCcardAdapter(favorites,images);
             rv.setAdapter(adapter);
         }
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        // TODO Auto-generated method stub
+        Context context = getContext();
+        Vibrator vibrator = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
+        vibrator.vibrate(50);
+        getActivity().getMenuInflater().inflate(R.menu.fav_menu, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(!this.isMenuVisible())
+            return super.onContextItemSelected(item);
+        switch (item.getItemId())
+        {
+            case R.id.item_web:
+                Intent intent = new Intent(getContext(), CarWebPage.class);
+                intent.putExtra("url", favorites.get(adapter.getPosition()).href);
+                intent.putExtra("isFromFavorites", true);
+                getContext().startActivity(intent);
+                break;
+            case R.id.item_in_favorites:
+                SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+                db.delete("favorites","href = ?", new String[]{favorites.get(adapter.getPosition()).href});
+                adapter.remove(adapter.getPosition());
+                db.close();
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 }

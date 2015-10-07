@@ -47,22 +47,6 @@ public class MonitorsFragment extends Fragment {
         MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
         rv.setAdapter(adapter);
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.END | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                Log.d("Swipe", "now");
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(rv);
-
         fab = (FloatingActionButton)view.findViewById(R.id.fab_line);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

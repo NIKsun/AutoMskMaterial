@@ -88,6 +88,17 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             return cars.getLength();
     }
 
+
+    public void remove(int position) {
+        favorites.remove(position);
+        notifyItemRemoved(position);
+        for (int i = position;i<favorites.size();i++) {
+            if(i+1<images.length)
+                images[i] = images[i+1];
+            notifyItemChanged(i);
+        }
+    }
+
     @Override
     public LOCviewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_car, viewGroup, false);
