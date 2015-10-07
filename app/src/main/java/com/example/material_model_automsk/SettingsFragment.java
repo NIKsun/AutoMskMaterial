@@ -25,6 +25,7 @@ public class SettingsFragment extends Fragment
 {
     int radio_button_checked = 1;
     boolean visible = false;
+    boolean visibleNotification = false;
     View savedView;
     RadioButton rb1,rb2;
 
@@ -79,6 +80,24 @@ public class SettingsFragment extends Fragment
                 //showDialogTheme(2);
             }
         });
+
+        LinearLayout changeNotification = (LinearLayout)savedView.findViewById(R.id.change_notification);
+        changeNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout Theme = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
+                if (!visibleNotification)  // Если тема первый раз открывается
+                {
+                    visibleNotification = true;
+                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                } else {
+                    visibleNotification = false;
+                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                }
+            }
+        });
+
+
         /*
         Switch sw = (Switch)savedView.findViewById(R.id.cv_notification_switch_status);
         sw.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
