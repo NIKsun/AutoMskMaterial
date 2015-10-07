@@ -64,15 +64,11 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_translate_buttom);
-                fab.startAnimation(anim);
-                //fab.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "room530a@gmail.com", null));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке АвтоМосква.");
-                startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+                startActivity(Intent.createChooser(intent, "Выберите почтового клиента:"));
             }
         });
-
 
         return savedView;
     }
