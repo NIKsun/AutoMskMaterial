@@ -67,7 +67,7 @@
         <item name="android:textColor">@color/abc_primary_text_material_light</item>
     </style>
 
-    <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile.MultiLine">
+    <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile">
         <item name="sb_text">Нет удалось подключиться к серверу.\nПроверьте соеденение с интернетом.</item>
         <item name="sb_actionText">\nОк</item>
         <item name="sb_duration">4000</item>

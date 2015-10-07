@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rey.material.widget.ProgressView;
+import com.rey.material.widget.SnackBar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +40,7 @@ class CarCard
     String img;
     String msg;
     String date;
+
     CarCard(String href, String img, String msg, String date)
     {
         this.date = date;
@@ -56,6 +58,10 @@ public class FavoritesFragment extends Fragment {
     Bitmap images[];
     View savedView;
     LOCcardAdapter adapter;
+
+    CarCard tempCar;
+    Bitmap tempImage;
+    int tempPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,10 +86,23 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
-                db.delete("favorites","href = ?", new String[]{favorites.get(viewHolder.getPosition()).href});
-                adapter.remove(viewHolder.getPosition());
-                db.close();
+                tempPosition = viewHolder.getPosition();
+                tempCar = favorites.get(tempPosition);
+                tempImage = images[tempPosition];
+
+                adapter.remove(tempPosition);
+                SnackBar sb = ((MainActivity)getActivity()).getSnackBar();
+                sb.applyStyle(R.style.SnackBarSingleLine);
+                sb.text("Удален из избранного.")
+                        .actionText("Отмена")
+                        .duration(2000)
+                        .actionClickListener(new SnackBar.OnActionClickListener() {
+                            @Override
+                            public void onActionClick(SnackBar snackBar, int i) {
+                                adapter.insert(tempPosition, tempCar, tempImage);
+                            }
+                        });
+                sb.show();
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
@@ -93,6 +112,13 @@ public class FavoritesFragment extends Fragment {
         LoadListView llv = new LoadListView();
         llv.execute();
         return savedView;
+    }
+
+    private void deleteItemFromDB(String href)
+    {
+        SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+        db.delete("favorites","href = ?", new String[]{href});
+        db.close();
     }
 
     @Override
@@ -198,7 +224,7 @@ public class FavoritesFragment extends Fragment {
                 break;
             case R.id.item_in_favorites:
                 SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
-                db.delete("favorites","href = ?", new String[]{favorites.get(adapter.getPosition()).href});
+                db.delete("favorites", "href = ?", new String[]{favorites.get(adapter.getPosition()).href});
                 adapter.remove(adapter.getPosition());
                 db.close();
                 break;
