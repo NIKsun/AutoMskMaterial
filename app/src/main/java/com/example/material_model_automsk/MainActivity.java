@@ -206,6 +206,13 @@ public class MainActivity extends ActionBarActivity
     public void onClickHandlerHidden(View v){
         LinearLayout ll;
         Button b;
+        final Spinner sp1;
+        final Spinner sp2;
+
+        final String[] data;
+
+
+
         switch (v.getId()){
             case R.id.search_ll_engine_type:
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
@@ -214,6 +221,69 @@ public class MainActivity extends ActionBarActivity
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_price:
+
+                v.setClickable(false);
+
+                data = new String[176];
+
+                for(int i=0; i<data.length; ++i){
+                    if(i<51){
+                        data[i]= String.valueOf(i*10000);
+                    }
+                    else
+                    if(i<76){
+                        data[i]= String.valueOf(Integer.parseInt(data[i-1].replace(" ",""))+20000);
+                    }
+                    else
+                    if(i<96) {
+                        data[i] = String.valueOf(Integer.parseInt(data[i - 1].replace(" ","")) + 50000);
+                    }
+                    else
+                        data[i] = String.valueOf(Integer.parseInt(data[i - 1].replace(" ","")) + 100000);
+
+                    int len = data[i].length(), counter;
+                    String result = "";
+                    if(len%3!=0)
+                        result = data[i].substring(0,len%3)+" ";
+                    counter = len%3;
+                    while (counter < len)
+                    {
+                        result += data[i].substring(counter,counter+3)+" ";
+                        counter+=3;
+                    }
+                    data[i] = result.substring(0,result.length()-1);
+                }
+
+                sp1 = (Spinner) findViewById(R.id.spinner_label_price_from);
+                sp2 = (Spinner) findViewById(R.id.spinner_label_price_to);
+
+                fillSpinner(sp1, data, 0);
+                fillSpinner(sp2, data, data.length);
+
+                sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp2.getSelectedItemPosition();
+                        if (item > item2) {
+                            spinner.setSelection(sp2.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                sp2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp1.getSelectedItemPosition();
+                        if (item < item2) {
+                            spinner.setSelection(sp1.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.VISIBLE);
@@ -221,13 +291,43 @@ public class MainActivity extends ActionBarActivity
                 break;
             case R.id.search_ll_year:
 
-
-                String[] data = new String[36];
+                data = new String[36];
                 for(int i = 0; i < data.length; i++)
                     data[i] = "" + String.valueOf(i + 1980);
-                fillSpinner((Spinner) findViewById(R.id.spinner_label_year_from),data);
-                fillSpinner((Spinner) findViewById(R.id.spinner_label_year_to),data);
 
+                sp1 = (Spinner) findViewById(R.id.spinner_label_year_from);
+                sp2 = (Spinner) findViewById(R.id.spinner_label_year_to);
+
+                fillSpinner(sp1, data, 0);
+                fillSpinner(sp2, data, data.length);
+
+                //CardView cv = (CardView) findViewById(R.id.search_ll_year_cv);
+                v.setClickable(false);
+
+
+                sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = Integer.parseInt(spinner.getSelectedItem().toString());
+                        Integer item2 = Integer.parseInt(sp2.getSelectedItem().toString());
+                        if (item > item2) {
+                            spinner.setSelection(sp2.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                sp2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = Integer.parseInt(spinner.getSelectedItem().toString());
+                        Integer item2 = Integer.parseInt(sp1.getSelectedItem().toString());
+                        if(item < item2){
+                            spinner.setSelection(sp1.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
 
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
@@ -236,12 +336,88 @@ public class MainActivity extends ActionBarActivity
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_mileage:
+
+                v.setClickable(false);
+
+
+                data = new String[]{"0","5","10","15","20","25","30","35","40","45","50","55", "60", "65", "70","75","80","85","90","95","100","110","120","130","140","150","160","170","180","190","200","210","220","230","240","250","260","270","280","290","300","310","320","330","340","350","360","370","380","390","400","410","420","430","440","450","460","470","480","490","500","600"};
+                String[] data_view = new String[data.length];
+                for(int n = 1; n < data.length-1 ; ++n ){
+                    data_view[n]=data[n]+" 000";
+                }
+                data_view[0]="0";
+                data_view[data.length-1]="500 000+";
+
+                sp1 = (Spinner) findViewById(R.id.spinner_label_mileage_from);
+                sp2 = (Spinner) findViewById(R.id.spinner_label_mileage_to);
+
+                fillSpinner(sp1, data_view, 0);
+                fillSpinner(sp2, data_view, data.length);
+
+                sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = Integer.parseInt(data[spinner.getSelectedItemPosition()]);
+                        Integer item2 = Integer.parseInt(data[sp2.getSelectedItemPosition()]);
+                        if (item > item2) {
+                            spinner.setSelection(sp2.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                sp2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = Integer.parseInt(data[spinner.getSelectedItemPosition()]);
+                        Integer item2 = Integer.parseInt(data[sp1.getSelectedItemPosition()]);
+                        if(item < item2){
+                            spinner.setSelection(sp1.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.VISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_engine_volume:
+
+                v.setClickable(false);
+                data = new String[]{"0.0","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","2.0","2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.9","3.0","3.1","3.2","3.3","3.4","3.5","4.0","4.5","5.0","5.5","6.0","6.0+"};
+
+                sp1 = (Spinner) findViewById(R.id.spinner_label_engine_volume_from);
+                sp2 = (Spinner) findViewById(R.id.spinner_label_engine_volume_to);
+
+                fillSpinner(sp1, data, 0);
+                fillSpinner(sp2, data, data.length);
+
+                sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp2.getSelectedItemPosition();
+                        if (item > item2) {
+                            spinner.setSelection(sp2.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                sp2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp1.getSelectedItemPosition();
+                        if(item < item2){
+                            spinner.setSelection(sp1.getSelectedItemPosition());
+                            Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.VISIBLE);
@@ -279,24 +455,40 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences.Editor ed;
         switch (v.getId()){
             case R.id.search_ll_year_clear:
+
+                ll = (LinearLayout)findViewById(R.id.search_ll_year);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
                 b = (Button) findViewById(R.id.search_ll_year_clear);
                 b.setVisibility(View.INVISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 break;
             case R.id.search_ll_price_clear:
+
+                ll = (LinearLayout)findViewById(R.id.search_ll_price);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.INVISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 break;
             case R.id.search_ll_mileage_clear:
+
+                ll = (LinearLayout)findViewById(R.id.search_ll_mileage);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.INVISIBLE);
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 break;
             case R.id.search_ll_engine_volume_clear:
+
+                ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.INVISIBLE);
@@ -423,33 +615,13 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    public void onClickSpinner(View v){
-        Spinner sp;
-        switch (v.getId()){
-            case R.id.spinner_label_year_from :
 
-
-                break;
-        }
-    }
-
-    public void fillSpinner(Spinner sp,String[] data){
+    public void fillSpinner(Spinner sp,String[] data, int pos){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.row_spn, data);
         adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
         sp.setAdapter(adapter);
-        sp.setEnabled(true);
-
-
-        sp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                Log.d("spinner", (String) spinner.getSelectedItem().toString());
-            }
-        });
-
-
+        sp.setSelection(pos);
     }
-
 
     public void setNavigationDrawerItem(int itemNumber) {
         itemSelectFromTabLayout = true;
