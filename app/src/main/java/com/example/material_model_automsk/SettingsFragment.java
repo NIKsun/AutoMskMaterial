@@ -83,34 +83,14 @@ public class SettingsFragment extends Fragment
 
         });
 
-/*        LinearLayout changeNotification = (LinearLayout)savedView.findViewById(R.id.change_notification);
-        changeNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout Theme = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
-                if (!visibleNotification)  // Если тема первый раз открывается
-                {
-                    visibleNotification = true;
-                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                } else {
-                    visibleNotification = false;
-                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
-                }
-            }
-        });
-        */
-        //com.rey.material.widget.TextView
-        //cv_notification_switch_status
-
         final com.rey.material.widget.Switch changeNotification = (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_notification_switch);
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         changeNotification.setChecked(sPref.getBoolean("Notification", false));
-        changeNotification.setOnClickListener(new View.OnClickListener() {
+        changeNotification.setOnCheckedChangeListener(new com.rey.material.widget.Switch.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(com.rey.material.widget.Switch aSwitch, boolean b) {
                 LinearLayout Theme = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
-                if (changeNotification.isChecked())
-                {
+                if (changeNotification.isChecked()) {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("Notification", true);
@@ -124,8 +104,8 @@ public class SettingsFragment extends Fragment
                     Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
                 }
             }
-        });
 
+        });
 
         final com.rey.material.widget.Switch switchVibration= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_vibration_switch_status);
         switchVibration.setChecked(sPref.getBoolean("Vibration", false));

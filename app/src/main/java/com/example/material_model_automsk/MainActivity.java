@@ -231,7 +231,7 @@ public class MainActivity extends ActionBarActivity
 
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(this);
-                ad.setTitle("Обновление.");
+                ad.setTitle("Обновление");
                 ad.setMessage("Вы хотите обновить приложение?");
                 ad.setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
