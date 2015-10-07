@@ -18,6 +18,7 @@ import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.Spinner;
 
 /**
  * Created by Никита on 24.09.2015.
@@ -104,17 +105,18 @@ public class SearchFragment extends Fragment {
                         super.onPositiveActionClicked(fragment);
                         Filter filter = new Filter();
 
-                        filter.setYear(((TextView)view.findViewById(R.id.spinner_label_year_from)).getText(),
-                                ((TextView)view.findViewById(R.id.spinner_label_year_to)).getText());
+                        filter.setYear(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString(),
+                                ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString());
 
-                        filter.setMilleage(((TextView) view.findViewById(R.id.spinner_label_mileage_from)).getText(),
-                                ((TextView) view.findViewById(R.id.spinner_label_mileage_to)).getText());
+                        filter.setMilleage(((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString(),
+                                ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString());
 
-                        filter.setPrice(((TextView) view.findViewById(R.id.spinner_label_price_from)).getText(),
-                                ((TextView) view.findViewById(R.id.spinner_label_price_to)).getText());
+                        filter.setPrice(((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString(),
+                                ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString());
 
-                        filter.setVolume(((TextView) view.findViewById(R.id.spinner_label_engine_volume_from)).getText(),
-                                ((TextView) view.findViewById(R.id.spinner_label_engine_volume_to)).getText());
+                        filter.setVolume(((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString(),
+                                ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString());
+
                     }
 
                     @Override
