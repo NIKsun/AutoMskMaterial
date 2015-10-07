@@ -90,31 +90,6 @@ public class MainActivity extends ActionBarActivity
         mSnackBar = (SnackBar)findViewById(R.id.main_sn);
 
         addMonitorButton = (Button)findViewById(R.id.toolbar_add_monitor_button);
-        addMonitorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        super.onPositiveActionClicked(fragment);
-                    }
-
-                    @Override
-                    public void onNegativeActionClicked(DialogFragment fragment) {
-                        super.onNegativeActionClicked(fragment);
-                    }
-                };
-
-                ((SimpleDialog.Builder) builder).message("Будет создан новый монитор с текущими настройками поиска. " +
-                        "Мониторы помогают сохранять настройки поиска и отслеживать поступление новых объявлений по этим настройкам.")
-                        .title("Создать новый монитор?")
-                        .positiveAction("Создать")
-                        .negativeAction("Нет");
-                DialogFragment fragment = DialogFragment.newInstance(builder);
-                fragment.show(getSupportFragmentManager(), null);
-            }
-        });
-
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);

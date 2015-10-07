@@ -86,6 +86,10 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                if(tempCar != null)
+                {
+                    deleteItemFromDB(tempCar.href);
+                }
                 tempPosition = viewHolder.getPosition();
                 tempCar = favorites.get(tempPosition);
                 tempImage = images[tempPosition];
@@ -95,11 +99,12 @@ public class FavoritesFragment extends Fragment {
                 sb.applyStyle(R.style.SnackBarSingleLine);
                 sb.text("Удален из избранного.")
                         .actionText("Отмена")
-                        .duration(2000)
+                        .duration(2500)
                         .actionClickListener(new SnackBar.OnActionClickListener() {
                             @Override
                             public void onActionClick(SnackBar snackBar, int i) {
                                 adapter.insert(tempPosition, tempCar, tempImage);
+                                tempCar = null;
                             }
                         });
                 sb.show();
@@ -117,13 +122,18 @@ public class FavoritesFragment extends Fragment {
     private void deleteItemFromDB(String href)
     {
         SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
-        db.delete("favorites","href = ?", new String[]{href});
+        db.delete("favorites", "href = ?", new String[]{href});
         db.close();
     }
 
     @Override
     public void onDestroy() {
         imageLoaderMayRunning = false;
+        if(tempCar != null)
+        {
+            deleteItemFromDB(tempCar.href);
+        }
+        ((MainActivity)getActivity()).getSnackBar().dismiss();
         super.onDestroy();
     }
 
@@ -223,10 +233,28 @@ public class FavoritesFragment extends Fragment {
                 getContext().startActivity(intent);
                 break;
             case R.id.item_in_favorites:
-                SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
-                db.delete("favorites", "href = ?", new String[]{favorites.get(adapter.getPosition()).href});
+
+                if(tempCar != null)
+                {
+                    deleteItemFromDB(tempCar.href);
+                }
+                tempPosition = adapter.getPosition();
+                tempCar = favorites.get(tempPosition);
+                tempImage = images[tempPosition];
                 adapter.remove(adapter.getPosition());
-                db.close();
+                SnackBar sb = ((MainActivity)getActivity()).getSnackBar();
+                sb.applyStyle(R.style.SnackBarSingleLine);
+                sb.text("Удален из избранного.")
+                        .actionText("Отмена")
+                        .duration(2500)
+                        .actionClickListener(new SnackBar.OnActionClickListener() {
+                            @Override
+                            public void onActionClick(SnackBar snackBar, int i) {
+                                adapter.insert(tempPosition, tempCar, tempImage);
+                                tempCar = null;
+                            }
+                        });
+                sb.show();
                 break;
         }
         return super.onContextItemSelected(item);

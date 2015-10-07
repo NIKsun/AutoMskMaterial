@@ -13,7 +13,7 @@ import android.util.Log;
 class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context) {
-        super(context, "main_db4", null, 1);
+        super(context, "main_db5", null, 1);
     }
 
     @Override
@@ -32,6 +32,24 @@ class DbHelper extends SQLiteOpenHelper {
                 + "id integer primary key autoincrement,"
                 + "markauser text," + "markarequest text," +"markarequestavito text,"+"markarequestdrom text"
                 + ");");
+
+        db.execSQL("create table filters ("
+                + "id integer primary key autoincrement,"
+                + "marka text,"
+                + "model text,"
+                + "yearFrom text,"
+                + "yearTo text,"
+                + "priceFrom text,"
+                + "priceTo text,"
+                + "milleageFrom text,"
+                + "milleageTo text,"
+                + "volumeFrom text,"
+                + "volumeTo text,"
+                + "transmission text,"
+                + "bodyType text,"
+                + "engineType text,"
+                + "withPhoto integer,"
+                + "driveType text);");
 
         /**
          * 1. for user
@@ -74,8 +92,6 @@ class DbHelper extends SQLiteOpenHelper {
             cv.put("marka_id", models_split[i+4]);
             db.insert("modelsTable", null, cv);
         }
-
-        Log.d("DB", "onCr");
     }
 
     @Override

@@ -30,20 +30,20 @@ class Filter {
     Integer id;
     String mark;
     String model;
-    Integer priceFrom;
-    Integer priceTo;
-    Integer yearFrom;
-    Integer yearTo;
-    Integer milleageFrom;
-    Integer milleageTo;
-    Integer volumeFrom;
-    Integer volumeTo;
+    String priceFrom;
+    String priceTo;
+    String yearFrom;
+    String yearTo;
+    String milleageFrom;
+    String milleageTo;
+    String volumeFrom;
+    String volumeTo;
     String transmission;
     String typeOfEngine;
     String typeOfCarcase;
     String typeOfWheelDrive;
 
-    private String getRangeString(String name, String value, Integer from, Integer to)
+    private String getRangeString(String name, String value, String from, String to)
     {
         String message = "";
         if(from != null && from == to)
@@ -69,27 +69,26 @@ class Filter {
         return message;
     }
 
-    Filter(Integer id, String mark, String model) {
-        this.id = id;
-        this.mark = mark;
-        this.model = model;
+    Filter() {
     }
-    void setPrice(Integer from, Integer to){
-        priceFrom = from;
-        priceTo = to;
+    void setPrice(CharSequence from, CharSequence to){
+        priceFrom = (String) from;
+        priceTo = (String) to;
     }
-    void setYear(Integer from, Integer to){
-        yearFrom = from;
-        yearTo = to;
+    void setYear(CharSequence from, CharSequence to){
+        yearFrom = (String) from;
+        yearTo = (String) to;
     }
-    void setMilleage(Integer from, Integer to){
-        milleageFrom = from;
-        milleageTo = to;
+    void setMilleage(CharSequence from, CharSequence to){
+        milleageFrom = (String) from;
+        milleageTo = (String) to;
     }
-    void setVolume(Integer from, Integer to){
-        volumeFrom = from;
-        volumeTo = to;
+    void setVolume(CharSequence from, CharSequence to){
+        volumeFrom = (String) from;
+        volumeTo = (String) to;
     }
+
+
 }
 
 class Monitor {

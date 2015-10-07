@@ -12,7 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.rey.material.app.Dialog;
+import com.rey.material.app.DialogFragment;
+import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
 
 /**
@@ -88,7 +92,46 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        final View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        android.widget.Button addMonitorButton = ((MainActivity)getActivity()).getAddMonitorButton();
+        addMonitorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+                    @Override
+                    public void onPositiveActionClicked(DialogFragment fragment) {
+                        super.onPositiveActionClicked(fragment);
+                        Filter filter = new Filter();
+
+                        filter.setYear(((TextView)view.findViewById(R.id.spinner_label_year_from)).getText(),
+                                ((TextView)view.findViewById(R.id.spinner_label_year_to)).getText());
+
+                        filter.setMilleage(((TextView) view.findViewById(R.id.spinner_label_mileage_from)).getText(),
+                                ((TextView) view.findViewById(R.id.spinner_label_mileage_to)).getText());
+
+                        filter.setPrice(((TextView) view.findViewById(R.id.spinner_label_price_from)).getText(),
+                                ((TextView) view.findViewById(R.id.spinner_label_price_to)).getText());
+
+                        filter.setVolume(((TextView) view.findViewById(R.id.spinner_label_engine_volume_from)).getText(),
+                                ((TextView) view.findViewById(R.id.spinner_label_engine_volume_to)).getText());
+                    }
+
+                    @Override
+                    public void onNegativeActionClicked(DialogFragment fragment) {
+                        super.onNegativeActionClicked(fragment);
+                    }
+                };
+
+                builder.message("Будет создан новый монитор с текущими настройками поиска. " +
+                        "Мониторы помогают сохранять настройки поиска и отслеживать поступление новых объявлений по этим настройкам.")
+                        .title("Создать новый монитор?")
+                        .positiveAction("Создать")
+                        .negativeAction("Нет");
+                DialogFragment fragment = DialogFragment.newInstance(builder);
+                fragment.show(getActivity().getSupportFragmentManager(), null);
+            }
+        });
         //TextView textView = (TextView) view;
         //textView.setText("Fragment #" + mPage);
         return view;

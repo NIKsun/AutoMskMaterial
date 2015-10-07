@@ -91,7 +91,7 @@ public class MonitorsFragment extends Fragment {
 
     private void initializeData(){
         monitors = new ArrayList<>();
-        Filter f = new Filter(1,"Audi","A3");
+        /*Filter f = new Filter(1,"Audi","A3");
         f.setPrice(100, 10000);
         f.setYear(2010, null);
         f.setMilleage(null, 100000);
@@ -108,7 +108,7 @@ public class MonitorsFragment extends Fragment {
         f.setMilleage(42000, 100000);
         f.setVolume(3, 5);
         monitors.add(new Monitor(f, true, 0));
-        monitors.add(new Monitor());
+        monitors.add(new Monitor());*/
     }
 
 
