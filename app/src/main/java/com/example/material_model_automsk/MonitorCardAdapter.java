@@ -189,12 +189,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         return monitors.size();
     }
 
-    boolean visib = false;
-    public void setVisibility()
-    {
-        visib = !visib;
-    }
-
     @Override
     public MonitorViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_monitor, viewGroup, false);
@@ -210,6 +204,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             monitorViewHolder.cv.setVisibility(View.INVISIBLE);
             return;
         }
+
+        monitorViewHolder.cv.setVisibility(View.VISIBLE);
+        monitorViewHolder.ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
 
         monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
@@ -302,8 +299,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 }
             }
         });
-
-
     }
 
     @Override
