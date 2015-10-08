@@ -121,7 +121,7 @@ public class MonitorsFragment extends Fragment {
     {
         final RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
         initializeData();
-        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
+        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity());
         rv.setAdapter(adapter);
         if(fab != null) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
