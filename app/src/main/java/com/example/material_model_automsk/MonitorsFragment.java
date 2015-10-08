@@ -34,6 +34,7 @@ public class MonitorsFragment extends Fragment {
     }
 
     private List<Monitor> monitors;
+    private List<Filter> filters;
     FloatingActionButton fab;
     Boolean isHidden = false;
     LinearLayoutManager llm;
@@ -92,50 +93,82 @@ public class MonitorsFragment extends Fragment {
 
 
     private void initializeData(){
-        monitors = new ArrayList<>();
-
         SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
-        Cursor cursor = db.query("filters", null, null, null, null, null, null);
+        Cursor cursorFilters = db.query("filters", null, null, null, null, null, null);
 
-        int iMark = cursor.getColumnIndex("marka");
-        int iModel = cursor.getColumnIndex("model");
-        int iYearFrom = cursor.getColumnIndex("yearFrom");
-        int iYearTo = cursor.getColumnIndex("yearTo");
-        int iPriceFrom = cursor.getColumnIndex("priceFrom");
-        int iPriceTo = cursor.getColumnIndex("priceTo");
-        int iMilleageFrom = cursor.getColumnIndex("milleageFrom");
-        int iMilleageTo = cursor.getColumnIndex("milleageTo");
-        int iVolumeFrom = cursor.getColumnIndex("volumeFrom");
-        int iVolumeTo = cursor.getColumnIndex("volumeTo");
-        int iTransmission = cursor.getColumnIndex("transmission");
-        int iBodyType = cursor.getColumnIndex("bodyType");
-        int iEngineType = cursor.getColumnIndex("engineType");
-        int iDriveType = cursor.getColumnIndex("driveType");
-        int iWithPhoto = cursor.getColumnIndex("withPhoto");
+        int iMark = cursorFilters.getColumnIndex("marka");
+        int iModel = cursorFilters.getColumnIndex("model");
+        int iYearFrom = cursorFilters.getColumnIndex("yearFrom");
+        int iYearTo = cursorFilters.getColumnIndex("yearTo");
+        int iPriceFrom = cursorFilters.getColumnIndex("priceFrom");
+        int iPriceTo = cursorFilters.getColumnIndex("priceTo");
+        int iMilleageFrom = cursorFilters.getColumnIndex("milleageFrom");
+        int iMilleageTo = cursorFilters.getColumnIndex("milleageTo");
+        int iVolumeFrom = cursorFilters.getColumnIndex("volumeFrom");
+        int iVolumeTo = cursorFilters.getColumnIndex("volumeTo");
+        int iTransmission = cursorFilters.getColumnIndex("transmission");
+        int iBodyType = cursorFilters.getColumnIndex("bodyType");
+        int iEngineType = cursorFilters.getColumnIndex("engineType");
+        int iDriveType = cursorFilters.getColumnIndex("driveType");
+        int iWithPhoto = cursorFilters.getColumnIndex("withPhoto");
 
-        monitors = new ArrayList<>();
-        if (cursor.moveToFirst()) {
+        filters = new ArrayList<>();
+        if (cursorFilters.moveToFirst()) {
             do {
                 Filter elem = new Filter();
-                elem.mark = cursor.getString(iMark);
-                elem.model = cursor.getString(iModel);
+                elem.id = cursorFilters.getInt(cursorFilters.getColumnIndex("id"));
+                elem.mark = cursorFilters.getString(iMark);
+                elem.model = cursorFilters.getString(iModel);
 
-                elem.setYear(cursor.getString(iYearFrom), cursor.getString(iYearTo));
-                elem.setMilleage(cursor.getString(iMilleageFrom), cursor.getString(iMilleageTo));
-                elem.setPrice(cursor.getString(iPriceFrom), cursor.getString(iPriceTo));
-                elem.setVolume(cursor.getString(iVolumeFrom), cursor.getString(iVolumeTo));
+                elem.setYear(cursorFilters.getString(iYearFrom), cursorFilters.getString(iYearTo));
+                elem.setMilleage(cursorFilters.getString(iMilleageFrom), cursorFilters.getString(iMilleageTo));
+                elem.setPrice(cursorFilters.getString(iPriceFrom), cursorFilters.getString(iPriceTo));
+                elem.setVolume(cursorFilters.getString(iVolumeFrom), cursorFilters.getString(iVolumeTo));
 
-                elem.transmission = cursor.getString(iTransmission);
-                elem.typeOfCarcase = cursor.getString(iBodyType);
-                elem.typeOfEngine = cursor.getString(iEngineType);
-                elem.typeOfWheelDrive = cursor.getString(iDriveType);
-                if(cursor.getInt(iWithPhoto) == 1)
+                elem.transmission = cursorFilters.getString(iTransmission);
+                elem.typeOfCarcase = cursorFilters.getString(iBodyType);
+                elem.typeOfEngine = cursorFilters.getString(iEngineType);
+                elem.typeOfWheelDrive = cursorFilters.getString(iDriveType);
+                if(cursorFilters.getInt(iWithPhoto) == 1)
                     elem.withPhoto = true;
                 else
                     elem.withPhoto = false;
 
-            } while (cursor.moveToNext());
+                filters.add(elem);
+            } while (cursorFilters.moveToNext());
         }
+
+        Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
+
+        int idFilter = cursorMonitors.getColumnIndex("filter_id");
+        int iCountOfNewCars = cursorMonitors.getColumnIndex("count_of_new_cars");
+        int isActive = cursorMonitors.getColumnIndex("is_active");
+
+        monitors = new ArrayList<>();
+        if (cursorMonitors.moveToFirst()) {
+            do {
+                Monitor elem = new Monitor();
+                elem.id = cursorMonitors.getInt(cursorMonitors.getColumnIndex("id"));
+
+                int i=0, filterID = cursorMonitors.getInt(idFilter);
+                while(i != filters.size() && filters.get(i).id != filterID)
+                    i++;
+
+                if(i == filters.size())
+                    continue;
+
+                elem.filter = filters.get(i);
+
+                elem.countOfNewCars = cursorMonitors.getInt(iCountOfNewCars);
+                if(cursorMonitors.getInt(isActive) == 1)
+                    elem.isActive = true;
+                else
+                    elem.isActive = false;
+
+                monitors.add(elem);
+            } while (cursorMonitors.moveToNext());
+        }
+
         db.close();
     }
 
