@@ -19,6 +19,7 @@ import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
+import com.rey.material.widget.Switch;
 
 /**
  * Created by Никита on 24.09.2015.
@@ -105,18 +106,82 @@ public class SearchFragment extends Fragment {
                         super.onPositiveActionClicked(fragment);
                         Filter filter = new Filter();
 
+                        Log.d("sp", String.valueOf(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()));
+
+                        if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()!=-1))
                         filter.setYear(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString());
 
+                        if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!=-1))
                         filter.setMilleage(((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString());
 
+                        if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!=-1))
                         filter.setPrice(((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString());
 
+                        if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!=-1))
                         filter.setVolume(((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString());
 
+                        filter.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
+                        //filter.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
+
+                        filter.withPhoto = ((Switch) view.findViewById(R.id.search_ll_withPhoto)).isChecked();
+
+                        filter.transmission="";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_man)).isChecked())
+                            filter.transmission+="1";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_auto)).isChecked())
+                            filter.transmission+="2";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_robot)).isChecked())
+                            filter.transmission+="3";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_var)).isChecked())
+                            filter.transmission+="4";
+
+                        filter.typeOfEngine="";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_gasoline)).isChecked())
+                            filter.typeOfEngine+="1";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_diesel)).isChecked())
+                            filter.typeOfEngine+="2";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_hybrid)).isChecked())
+                            filter.typeOfEngine+="3";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_gas)).isChecked())
+                            filter.typeOfEngine+="4";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_electro)).isChecked())
+                            filter.typeOfEngine+="5";
+
+                        filter.typeOfWheelDrive="";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_forward)).isChecked())
+                            filter.typeOfWheelDrive+="1";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_backward)).isChecked())
+                            filter.typeOfWheelDrive+="2";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_full)).isChecked())
+                            filter.typeOfWheelDrive+="3";
+
+                        filter.typeOfCarcase="";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_sed)).isChecked())
+                            filter.typeOfCarcase+="1";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_hatch)).isChecked())
+                            filter.typeOfCarcase+="2";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_univ)).isChecked())
+                            filter.typeOfCarcase+="3";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_minivan)).isChecked())
+                            filter.typeOfCarcase+="4";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_offroad)).isChecked())
+                            filter.typeOfCarcase+="5";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_coupe)).isChecked())
+                            filter.typeOfCarcase+="6";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_van)).isChecked())
+                            filter.typeOfCarcase+="7";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_limus)).isChecked())
+                            filter.typeOfCarcase+="8";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_picap)).isChecked())
+                            filter.typeOfCarcase+="9";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_cabrio)).isChecked())
+                            filter.typeOfCarcase+="0";
+
+                        filter.insertToDb(getContext());
                     }
 
                     @Override

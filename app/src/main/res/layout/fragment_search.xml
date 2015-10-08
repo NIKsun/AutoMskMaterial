@@ -976,7 +976,7 @@
                     style="@style/Base.TextAppearance.AppCompat.Title" />
 
                 <com.rey.material.widget.Switch
-                    android:id="@+id/cv_mon_switch_status"
+                    android:id="@+id/search_ll_withPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end|center"

@@ -1,9 +1,11 @@
 package com.example.material_model_automsk;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -42,6 +44,7 @@ class Filter {
     String typeOfEngine;
     String typeOfCarcase;
     String typeOfWheelDrive;
+    Boolean withPhoto;
 
     private String getRangeString(String name, String value, String from, String to)
     {
@@ -86,6 +89,36 @@ class Filter {
     void setVolume(CharSequence from, CharSequence to){
         volumeFrom = (String) from;
         volumeTo = (String) to;
+    }
+
+    void insertToDb(Context context){
+
+        final DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        //cv.put("id", models_split[i]);
+        cv.put("marka", this.mark);
+        cv.put("model", this.model);
+        cv.put("yearFrom", this.yearFrom);
+        cv.put("yearTo", this.yearTo);
+
+        cv.put("priceFrom", this.priceFrom);
+        cv.put("priceTo", this.priceTo);
+        cv.put("milleageFrom", this.milleageFrom);
+        cv.put("milleageTo", this.milleageTo);
+
+        cv.put("volumeFrom", this.volumeFrom);
+        cv.put("volumeTo", this.volumeTo);
+        cv.put("transmission", this.transmission);
+        cv.put("bodyType", this.typeOfCarcase);
+
+        cv.put("engineType", this.typeOfEngine);
+        cv.put("withPhoto", !!this.withPhoto);
+        cv.put("driveType", this.typeOfWheelDrive);
+        db.insert("filters", null, cv);
+
+        db.close();
     }
 
 
