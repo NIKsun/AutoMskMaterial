@@ -41,11 +41,21 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
+        SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString("SelectedMark","Любая").commit();
+        ed.putString("SelectedModel","Любая").commit();
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+
+
     }
 
     @Override
     public void onResume(){
-        super.onPause();
+        super.onResume();
         SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
 
         String mark = sPref.getString("SelectedMark", "Любая");
@@ -54,13 +64,8 @@ public class SearchFragment extends Fragment {
         TextView t = (TextView) getActivity().findViewById(R.id.search_ll_mark_text);
         t.setText(mark);
 
-
-
         TextView t2 = (TextView) getActivity().findViewById(R.id.search_ll_model_text);
         t2.setText(model);
-
-
-
 
         CardView ll = (CardView) getActivity().findViewById(R.id.search_ll_model_cardview);
         if(!mark.equals("Любая"))
