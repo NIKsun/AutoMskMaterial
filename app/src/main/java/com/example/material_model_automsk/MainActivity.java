@@ -736,7 +736,7 @@ public class MainActivity extends ActionBarActivity
                 ed.putString("SelectedModel","Любая").commit();
 
                 CardView cv = (CardView) findViewById(R.id.search_ll_model_cardview);
-                cv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                cv.setVisibility(View.GONE);
                 break;
             case R.id.search_ll_model_clear:
                 b = (Button) findViewById(R.id.search_ll_model_clear);

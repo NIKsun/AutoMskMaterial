@@ -13,8 +13,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.rey.material.widget.Button;
@@ -36,61 +38,82 @@ public class MonitorsFragment extends Fragment {
     private List<Monitor> monitors;
     private List<Filter> filters;
     FloatingActionButton fab;
-    Boolean isHidden = false;
     LinearLayoutManager llm;
+    View savedView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_monitors, container, false);
-        final RecyclerView rv = (RecyclerView)view.findViewById(R.id.rv);
-        llm = new LinearLayoutManager(view.getContext());
+        savedView = inflater.inflate(R.layout.fragment_monitors, container, false);
+        final RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
+        llm = new LinearLayoutManager(savedView.getContext());
         rv.setLayoutManager(llm);
-        initializeData();
-        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
-        rv.setAdapter(adapter);
 
-        fab = (FloatingActionButton)view.findViewById(R.id.fab_line);
+        update();
+
+        fab = (FloatingActionButton)savedView.findViewById(R.id.fab_line);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MonitorCardAdapter mca = (MonitorCardAdapter)rv.getAdapter();
-                mca.setVisibility();
-                for(int i=0;i<mca.getItemCount();i++)
-                    mca.notifyItemChanged(i);
             }
         });
-        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
-
+        /*rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged (RecyclerView recyclerView, int newState){
-                if(newState==0 && isHidden) {
-                    Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
-                    fab.startAnimation(anim);
-                    fab.setVisibility(View.VISIBLE);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == 0 && isHidden) {
 
                     isHidden = false;
-                }
-                else if(!isHidden) {
-                    Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
-                    fab.startAnimation(anim);
-                    fab.setVisibility(View.INVISIBLE);
+                } else if (!isHidden) {
                     isHidden = true;
                 }
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
-            public void onScrolled (RecyclerView recyclerView,int dx, int dy){
-                super.onScrolled(recyclerView,dx,dy);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
             }
 
+        });*/
+
+        rv.setOnScrollListener(new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
+                fab.startAnimation(anim);
+                fab.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void hide() {
+                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
+                fab.startAnimation(anim);
+                fab.setVisibility(View.INVISIBLE);
+            }
         });
 
-        return view;
+        return savedView;
     }
 
 
+    public void update()
+    {
+        final RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
+        initializeData();
+        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
+        rv.setAdapter(adapter);
+        if(fab != null) {
+            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
+            fab.startAnimation(animation);
+            fab.setVisibility(View.VISIBLE);
+        }
+
+    }
+    public void hideFAB()
+    {
+        if(fab != null)
+            fab.setVisibility(View.INVISIBLE);
+    }
 
     private void initializeData(){
         SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
@@ -147,7 +170,7 @@ public class MonitorsFragment extends Fragment {
         monitors = new ArrayList<>();
         if (cursorMonitors.moveToFirst()) {
             do {
-                Monitor elem = new Monitor();
+                Monitor elem = new Monitor(null);
                 elem.id = cursorMonitors.getInt(cursorMonitors.getColumnIndex("id"));
 
                 int i=0, filterID = cursorMonitors.getInt(idFilter);
@@ -158,8 +181,8 @@ public class MonitorsFragment extends Fragment {
                     continue;
 
                 elem.filter = filters.get(i);
-
                 elem.countOfNewCars = cursorMonitors.getInt(iCountOfNewCars);
+
                 if(cursorMonitors.getInt(isActive) == 1)
                     elem.isActive = true;
                 else
@@ -168,10 +191,36 @@ public class MonitorsFragment extends Fragment {
                 monitors.add(elem);
             } while (cursorMonitors.moveToNext());
         }
-
         db.close();
     }
 
+
+    public abstract class MyRecyclerScroll extends RecyclerView.OnScrollListener {
+
+        int scrollDist = 0;
+        boolean isVisible = true;
+        public abstract void show();
+        public abstract void hide();
+        static final float MINIMUM = 25;
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (isVisible && scrollDist > MINIMUM) {
+                hide();
+                scrollDist = 0;
+                isVisible = false;
+            }
+            else if (!isVisible && scrollDist < -MINIMUM) {
+                show();
+                scrollDist = 0;
+                isVisible = true;
+            }
+            if ((isVisible && dy > 0) || (!isVisible && dy < 0)) {
+                scrollDist += dy;
+            }
+        }
+    }
 
 
 }

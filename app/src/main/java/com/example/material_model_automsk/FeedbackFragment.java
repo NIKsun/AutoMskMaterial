@@ -48,15 +48,8 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         savedView = inflater.inflate(R.layout.fragment_feedback, container, false);
 
-        /*com.rey.material.widget.Button sendFeedback = (com.rey.material.widget.Button) savedView.findViewById(R.id.send_feedback);
-        sendFeedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });*/
-
         final FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.send_feedback);
-        final Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_scale);
+        final Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_simple_grow);
         fab.startAnimation(anim);
         fab.setVisibility(View.VISIBLE);
         fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);

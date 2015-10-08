@@ -4,13 +4,13 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
     private String tabTitles[] = new String[] { "Мониторы", "Поиск"};
     private Context context;
+    MonitorsFragment monitorsFragment;
 
     public MonitorFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -26,8 +26,10 @@ public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Log.d("now", "getItem " + position);
-        if(position == 0)
-            return MonitorsFragment.newInstance(position + 1);
+        if(position == 0) {
+            monitorsFragment = MonitorsFragment.newInstance(position + 1);
+            return monitorsFragment;
+        }
         else
             return SearchFragment.newInstance(position + 1);
     }

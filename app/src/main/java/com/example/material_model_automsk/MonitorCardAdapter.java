@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -114,14 +115,16 @@ class Filter {
         cv.put("bodyType", this.typeOfCarcase);
 
         cv.put("engineType", this.typeOfEngine);
-        cv.put("withPhoto", !!this.withPhoto);
+        cv.put("withPhoto", this.withPhoto ? 1 : 0);
         cv.put("driveType", this.typeOfWheelDrive);
         db.insert("filters", null, cv);
 
+        Cursor cur = db.query("filters", new String[]{"id"}, null, null, null, null, null, null);
+        cur.moveToLast();
+        id = cur.getInt(cur.getColumnIndex("id"));
+
         db.close();
     }
-
-
 }
 
 class Monitor {
@@ -130,16 +133,22 @@ class Monitor {
     Boolean isActive;
     Integer countOfNewCars;
 
-    Monitor() {    }
     Monitor(Filter filter) {
+        isActive = true;
         this.filter = filter;
-        this.isActive = false;
-        this.countOfNewCars = 0;
+        countOfNewCars = 0;
     }
-    Monitor(Filter filter, Boolean isActive, Integer numberOfNewCars) {
-        this.filter = filter;
-        this.isActive = isActive;
-        this.countOfNewCars = numberOfNewCars;
+
+    void insertToDb(Context context)
+    {
+        final DbHelper dbHelper = new DbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("filter_id", filter.id);
+        cv.put("count_of_new_cars", countOfNewCars);
+        cv.put("is_active", isActive ? 1 : 0);
+        db.insert("monitors", null, cv);
+        db.close();
     }
 }
 

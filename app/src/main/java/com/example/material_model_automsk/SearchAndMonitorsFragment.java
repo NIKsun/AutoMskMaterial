@@ -17,6 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.rey.material.widget.FloatingActionButton;
+
 import java.io.Serializable;
 
 /**
@@ -74,13 +76,18 @@ public class SearchAndMonitorsFragment extends Fragment {
             public void onPageSelected(int position) {
                 myContext.setNavigationDrawerItem(position);
                 Button addMonitorButton = myContext.getAddMonitorButton();
+                MonitorsFragment mf = ((MonitorFragmentPagerAdapter)viewPager.getAdapter()).monitorsFragment;
                 if (position == 0)
                 {
+                    if(mf != null)
+                        mf.update();
                     Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_right);
                     addMonitorButton.setVisibility(View.INVISIBLE);
                     addMonitorButton.startAnimation(anim);
                 } else
                 {
+                    if(mf != null)
+                        mf.hideFAB();
                     Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_left);
                     addMonitorButton.setVisibility(View.VISIBLE);
                     addMonitorButton.startAnimation(anim);
@@ -88,6 +95,7 @@ public class SearchAndMonitorsFragment extends Fragment {
                 myContext.getSnackBar().dismiss();
             }
 
+            private Boolean isHidden = true;
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
             }

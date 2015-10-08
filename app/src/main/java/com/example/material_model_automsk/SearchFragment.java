@@ -65,19 +65,12 @@ public class SearchFragment extends Fragment {
         CardView ll = (CardView) getActivity().findViewById(R.id.search_ll_model_cardview);
         if(!mark.equals("Любая"))
         {
-
             Button b = (Button) getActivity().findViewById(R.id.search_ll_mark_clear);
             b.setVisibility(View.VISIBLE);
-
-            //getContext().getResources().getDisplayMetrics().densityDpi = 2;
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(15, 15, 15, 15);
-            ll.setLayoutParams(lp);
-            ll.setUseCompatPadding(true);
-            ll.setCardElevation(4);
+            ll.setVisibility(View.VISIBLE);
         }
         else
-            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+            ll.setVisibility(View.GONE);
         if(!model.equals("Любая"))
         {
             Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
@@ -125,7 +118,7 @@ public class SearchFragment extends Fragment {
                                 ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString());
 
                         filter.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
-                        //filter.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
+                        filter.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
 
                         filter.withPhoto = ((Switch) view.findViewById(R.id.search_ll_withPhoto)).isChecked();
 
@@ -182,6 +175,8 @@ public class SearchFragment extends Fragment {
                             filter.typeOfCarcase+="0";
 
                         filter.insertToDb(getContext());
+                        Monitor monitor = new Monitor(filter);
+                        monitor.insertToDb(getContext());
                     }
 
                     @Override

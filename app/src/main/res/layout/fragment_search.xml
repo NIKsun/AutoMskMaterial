@@ -8,15 +8,13 @@
     android:scrollbarStyle="outsideOverlay"
     android:paddingLeft="10dp"
     android:paddingBottom="15dp"
-    android:paddingRight="10dp"
-    android:animateLayoutChanges="true">
+    android:paddingRight="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:animateLayoutChanges="true"
-        >
+        android:animateLayoutChanges="true">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -86,20 +84,19 @@
 
         </android.support.v7.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
             android:id="@+id/search_ll_model_cardview"
             android:onClick="onClickMarkorModel"
-            >
+            card_view:cardUseCompatPadding="true"
+            card_view:cardElevation="4dp"
+            android:layout_margin="@dimen/activity_horizontal_margin">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp">
 
@@ -125,8 +122,6 @@
                         android:onClick="onClickClearSelection"/>
                 </FrameLayout>
 
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -149,11 +144,11 @@
                         style="@style/LightTitleText"/>
 
                 </LinearLayout>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
-</LinearLayout>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
