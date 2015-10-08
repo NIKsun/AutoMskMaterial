@@ -1,5 +1,7 @@
 package com.example.material_model_automsk;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -32,6 +34,7 @@ public class MonitorsFragment extends Fragment {
     }
 
     private List<Monitor> monitors;
+    private List<Filter> filters;
     FloatingActionButton fab;
     Boolean isHidden = false;
     LinearLayoutManager llm;
@@ -90,25 +93,83 @@ public class MonitorsFragment extends Fragment {
 
 
     private void initializeData(){
+        SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+        Cursor cursorFilters = db.query("filters", null, null, null, null, null, null);
+
+        int iMark = cursorFilters.getColumnIndex("marka");
+        int iModel = cursorFilters.getColumnIndex("model");
+        int iYearFrom = cursorFilters.getColumnIndex("yearFrom");
+        int iYearTo = cursorFilters.getColumnIndex("yearTo");
+        int iPriceFrom = cursorFilters.getColumnIndex("priceFrom");
+        int iPriceTo = cursorFilters.getColumnIndex("priceTo");
+        int iMilleageFrom = cursorFilters.getColumnIndex("milleageFrom");
+        int iMilleageTo = cursorFilters.getColumnIndex("milleageTo");
+        int iVolumeFrom = cursorFilters.getColumnIndex("volumeFrom");
+        int iVolumeTo = cursorFilters.getColumnIndex("volumeTo");
+        int iTransmission = cursorFilters.getColumnIndex("transmission");
+        int iBodyType = cursorFilters.getColumnIndex("bodyType");
+        int iEngineType = cursorFilters.getColumnIndex("engineType");
+        int iDriveType = cursorFilters.getColumnIndex("driveType");
+        int iWithPhoto = cursorFilters.getColumnIndex("withPhoto");
+
+        filters = new ArrayList<>();
+        if (cursorFilters.moveToFirst()) {
+            do {
+                Filter elem = new Filter();
+                elem.id = cursorFilters.getInt(cursorFilters.getColumnIndex("id"));
+                elem.mark = cursorFilters.getString(iMark);
+                elem.model = cursorFilters.getString(iModel);
+
+                elem.setYear(cursorFilters.getString(iYearFrom), cursorFilters.getString(iYearTo));
+                elem.setMilleage(cursorFilters.getString(iMilleageFrom), cursorFilters.getString(iMilleageTo));
+                elem.setPrice(cursorFilters.getString(iPriceFrom), cursorFilters.getString(iPriceTo));
+                elem.setVolume(cursorFilters.getString(iVolumeFrom), cursorFilters.getString(iVolumeTo));
+
+                elem.transmission = cursorFilters.getString(iTransmission);
+                elem.typeOfCarcase = cursorFilters.getString(iBodyType);
+                elem.typeOfEngine = cursorFilters.getString(iEngineType);
+                elem.typeOfWheelDrive = cursorFilters.getString(iDriveType);
+                if(cursorFilters.getInt(iWithPhoto) == 1)
+                    elem.withPhoto = true;
+                else
+                    elem.withPhoto = false;
+
+                filters.add(elem);
+            } while (cursorFilters.moveToNext());
+        }
+
+        Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
+
+        int idFilter = cursorMonitors.getColumnIndex("filter_id");
+        int iCountOfNewCars = cursorMonitors.getColumnIndex("count_of_new_cars");
+        int isActive = cursorMonitors.getColumnIndex("is_active");
+
         monitors = new ArrayList<>();
-        /*Filter f = new Filter(1,"Audi","A3");
-        f.setPrice(100, 10000);
-        f.setYear(2010, null);
-        f.setMilleage(null, 100000);
-        f.setVolume(5, 5);
-        monitors.add(new Monitor(f, false, 0));
-        f = new Filter(1,"Audi","A4");
-        f.setYear(2010, 2012);
-        monitors.add(new Monitor(f, true, 4));
-        f = new Filter(1,"Audi","A5");
-        monitors.add(new Monitor(f,true,12));
-        f = new Filter(1,"Audi","A6");
-        f.setPrice(100, 1300000);
-        f.setYear(2010, 2012);
-        f.setMilleage(42000, 100000);
-        f.setVolume(3, 5);
-        monitors.add(new Monitor(f, true, 0));
-        monitors.add(new Monitor());*/
+        if (cursorMonitors.moveToFirst()) {
+            do {
+                Monitor elem = new Monitor();
+                elem.id = cursorMonitors.getInt(cursorMonitors.getColumnIndex("id"));
+
+                int i=0, filterID = cursorMonitors.getInt(idFilter);
+                while(i != filters.size() && filters.get(i).id != filterID)
+                    i++;
+
+                if(i == filters.size())
+                    continue;
+
+                elem.filter = filters.get(i);
+
+                elem.countOfNewCars = cursorMonitors.getInt(iCountOfNewCars);
+                if(cursorMonitors.getInt(isActive) == 1)
+                    elem.isActive = true;
+                else
+                    elem.isActive = false;
+
+                monitors.add(elem);
+            } while (cursorMonitors.moveToNext());
+        }
+
+        db.close();
     }
 
 
