@@ -42,6 +42,7 @@ class Filter {
     String typeOfEngine;
     String typeOfCarcase;
     String typeOfWheelDrive;
+    Boolean withPhoto;
 
     private String getRangeString(String name, String value, String from, String to)
     {

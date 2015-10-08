@@ -33,6 +33,12 @@ class DbHelper extends SQLiteOpenHelper {
                 + "markauser text," + "markarequest text," +"markarequestavito text,"+"markarequestdrom text"
                 + ");");
 
+        db.execSQL("create table monitors ("
+                + "id integer primary key autoincrement,"
+                + "filter_id integer,"
+                + "count_of_new _cars integer,"
+                + "is_active integer);");
+
         db.execSQL("create table filters ("
                 + "id integer primary key autoincrement,"
                 + "marka text,"

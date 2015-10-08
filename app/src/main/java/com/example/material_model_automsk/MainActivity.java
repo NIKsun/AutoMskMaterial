@@ -645,7 +645,6 @@ public class MainActivity extends ActionBarActivity
                 ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 break;
             case R.id.search_ll_engine_volume_clear:
-
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume);
                 ll.setClickable(true);
 

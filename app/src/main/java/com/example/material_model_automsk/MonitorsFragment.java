@@ -1,5 +1,7 @@
 package com.example.material_model_automsk;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -91,24 +93,50 @@ public class MonitorsFragment extends Fragment {
 
     private void initializeData(){
         monitors = new ArrayList<>();
-        /*Filter f = new Filter(1,"Audi","A3");
-        f.setPrice(100, 10000);
-        f.setYear(2010, null);
-        f.setMilleage(null, 100000);
-        f.setVolume(5, 5);
-        monitors.add(new Monitor(f, false, 0));
-        f = new Filter(1,"Audi","A4");
-        f.setYear(2010, 2012);
-        monitors.add(new Monitor(f, true, 4));
-        f = new Filter(1,"Audi","A5");
-        monitors.add(new Monitor(f,true,12));
-        f = new Filter(1,"Audi","A6");
-        f.setPrice(100, 1300000);
-        f.setYear(2010, 2012);
-        f.setMilleage(42000, 100000);
-        f.setVolume(3, 5);
-        monitors.add(new Monitor(f, true, 0));
-        monitors.add(new Monitor());*/
+
+        SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+        Cursor cursor = db.query("filters", null, null, null, null, null, null);
+
+        int iMark = cursor.getColumnIndex("marka");
+        int iModel = cursor.getColumnIndex("model");
+        int iYearFrom = cursor.getColumnIndex("yearFrom");
+        int iYearTo = cursor.getColumnIndex("yearTo");
+        int iPriceFrom = cursor.getColumnIndex("priceFrom");
+        int iPriceTo = cursor.getColumnIndex("priceTo");
+        int iMilleageFrom = cursor.getColumnIndex("milleageFrom");
+        int iMilleageTo = cursor.getColumnIndex("milleageTo");
+        int iVolumeFrom = cursor.getColumnIndex("volumeFrom");
+        int iVolumeTo = cursor.getColumnIndex("volumeTo");
+        int iTransmission = cursor.getColumnIndex("transmission");
+        int iBodyType = cursor.getColumnIndex("bodyType");
+        int iEngineType = cursor.getColumnIndex("engineType");
+        int iDriveType = cursor.getColumnIndex("driveType");
+        int iWithPhoto = cursor.getColumnIndex("withPhoto");
+
+        monitors = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Filter elem = new Filter();
+                elem.mark = cursor.getString(iMark);
+                elem.model = cursor.getString(iModel);
+
+                elem.setYear(cursor.getString(iYearFrom), cursor.getString(iYearTo));
+                elem.setMilleage(cursor.getString(iMilleageFrom), cursor.getString(iMilleageTo));
+                elem.setPrice(cursor.getString(iPriceFrom), cursor.getString(iPriceTo));
+                elem.setVolume(cursor.getString(iVolumeFrom), cursor.getString(iVolumeTo));
+
+                elem.transmission = cursor.getString(iTransmission);
+                elem.typeOfCarcase = cursor.getString(iBodyType);
+                elem.typeOfEngine = cursor.getString(iEngineType);
+                elem.typeOfWheelDrive = cursor.getString(iDriveType);
+                if(cursor.getInt(iWithPhoto) == 1)
+                    elem.withPhoto = true;
+                else
+                    elem.withPhoto = false;
+
+            } while (cursor.moveToNext());
+        }
+        db.close();
     }
 
 
