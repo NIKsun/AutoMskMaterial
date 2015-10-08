@@ -148,6 +148,7 @@ public class MarkFilter extends Activity {
                     //ViewHolder holder = pair.second;
                     ed.putString("SelectedMark", String.valueOf(tv.getText()));
                     ed.putString("SelectedModel", "Любая");
+                    TextView t = (TextView) findViewById(R.id.search_ll_mark_text);
                     Log.d("Tag", String.valueOf(tv.getText()));
                 } else {
                     ed.putString("SelectedModel", String.valueOf(tv.getText()));
