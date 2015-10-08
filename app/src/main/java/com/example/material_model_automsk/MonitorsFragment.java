@@ -2,6 +2,7 @@ package com.example.material_model_automsk;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -40,6 +41,8 @@ public class MonitorsFragment extends Fragment {
     FloatingActionButton fab;
     LinearLayoutManager llm;
     View savedView;
+    boolean isHidden;
+    AlarmWaiter alarmWaiter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +51,7 @@ public class MonitorsFragment extends Fragment {
         final RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
         llm = new LinearLayoutManager(savedView.getContext());
         rv.setLayoutManager(llm);
+        alarmWaiter = new AlarmWaiter();
 
         update();
 
@@ -57,50 +61,67 @@ public class MonitorsFragment extends Fragment {
             public void onClick(View v) {
             }
         });
-        /*rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == 0 && isHidden) {
-
-                    isHidden = false;
-                } else if (!isHidden) {
-                    isHidden = true;
-                }
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Log.d("DB_id", String.valueOf(dy));
+                if(dy>15||dy<-15 ) {
+                    if (!isHidden) {
+                        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
+                        fab.startAnimation(anim);
+                        fab.setVisibility(View.INVISIBLE);
+                        isHidden = true;
+                    }
+                    alarmWaiter.cancel(true);
+                    alarmWaiter = new AlarmWaiter();
+                    alarmWaiter.execute(400);
+                }
                 super.onScrolled(recyclerView, dx, dy);
             }
 
-        });*/
-
-        rv.setOnScrollListener(new MyRecyclerScroll() {
-            @Override
-            public void show() {
-                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
-                fab.startAnimation(anim);
-                fab.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void hide() {
-                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
-                fab.startAnimation(anim);
-                fab.setVisibility(View.INVISIBLE);
-            }
         });
 
         return savedView;
     }
 
 
+    class AlarmWaiter extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            try {
+                Thread.sleep(params[0]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Void isNotFound) {
+            Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
+            fab.startAnimation(anim);
+            fab.setVisibility(View.VISIBLE);
+            isHidden = false;
+        }
+    }
+
     public void update()
     {
         final RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
         initializeData();
-        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors);
+        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity());
         rv.setAdapter(adapter);
         if(fab != null) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
@@ -141,7 +162,6 @@ public class MonitorsFragment extends Fragment {
                 Filter elem = new Filter();
                 elem.id = cursorFilters.getInt(cursorFilters.getColumnIndex("id"));
 
-                Log.d("DB_id", "from filter "+String.valueOf(elem.id));
                 elem.mark = cursorFilters.getString(iMark);
                 elem.model = cursorFilters.getString(iModel);
 
@@ -177,7 +197,6 @@ public class MonitorsFragment extends Fragment {
 
                 int i=0, filterID = cursorMonitors.getInt(idFilter);
 
-                Log.d("DB_id", "from monitor "+String.valueOf(filterID));
                 while(i != filters.size() && filters.get(i).id != filterID)
                     i++;
 
@@ -199,33 +218,6 @@ public class MonitorsFragment extends Fragment {
         monitors.add(new Monitor(null));
     }
 
-
-    public abstract class MyRecyclerScroll extends RecyclerView.OnScrollListener {
-
-        int scrollDist = 0;
-        boolean isVisible = true;
-        public abstract void show();
-        public abstract void hide();
-        static final float MINIMUM = 25;
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            if (isVisible && scrollDist > MINIMUM) {
-                hide();
-                scrollDist = 0;
-                isVisible = false;
-            }
-            else if (!isVisible && scrollDist < -MINIMUM) {
-                show();
-                scrollDist = 0;
-                isVisible = true;
-            }
-            if ((isVisible && dy > 0) || (!isVisible && dy < 0)) {
-                scrollDist += dy;
-            }
-        }
-    }
 
 
 }

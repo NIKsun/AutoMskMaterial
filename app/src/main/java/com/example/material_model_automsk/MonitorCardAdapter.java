@@ -1,5 +1,6 @@
 package com.example.material_model_automsk;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +8,14 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -529,20 +532,19 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     }
 
     List<Monitor> monitors;
+    Activity parentActivity;
 
-    MonitorCardAdapter(List<Monitor> monitors){
+    Monitor tempMonitor;
+    int tempPosition;
+
+    MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity){
         this.monitors = monitors;
+        this.parentActivity = parentActivity;
     }
 
     @Override
     public int getItemCount() {
         return monitors.size();
-    }
-
-    boolean visib = false;
-    public void setVisibility()
-    {
-        visib = !visib;
     }
 
     @Override
@@ -560,6 +562,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             monitorViewHolder.cv.setVisibility(View.INVISIBLE);
             return;
         }
+
+        monitorViewHolder.cv.setVisibility(View.VISIBLE);
+        monitorViewHolder.ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
 
         monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
@@ -592,6 +597,14 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        switch ((String)item.getTitle())
+                        {
+                            case "Изменить": Log.d("popup", (String) item.getTitle());break;
+                            case "Удалить":
+                                remove(i);
+                                break;
+                        }
+
                         return false;
                     }
                 });
@@ -652,8 +665,33 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 }
             }
         });
+    }
 
+    public void remove(final int position) {
 
+        tempMonitor=monitors.get(position);
+        tempPosition=position;
+
+        monitors.remove(position);
+        notifyItemRemoved(position);
+        for (int i = position;i<monitors.size();i++)
+            notifyItemChanged(i);
+
+        SnackBar sb = ((MainActivity)parentActivity).getSnackBar();
+        sb.applyStyle(R.style.SnackBarSingleLine);
+        sb.text("Монитор удален")
+                .actionText("Восстановить")
+                .duration(2500)
+                .actionClickListener(new SnackBar.OnActionClickListener() {
+                    @Override
+                    public void onActionClick(SnackBar snackBar, int i) {
+                        monitors.add(tempPosition, tempMonitor);
+                        notifyItemInserted(tempPosition);
+                        for (int iter = tempPosition; iter <monitors.size(); iter++)
+                            notifyItemChanged(iter);
+                    }
+                });
+        sb.show();
     }
 
     @Override
