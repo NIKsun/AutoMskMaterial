@@ -175,6 +175,7 @@ public class SearchFragment extends Fragment {
                             filter.typeOfCarcase+="0";
 
                         filter.insertToDb(getContext());
+
                         Monitor monitor = new Monitor(filter);
                         monitor.insertToDb(getContext());
                     }

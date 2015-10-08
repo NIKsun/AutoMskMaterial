@@ -140,6 +140,8 @@ public class MonitorsFragment extends Fragment {
             do {
                 Filter elem = new Filter();
                 elem.id = cursorFilters.getInt(cursorFilters.getColumnIndex("id"));
+
+                Log.d("DB_id", "from filter "+String.valueOf(elem.id));
                 elem.mark = cursorFilters.getString(iMark);
                 elem.model = cursorFilters.getString(iModel);
 
@@ -174,6 +176,8 @@ public class MonitorsFragment extends Fragment {
                 elem.id = cursorMonitors.getInt(cursorMonitors.getColumnIndex("id"));
 
                 int i=0, filterID = cursorMonitors.getInt(idFilter);
+
+                Log.d("DB_id", "from monitor "+String.valueOf(filterID));
                 while(i != filters.size() && filters.get(i).id != filterID)
                     i++;
 
@@ -192,6 +196,7 @@ public class MonitorsFragment extends Fragment {
             } while (cursorMonitors.moveToNext());
         }
         db.close();
+        monitors.add(new Monitor(null));
     }
 
 

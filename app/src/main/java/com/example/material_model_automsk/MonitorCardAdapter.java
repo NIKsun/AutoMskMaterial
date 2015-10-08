@@ -118,7 +118,8 @@ class Filter {
         cv.put("withPhoto", this.withPhoto ? 1 : 0);
         cv.put("driveType", this.typeOfWheelDrive);
         db.insert("filters", null, cv);
-
+        db.close();
+        db = dbHelper.getWritableDatabase();
         Cursor cur = db.query("filters", new String[]{"id"}, null, null, null, null, null, null);
         cur.moveToLast();
         id = cur.getInt(cur.getColumnIndex("id"));
