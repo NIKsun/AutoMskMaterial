@@ -374,7 +374,9 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_type_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
                 break;
             case R.id.search_ll_price:
 
@@ -443,7 +445,10 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
+
                 break;
             case R.id.search_ll_year:
 
@@ -529,7 +534,7 @@ public class MainActivity extends ActionBarActivity
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = Integer.parseInt(data[spinner.getSelectedItemPosition()]);
                         Integer item2 = Integer.parseInt(data[sp1.getSelectedItemPosition()]);
-                        if(item < item2){
+                        if (item < item2) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -539,7 +544,9 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
                 break;
             case R.id.search_ll_engine_volume:
 
@@ -569,7 +576,7 @@ public class MainActivity extends ActionBarActivity
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp1.getSelectedItemPosition();
-                        if(item < item2){
+                        if (item < item2) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -579,25 +586,33 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
                 break;
             case R.id.search_ll_trans:
                 ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
                 b = (Button) findViewById(R.id.search_ll_trans_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
                 break;
             case R.id.search_ll_body_type:
                 ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_body_type_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_drive:
                 ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
                 b = (Button) findViewById(R.id.search_ll_drive_clear);
                 b.setVisibility(View.VISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                expand(ll);
                 break;
 
         }
@@ -632,7 +647,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.INVISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_mileage_clear:
 
@@ -642,7 +658,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.INVISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_engine_volume_clear:
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume);
@@ -651,7 +668,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.INVISIBLE);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_engine_type_clear:
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
@@ -667,7 +685,8 @@ public class MainActivity extends ActionBarActivity
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_hybrid);
                 ch.setChecked(false);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_trans_clear:
                 ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
@@ -681,7 +700,8 @@ public class MainActivity extends ActionBarActivity
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_var);
                 ch.setChecked(false);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_body_type_clear:
                 ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
@@ -709,7 +729,8 @@ public class MainActivity extends ActionBarActivity
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_van);
                 ch.setChecked(false);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_drive_clear:
                 ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
@@ -721,7 +742,8 @@ public class MainActivity extends ActionBarActivity
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_drive_full);
                 ch.setChecked(false);
-                ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                collapse(ll);
                 break;
             case R.id.search_ll_mark_clear:
                 b = (Button) findViewById(R.id.search_ll_mark_clear);

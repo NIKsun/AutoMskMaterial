@@ -107,31 +107,42 @@ public class SearchFragment extends Fragment {
                         Log.d("sp", String.valueOf(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()));
 
                         if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()!=-1))
-                        filter.setYear(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString(),
+                            filter.setYear(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString());
+                        else
+                            filter.setYear("","");
 
                         if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!=-1))
                         filter.setMilleage(((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString());
+                        else
+                            filter.setMilleage("", "");
 
                         if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!=-1))
                         filter.setPrice(((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString());
+                        else
+                            filter.setPrice("", "");
 
                         if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!=-1))
                         filter.setVolume(((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString(),
                                 ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString());
+                        else
+                            filter.setVolume("", "");
 
                         filter.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
-                        filter.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
+                        if(!filter.mark.equals("Любая"))
+                            filter.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
+                        else
+                            filter.model = "Любая";
 
                         filter.withPhoto = ((Switch) view.findViewById(R.id.search_ll_withPhoto)).isChecked();
 
                         filter.transmission="";
                         if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_man)).isChecked())
-                            filter.transmission+="1";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_auto)).isChecked())
                             filter.transmission+="2";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_auto)).isChecked())
+                            filter.transmission+="1";
                         if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_robot)).isChecked())
                             filter.transmission+="3";
                         if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_var)).isChecked())
@@ -165,21 +176,23 @@ public class SearchFragment extends Fragment {
                         if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_univ)).isChecked())
                             filter.typeOfCarcase+="3";
                         if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_minivan)).isChecked())
-                            filter.typeOfCarcase+="4";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_offroad)).isChecked())
                             filter.typeOfCarcase+="5";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_offroad)).isChecked())
+                            filter.typeOfCarcase+="4";
                         if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_coupe)).isChecked())
-                            filter.typeOfCarcase+="6";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_van)).isChecked())
                             filter.typeOfCarcase+="7";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_limus)).isChecked())
-                            filter.typeOfCarcase+="8";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_picap)).isChecked())
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_van)).isChecked())
                             filter.typeOfCarcase+="9";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_cabrio)).isChecked())
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_limus)).isChecked())
+                            filter.typeOfCarcase+="6";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_picap)).isChecked())
                             filter.typeOfCarcase+="0";
+                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_cabrio)).isChecked())
+                            filter.typeOfCarcase+="8";
 
                         filter.insertToDb(getContext());
+
+                        filter.getHref(getContext());
 
                         Monitor monitor = new Monitor(filter);
                         monitor.insertToDb(getContext());
