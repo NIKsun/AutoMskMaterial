@@ -45,7 +45,8 @@ public class ListOfCarsActivity extends ActionBarActivity
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_LOC);
         viewPager.setAdapter(new LOC_FragmentPagerAdapter(getSupportFragmentManager(),
-                ListOfCarsActivity.this, getIntent().getIntExtra("FilterID", 0)));
+                ListOfCarsActivity.this, getIntent().getStringExtra("hrefAuto"),
+                getIntent().getStringExtra("hrefAvito"), getIntent().getStringExtra("hrefDrom")));
         // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_LOC);
         tabLayout.setupWithViewPager(viewPager);

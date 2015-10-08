@@ -5,22 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.TextView;
 
-import com.rey.material.widget.Button;
 import com.rey.material.widget.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -69,8 +62,7 @@ public class MonitorsFragment extends Fragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                Log.d("DB_id", String.valueOf(dy));
-                if(dy>15||dy<-15 ) {
+                if (dy > 15 || dy < -15) {
                     if (!isHidden) {
                         Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
                         fab.startAnimation(anim);
@@ -119,9 +111,9 @@ public class MonitorsFragment extends Fragment {
 
     public void update()
     {
-        final RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
+        RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
         initializeData();
-        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity());
+        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity(),rv);
         rv.setAdapter(adapter);
         if(fab != null) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
@@ -218,6 +210,25 @@ public class MonitorsFragment extends Fragment {
         monitors.add(new Monitor(null));
     }
 
+    public void removeLastItemFromDb() {
+        if(savedView != null) {
+            RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv);
+            if(rv.getAdapter() != null)
+                ((MonitorCardAdapter) rv.getAdapter()).finableRemove();
+        }
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser) {
+            removeLastItemFromDb();
+        }
+    }
 
+    @Override
+    public void onDestroy() {
+        removeLastItemFromDb();
+        super.onDestroy();
+    }
 }

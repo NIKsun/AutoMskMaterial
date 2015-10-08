@@ -57,7 +57,7 @@ public class LOCfragment extends Fragment {
 
     final public static int RND_PXLS = 10;
     private int numberOfSite;
-    private int filterID;
+    private String href;
     ProgressView pvCircular;
     LinearLayout ll;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -68,10 +68,10 @@ public class LOCfragment extends Fragment {
     LOCcardAdapter adapter;
     DbHelper dbHelper;
 
-    public static LOCfragment newInstance(int page, int filterID) {
+    public static LOCfragment newInstance(int page, String href) {
         LOCfragment fragment = new LOCfragment();
         fragment.numberOfSite = page;
-        fragment.filterID = filterID;
+        fragment.href = href;
         return fragment;
     }
 
@@ -156,7 +156,7 @@ public class LOCfragment extends Fragment {
             switch (numberOfSite){
                 case 0:
                     try {
-                        doc = Jsoup.connect("http://auto.ru/cars/chevrolet/lanos/group-sedan/all/").userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                        doc = Jsoup.connect(href).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                     }
                     catch (HttpStatusException e)
                     {
@@ -195,7 +195,7 @@ public class LOCfragment extends Fragment {
                     break;
                 case 1:
                     try {
-                        doc = Jsoup.connect("https://www.avito.ru/moskva/avtomobili/bmw/m6?pmax=100000").userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                        doc = Jsoup.connect(href).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                     }
                     catch (HttpStatusException e)
                     {
@@ -231,7 +231,7 @@ public class LOCfragment extends Fragment {
                     carsBuf = new Cars(50);
                     while(counter < 20) {
                         try {
-                            doc = Jsoup.connect("http://auto.drom.ru/chevrolet/lanos/page@@@page/?go_search=2".replace("page@@@page", "page"+pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                            doc = Jsoup.connect(href.replace("page@@@page", "page" + pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                         }
                         catch (HttpStatusException e)
                         {

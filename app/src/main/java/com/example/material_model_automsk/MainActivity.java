@@ -283,6 +283,9 @@ public class MainActivity extends ActionBarActivity
             return;
         }
 
+        if(mSnackBar!=null)
+            mSnackBar.dismiss();
+
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         switch (position){
             case 0:
@@ -339,7 +342,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     public SnackBar getSnackBar(){
-        return mSnackBar;
+            return mSnackBar;
     }
     public Button getAddMonitorButton(){
         return addMonitorButton;

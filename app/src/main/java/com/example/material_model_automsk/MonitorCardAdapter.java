@@ -146,7 +146,7 @@ class Filter {
         String startYeard = "";
         if(startYear != 1980)
             startYeard = String.valueOf(startYear);
-        Integer endYear = !this.yearTo.equals("") ? Integer.valueOf(this.yearFrom) : 2015;
+        Integer endYear = !this.yearTo.equals("") ? Integer.valueOf(this.yearTo) : 2015;
         String endYeard = "";
         if(endYear != 2015)
             endYeard = String.valueOf(endYear);
@@ -405,7 +405,7 @@ class Filter {
         String photoa = "";
         String eng_vol1a = "1374_";
         String eng_vol2a = "b";
-        String probegaFrom = "1375_"+"15483"+"b"+probeg_arr_avito[probegvalFrom];
+        String probegaFrom = "1375_"+probeg_arr_avito[probegvalFrom]+"b";
         String probegaTo = probeg_arr_avito[probegvalTo];
 
         //constructor for drom
@@ -533,13 +533,15 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     List<Monitor> monitors;
     Activity parentActivity;
+    RecyclerView rv;
 
     Monitor tempMonitor;
     int tempPosition;
 
-    MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity){
+    MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity, RecyclerView myself){
         this.monitors = monitors;
         this.parentActivity = parentActivity;
+        this.rv = myself;
     }
 
     @Override
@@ -599,7 +601,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     public boolean onMenuItemClick(MenuItem item) {
                         switch ((String)item.getTitle())
                         {
-                            case "Изменить": Log.d("popup", (String) item.getTitle());break;
+                            case "Изменить": ;break;
                             case "Удалить":
                                 remove(i);
                                 break;
@@ -643,7 +645,11 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 NetworkInfo netInfo = cm.getActiveNetworkInfo();
                 if(netInfo != null && netInfo.isConnectedOrConnecting()) {
                     Intent intent = new Intent(v.getContext(), ListOfCarsActivity.class);
-                    intent.putExtra("FilterID", i);
+                    //intent.putExtra("FilterID", i);
+                    monitors.get(i).filter.getHref(parentActivity);
+                    intent.putExtra("hrefAuto", monitors.get(i).filter.hrefAuto);
+                    intent.putExtra("hrefAvito", monitors.get(i).filter.hrefAvito);
+                    intent.putExtra("hrefDrom", monitors.get(i).filter.hrefDrom);
                     v.getContext().startActivity(intent);
                 }
                 else
@@ -667,7 +673,22 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         });
     }
 
+    private void deleteItemFromDB(String id)
+    {
+        SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
+        db.delete("monitors", "id = ?", new String[]{id});
+        db.close();
+    }
+
+    public void finableRemove(){
+        if(tempMonitor != null)
+            deleteItemFromDB(String.valueOf(tempMonitor.id));
+        tempMonitor = null;
+    }
+
     public void remove(final int position) {
+        if(tempMonitor != null)
+            deleteItemFromDB(String.valueOf(tempMonitor.id));
 
         tempMonitor=monitors.get(position);
         tempPosition=position;
@@ -689,6 +710,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                         notifyItemInserted(tempPosition);
                         for (int iter = tempPosition; iter <monitors.size(); iter++)
                             notifyItemChanged(iter);
+                        rv.scrollToPosition(tempPosition);
                     }
                 });
         sb.show();

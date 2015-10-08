@@ -88,6 +88,7 @@ public class SearchAndMonitorsFragment extends Fragment {
                 {
                     if(mf != null)
                         mf.hideFAB();
+
                     Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_left);
                     addMonitorButton.setVisibility(View.VISIBLE);
                     addMonitorButton.startAnimation(anim);

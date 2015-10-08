@@ -97,14 +97,16 @@ public class FavoritesFragment extends Fragment {
                 adapter.remove(tempPosition);
                 SnackBar sb = ((MainActivity)getActivity()).getSnackBar();
                 sb.applyStyle(R.style.SnackBarSingleLine);
-                sb.text("Удален из избранного.")
-                        .actionText("Отмена")
+                sb.text("Удален из избранного")
+                        .actionText("Восстановить")
                         .duration(2500)
                         .actionClickListener(new SnackBar.OnActionClickListener() {
                             @Override
                             public void onActionClick(SnackBar snackBar, int i) {
                                 adapter.insert(tempPosition, tempCar, tempImage);
                                 tempCar = null;
+                                RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_favorites);
+                                rv.scrollToPosition(tempPosition);
                             }
                         });
                 sb.show();
@@ -244,13 +246,15 @@ public class FavoritesFragment extends Fragment {
                 adapter.remove(adapter.getPosition());
                 SnackBar sb = ((MainActivity)getActivity()).getSnackBar();
                 sb.applyStyle(R.style.SnackBarSingleLine);
-                sb.text("Удален из избранного.")
-                        .actionText("Отмена")
+                sb.text("Удален из избранного")
+                        .actionText("Восстановить")
                         .duration(2500)
                         .actionClickListener(new SnackBar.OnActionClickListener() {
                             @Override
                             public void onActionClick(SnackBar snackBar, int i) {
                                 adapter.insert(tempPosition, tempCar, tempImage);
+                                RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_favorites);
+                                rv.scrollToPosition(tempPosition);
                                 tempCar = null;
                             }
                         });
