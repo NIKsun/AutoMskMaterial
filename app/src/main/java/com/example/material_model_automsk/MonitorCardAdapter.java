@@ -578,13 +578,21 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             @Override
             public void onCheckedChanged(Switch aSwitch, boolean b) {
                 Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
-                if (b) {
+                if(b) {
                     monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.myPrimaryDarkColor));
                     monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_active));
-                } else {
+                }
+                else {
                     monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.colorPrimaryQuarter));
                     monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_not_active));
                 }
+
+                monitors.get(i).isActive = b;
+                SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put("is_active", b);
+                db.update("monitors", cv, "id = ?", new String[]{String.valueOf(monitors.get(i).id)});
+                db.close();
             }
         });
 
@@ -711,6 +719,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                         for (int iter = tempPosition; iter <monitors.size(); iter++)
                             notifyItemChanged(iter);
                         rv.scrollToPosition(tempPosition);
+                        tempMonitor = null;
                     }
                 });
         sb.show();
