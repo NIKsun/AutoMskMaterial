@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.Switch;
@@ -537,11 +538,13 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     Monitor tempMonitor;
     int tempPosition;
+    private int activeMonitorCounter;
 
-    MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity, RecyclerView myself){
+    MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity, RecyclerView myself, int startActiveMonitorCounter){
         this.monitors = monitors;
         this.parentActivity = parentActivity;
         this.rv = myself;
+        this.activeMonitorCounter = startActiveMonitorCounter;
     }
 
     @Override
@@ -573,18 +576,35 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         monitorViewHolder.monitorMarkAndModel.setTypeface(null, Typeface.BOLD);
         monitorViewHolder.monitorFilterInfo.setText(monitors.get(i).filter.getMessage());
 
+        Log.d("switcher", i + " : " + String.valueOf(monitors.get(i).isActive));
+
+
+        monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(null);
         monitorViewHolder.monitorSwitch.setChecked(monitors.get(i).isActive);
         monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(Switch aSwitch, boolean b) {
                 Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
                 if (b) {
+                    activeMonitorCounter++;
                     monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.myPrimaryDarkColor));
                     monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_active));
                 } else {
+                    activeMonitorCounter--;
                     monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.colorPrimaryQuarter));
                     monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_not_active));
                 }
+
+                if (activeMonitorCounter != 0)
+                    Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
+
+                monitors.get(i).isActive = b;
+                notifyDataSetChanged();
+                SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put("is_active", b);
+                db.update("monitors", cv, "id = ?", new String[]{String.valueOf(monitors.get(i).id)});
+                db.close();
             }
         });
 
@@ -711,6 +731,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                         for (int iter = tempPosition; iter <monitors.size(); iter++)
                             notifyItemChanged(iter);
                         rv.scrollToPosition(tempPosition);
+                        tempMonitor = null;
                     }
                 });
         sb.show();

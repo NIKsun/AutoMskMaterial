@@ -35,6 +35,7 @@ public class MonitorsFragment extends Fragment {
     LinearLayoutManager llm;
     View savedView;
     boolean isHidden;
+    private int activeMonitorCounter;
     AlarmWaiter alarmWaiter;
 
     @Override
@@ -112,8 +113,9 @@ public class MonitorsFragment extends Fragment {
     public void update()
     {
         RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
+        activeMonitorCounter = 0;
         initializeData();
-        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity(),rv);
+        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity(),rv,activeMonitorCounter);
         rv.setAdapter(adapter);
         if(fab != null) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
@@ -198,8 +200,10 @@ public class MonitorsFragment extends Fragment {
                 elem.filter = filters.get(i);
                 elem.countOfNewCars = cursorMonitors.getInt(iCountOfNewCars);
 
-                if(cursorMonitors.getInt(isActive) == 1)
+                if(cursorMonitors.getInt(isActive) == 1) {
+                    activeMonitorCounter++;
                     elem.isActive = true;
+                }
                 else
                     elem.isActive = false;
 
