@@ -103,32 +103,59 @@ public class SearchFragment extends Fragment {
                     public void onPositiveActionClicked(DialogFragment fragment) {
                         super.onPositiveActionClicked(fragment);
                         Filter filter = new Filter();
-
+                        String from = "";
+                        String to = "";
                         Log.d("sp", String.valueOf(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()));
 
-                        if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()!=-1))
-                            filter.setYear(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString(),
-                                ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString());
+                        if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()==-1))
+                                    filter.setYear(from,to);
                         else
-                            filter.setYear("","");
+                        {
+                            if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()!= 0))
+                                from = ((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString();
+                            if((((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItemPosition()!= 0))
+                                to = ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString();
+                        }
+                        filter.setYear(from,to);
 
-                        if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!=-1))
-                        filter.setMilleage(((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString(),
-                                ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString());
+                        from = "";
+                        to = "";
+                        if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()==-1))
+                            filter.setYear(from,to);
                         else
-                            filter.setMilleage("", "");
+                        {
+                            if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!= 0))
+                                from = ((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString();
+                            if((((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItemPosition()!= 0))
+                                to = ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString();
+                        }
+                        filter.setMilleage(from, to);
 
-                        if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!=-1))
-                        filter.setPrice(((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString(),
-                                ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString());
+                        from = "";
+                        to = "";
+                        if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()==-1))
+                            filter.setPrice(from,to);
                         else
-                            filter.setPrice("", "");
+                        {
+                            if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!= 0))
+                                from = ((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString();
+                            if((((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItemPosition()!= 0))
+                                to = ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString();
+                        }
+                        filter.setPrice(from,to);
 
-                        if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!=-1))
-                        filter.setVolume(((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString(),
-                                ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString());
+                        from = "";
+                        to = "";
+                        if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()==-1))
+                            filter.setVolume(from,to);
                         else
-                            filter.setVolume("", "");
+                        {
+                            if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!= 0))
+                                from = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString();
+                            if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItemPosition()!= 0))
+                                to = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString();
+                        }
+                        filter.setVolume(from,to);
 
                         filter.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
                         if(!filter.mark.equals("Любая"))
