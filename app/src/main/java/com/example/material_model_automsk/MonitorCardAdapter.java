@@ -493,7 +493,6 @@ class Filter {
         String marka_for_dialog = "###";
 
 
-
         if(!posMarkString.equals("Любая")) {
             Cursor cursorMark = db.query("marksTable", null, "markauser=?", new String[]{posMarkString}, null, null, null);
             cursorMark.moveToFirst();
@@ -507,20 +506,18 @@ class Filter {
         String model = "";
         String modelavito = "";
         String modeldrom = "";
-        String model_for_dialog = "###";
         if(!posModelString.equals("Любая")) {
             Cursor cursorModel = db.query("modelsTable", null, "modeluser=?", new String[]{posModelString}, null, null, null);
             cursorModel.moveToFirst();
             model = "/" + cursorModel.getString(cursorModel.getColumnIndex("modelrequest"));
             modelavito = "/" + cursorModel.getString(cursorModel.getColumnIndex("modelrequestavito"));
             modeldrom = "/" + cursorModel.getString(cursorModel.getColumnIndex("modelrequestdrom"));
-            model_for_dialog = cursorModel.getString(cursorModel.getColumnIndex("modeluser"));
         }
 
         //put two plus one request
-        /*String requestauto = "###";
-        String requestavito = "###";
-        String requestdrom = "###";*/
+        hrefAuto = "###";
+        hrefAvito = "###";
+        hrefDrom = "###";
         if(!(marka.equals("/###")) && !(model.equals("/###")))
             hrefAuto = begin + marka + model + end + year1 + startYear.toString() + year2 + endYear.toString() + price1 + price2+photo+eng_vol1+volume_arr_avto[startVolume]+eng_vol2+volume_arr_avto[endVolume]+probegFrom+probegTo+body_avto_req+privod_avto_req+trans_avto_req+engine_avto_req;
         if(!(markaavito.equals("/###")) && !(modelavito.equals("/###")))
@@ -541,11 +538,21 @@ class Monitor {
     Filter filter;
     Boolean isActive;
     Integer countOfNewCars;
+    String hrefAuto;
+    String hrefAvito;
+    String hrefDrom;
 
-    Monitor(Filter filter) {
+
+    Monitor() {
+    }
+    Monitor(Filter filter,Context context) {
         isActive = true;
         this.filter = filter;
         countOfNewCars = 0;
+        filter.getHref(context);
+        hrefAuto = filter.hrefAuto;
+        hrefAvito = filter.hrefAvito;
+        hrefDrom = filter.hrefDrom;
     }
 
     void insertToDb(Context context)
@@ -556,6 +563,11 @@ class Monitor {
         cv.put("filter_id", filter.id);
         cv.put("count_of_new_cars", countOfNewCars);
         cv.put("is_active", isActive ? 1 : 0);
+
+        cv.put("href_auto", hrefAuto);
+        cv.put("href_avito", hrefAvito);
+        cv.put("href_drom", hrefDrom);
+
         db.insert("monitors", null, cv);
         db.close();
     }
@@ -639,11 +651,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         monitorViewHolder.monitorMarkAndModel.setTypeface(null, Typeface.BOLD);
         monitorViewHolder.monitorFilterInfo.setText(monitors.get(i).filter.getMessage());
 
-        Log.d("switcher", i + " : " + String.valueOf(monitors.get(i).isActive));
-
-
-        monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(null);
         monitorViewHolder.monitorSwitch.setChecked(monitors.get(i).isActive);
+        monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(null);
         monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(Switch aSwitch, boolean b) {
@@ -728,11 +737,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 NetworkInfo netInfo = cm.getActiveNetworkInfo();
                 if(netInfo != null && netInfo.isConnectedOrConnecting()) {
                     Intent intent = new Intent(v.getContext(), ListOfCarsActivity.class);
-                    //intent.putExtra("FilterID", i);
-                    monitors.get(i).filter.getHref(parentActivity);
-                    intent.putExtra("hrefAuto", monitors.get(i).filter.hrefAuto);
-                    intent.putExtra("hrefAvito", monitors.get(i).filter.hrefAvito);
-                    intent.putExtra("hrefDrom", monitors.get(i).filter.hrefDrom);
+                    intent.putExtra("monitorID", monitors.get(i).id);
                     v.getContext().startActivity(intent);
                 }
                 else
@@ -770,6 +775,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     }
 
     public void remove(final int position) {
+        activeMonitorCounter--;
+
         if(tempMonitor != null)
             deleteItemFromDB(String.valueOf(tempMonitor.id));
 
@@ -789,6 +796,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 .actionClickListener(new SnackBar.OnActionClickListener() {
                     @Override
                     public void onActionClick(SnackBar snackBar, int i) {
+                        activeMonitorCounter++;
                         monitors.add(tempPosition, tempMonitor);
                         notifyItemInserted(tempPosition);
                         for (int iter = tempPosition; iter <monitors.size(); iter++)

@@ -1,6 +1,8 @@
 package com.example.material_model_automsk;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,12 +16,29 @@ public class LOC_FragmentPagerAdapter extends FragmentPagerAdapter {
     String hrefAvito;
     String hrefDrom;
 
-    public LOC_FragmentPagerAdapter(FragmentManager fm, Context context, String hrefAuto, String hrefAvito, String hrefDrom) {
+    public LOC_FragmentPagerAdapter(FragmentManager fm, Context context, Integer monitorID) {
         super(fm);
         this.context = context;
-        this.hrefAuto = hrefAuto;
-        this.hrefAvito = hrefAvito;
-        this.hrefDrom = hrefDrom;
+
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        Cursor cursorMonitors = db.query("monitors", new String[]{"id,href_auto,href_avito,href_drom"}, "id = ?", new String[]{String.valueOf(monitorID)}, null, null, null);
+
+        int iHrefAuto = cursorMonitors.getColumnIndex("href_auto");
+        int iHrefAvito = cursorMonitors.getColumnIndex("href_avito");
+        int iHrefDrom = cursorMonitors.getColumnIndex("href_drom");
+
+        if (cursorMonitors.moveToFirst()) {
+            this.hrefAuto = cursorMonitors.getString(iHrefAuto);
+            this.hrefAvito = cursorMonitors.getString(iHrefAvito);
+            this.hrefDrom = cursorMonitors.getString(iHrefDrom);
+        }
+        else {
+            this.hrefAuto = "###";
+            this.hrefAvito = "###";
+            this.hrefDrom = "###";
+        }
+
+        db.close();
     }
 
     @Override
