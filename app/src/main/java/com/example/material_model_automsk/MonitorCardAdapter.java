@@ -61,14 +61,14 @@ class Filter {
     private String getRangeString(String name, String value, String from, String to)
     {
         String message = "";
-        if(from != null && from == to)
+        if(!from.equals("") && from == to)
             return name+":\t только " + from + " " + value + "\n";
-        if(from != null) {
+        if(!from.equals("")) {
             message += name+":\t от " + from + " " + value;
-            if (to != null)
+            if (!to.equals(""))
                 message += " до " + to + " " + value;
         }
-        else if (to != null)
+        else if (!to.equals(""))
             message += name+":\t до " + to + " " + value;
         if(!message.isEmpty())
             message += "\n";
@@ -79,8 +79,8 @@ class Filter {
         String message = "";
         message += getRangeString("Цена", "руб.", priceFrom, priceTo);
         message += getRangeString("Год", "г.", yearFrom, yearTo);
-        message += getRangeString("Пробег", "км", milleageFrom, milleageTo);
-        message += getRangeString("Объем", "л", volumeFrom, volumeTo);
+        message += getRangeString("Пробег", "км.", milleageFrom, milleageTo);
+        message += getRangeString("Объем", "л.", volumeFrom, volumeTo);
         return message;
     }
 
