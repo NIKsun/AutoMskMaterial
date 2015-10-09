@@ -75,17 +75,16 @@ public class MainActivity extends ActionBarActivity
         Fabric.with(this, new Crashlytics());
         super.onCreate(savedInstanceState);
 
-        /*Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+        Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
         Boolean alrarmIsActive = false;
-        for(int i=1;i<=3;i++)
-            if (PendingIntent.getService(getApplicationContext(), i, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
-                alrarmIsActive = true;
+        if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
+            alrarmIsActive = true;
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
-        serviceIntent.putExtra("Service_monitorID", buttonNumber);
-        PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), buttonNumber, serviceIntent, 0);
-        am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 240000, 240000, pIntent);*/
+        PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
+        am.cancel(pIntent);
+        //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
