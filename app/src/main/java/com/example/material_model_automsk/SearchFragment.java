@@ -121,7 +121,7 @@ public class SearchFragment extends Fragment {
                         from = "";
                         to = "";
                         if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()==-1))
-                            filter.setYear(from,to);
+                            filter.setMilleage(from,to);
                         else
                         {
                             if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!= 0))

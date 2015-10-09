@@ -61,7 +61,7 @@ class Filter {
     private String getRangeString(String name, String value, String from, String to)
     {
         String message = "";
-        if(!from.equals("") && from == to)
+        if(!from.equals("") && from.equals(to))
             return name+":\t только " + from + " " + value + "\n";
         if(!from.equals("")) {
             message += name+":\t от " + from + " " + value;
@@ -74,6 +74,53 @@ class Filter {
             message += "\n";
         return message;
     }
+
+    private String getRangeStringFromCheckbox(String name, String value)
+    {
+        String[] param;
+        String[] select;
+        String message = "";
+        if(!value.equals(""))
+        switch (name){
+            case "КПП":
+                //message += "КПП: ";
+                param = new String[]{"механика", "автомат", "робот", "вариатор"};
+                select = value.split("");
+                for(int i = 1; i<select.length;++i)
+                    message+=param[Integer.parseInt(select[i])-1] + ", ";
+                message = message.substring(0,message.length()-2);
+                break;
+            case "Двигатель":
+                //message += "Двигатель: ";
+                param = new String[]{"бензин", "дизель", "гибрид", "газ", "электро"};
+                select = value.split("");
+                for(int i = 1; i<select.length;++i)
+                    message+=param[Integer.parseInt(select[i])-1] + ", ";
+                message = message.substring(0,message.length()-2);
+                break;
+            case "Кузов":
+                //message += "Кузов: ";
+                param = new String[]{"пикап", "седан", "хэтчбек", "универсал","внедорожник", "минивен", "лимузин", "купе","кабриолет","фургон"};
+                select = value.split("");
+                for(int i = 1; i<select.length;++i)
+                    message+=param[Integer.parseInt(select[i])] + ", ";
+                message = message.substring(0,message.length()-2);
+                break;
+            case "Привод":
+                //message += "Привод: ";
+                param = new String[]{"передний", "задний", "полный"};
+                select = value.split("");
+                for(int i = 1; i<select.length;++i)
+                    message+=param[Integer.parseInt(select[i])-1] + ", ";
+                message = message.substring(0,message.length()-2);
+                break;
+
+        }
+        if(!message.isEmpty())
+            message = name +": "+message+ "\n";
+        return message;
+    }
+
     String getMessage()
     {
         String message = "";
@@ -81,6 +128,13 @@ class Filter {
         message += getRangeString("Год", "г.", yearFrom, yearTo);
         message += getRangeString("Пробег", "км.", milleageFrom, milleageTo);
         message += getRangeString("Объем", "л.", volumeFrom, volumeTo);
+
+        message += getRangeStringFromCheckbox("Привод", typeOfWheelDrive);
+        message += getRangeStringFromCheckbox("КПП", transmission);
+        message += getRangeStringFromCheckbox("Двигатель", typeOfEngine);
+        message += getRangeStringFromCheckbox("Кузов", typeOfCarcase);
+
+        message += withPhoto ? "Только с фото" : "";
         return message;
     }
 
@@ -572,7 +626,16 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         monitorViewHolder.ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
 
-        monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
+        if(monitors.get(i).filter.mark.equals("Любая"))
+            monitorViewHolder.monitorMarkAndModel.setText("Любая марка");
+        else{
+            if(monitors.get(i).filter.model.equals("Любая"))
+                monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + "Любая модель");
+            else
+                monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
+        }
+
+        //monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
         monitorViewHolder.monitorMarkAndModel.setTypeface(null, Typeface.BOLD);
         monitorViewHolder.monitorFilterInfo.setText(monitors.get(i).filter.getMessage());
 
