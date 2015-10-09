@@ -1,7 +1,9 @@
 package com.example.material_model_automsk;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -64,12 +67,25 @@ public class MainActivity extends ActionBarActivity
     final String SAVED_TEXT_WITH_VERSION = "checkVersion";
     final String DO_NOT_REMIND = "DontRemind";
     static android.app.Dialog dialogPicker ;
+    private AlarmManager am;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Fabric.with(this, new Crashlytics());
         super.onCreate(savedInstanceState);
+
+        /*Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+        Boolean alrarmIsActive = false;
+        for(int i=1;i<=3;i++)
+            if (PendingIntent.getService(getApplicationContext(), i, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
+                alrarmIsActive = true;
+        am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+        serviceIntent.putExtra("Service_monitorID", buttonNumber);
+        PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), buttonNumber, serviceIntent, 0);
+        am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 240000, 240000, pIntent);*/
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");

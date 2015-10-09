@@ -13,7 +13,7 @@ import android.util.Log;
 class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context) {
-        super(context, "main_db10", null, 1);
+        super(context, "main_db11", null, 1);
     }
 
     @Override
@@ -35,6 +35,12 @@ class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("create table monitors ("
                 + "id integer primary key autoincrement,"
+                + "href_auto text,"
+                + "href_avito text,"
+                + "href_drom text,"
+                + "date_auto text,"
+                + "date_avito text,"
+                + "id_drom text,"
                 + "filter_id integer,"
                 + "count_of_new_cars integer,"
                 + "is_active integer);");

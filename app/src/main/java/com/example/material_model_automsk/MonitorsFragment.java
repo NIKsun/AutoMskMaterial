@@ -186,7 +186,7 @@ public class MonitorsFragment extends Fragment {
         monitors = new ArrayList<>();
         if (cursorMonitors.moveToFirst()) {
             do {
-                Monitor elem = new Monitor(null);
+                Monitor elem = new Monitor();
                 elem.id = cursorMonitors.getInt(cursorMonitors.getColumnIndex("id"));
 
                 int i=0, filterID = cursorMonitors.getInt(idFilter);
@@ -211,7 +211,7 @@ public class MonitorsFragment extends Fragment {
             } while (cursorMonitors.moveToNext());
         }
         db.close();
-        monitors.add(new Monitor(null));
+        monitors.add(new Monitor());
     }
 
     public void removeLastItemFromDb() {

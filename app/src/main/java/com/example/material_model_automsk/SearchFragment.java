@@ -194,7 +194,7 @@ public class SearchFragment extends Fragment {
 
                         filter.getHref(getContext());
 
-                        Monitor monitor = new Monitor(filter);
+                        Monitor monitor = new Monitor(filter,getContext());
                         monitor.insertToDb(getContext());
                     }
 

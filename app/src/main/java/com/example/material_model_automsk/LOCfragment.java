@@ -148,11 +148,15 @@ public class LOCfragment extends Fragment {
         protected Boolean doInBackground(final Void... params) {
 
             //РАБОТА С БД, ВЫЗОВ onProgressUpdate
+            Log.d("href",href);
+            if(href.equals("###"))
+                return true;
 
             Document doc;
             Elements mainElems;
             Boolean isNotFound = false, isNotConnected = false;
             Cars carsBuf = null;
+
             switch (numberOfSite){
                 case 0:
                     try {
@@ -299,7 +303,7 @@ public class LOCfragment extends Fragment {
             pvCircular.stop();
             imageLoaderMayRunning = true;
 
-            if(cars != null) { //Учесть состояние НЕ НАЙДЕНО!
+            if(cars != null) {
                 mSwipeRefreshLayout.setEnabled(true);
                 final Bitmap images[] = new Bitmap[cars.getLength()];
                 final Bitmap loadingImage = BitmapFactory.decodeResource(getResources(), R.drawable.car_loading_pic);
