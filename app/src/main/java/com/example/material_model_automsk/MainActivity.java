@@ -384,11 +384,14 @@ public class MainActivity extends ActionBarActivity
         final Spinner sp2;
 
         final String[] data;
+        final String[] data2;
 
 
 
         switch (v.getId()){
             case R.id.search_ll_engine_type:
+                v.setClickable(false);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_type_clear);
                 b.setVisibility(View.VISIBLE);
@@ -433,15 +436,18 @@ public class MainActivity extends ActionBarActivity
                 sp1 = (Spinner) findViewById(R.id.spinner_label_price_from);
                 sp2 = (Spinner) findViewById(R.id.spinner_label_price_to);
 
+                data[0]="От";
                 fillSpinner(sp1, data, 0);
-                fillSpinner(sp2, data, data.length);
+                data2 = (String[])data.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
 
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp2.getSelectedItemPosition();
-                        if (item > item2) {
+                        if (item > item2 && item2 != 0) {
                             spinner.setSelection(sp2.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -453,7 +459,7 @@ public class MainActivity extends ActionBarActivity
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp1.getSelectedItemPosition();
-                        if (item < item2) {
+                        if (item < item2 && item!=0) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -477,8 +483,11 @@ public class MainActivity extends ActionBarActivity
                 sp1 = (Spinner) findViewById(R.id.spinner_label_year_from);
                 sp2 = (Spinner) findViewById(R.id.spinner_label_year_to);
 
+                data[0]="От";
                 fillSpinner(sp1, data, 0);
-                fillSpinner(sp2, data, data.length);
+                data2 = (String[])data.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
 
                 //CardView cv = (CardView) findViewById(R.id.search_ll_year_cv);
                 v.setClickable(false);
@@ -487,9 +496,9 @@ public class MainActivity extends ActionBarActivity
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                        Integer item = Integer.parseInt(spinner.getSelectedItem().toString());
-                        Integer item2 = Integer.parseInt(sp2.getSelectedItem().toString());
-                        if (item > item2) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp2.getSelectedItemPosition();
+                        if (item > item2 && item2 != 0) {
                             spinner.setSelection(sp2.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -499,9 +508,9 @@ public class MainActivity extends ActionBarActivity
                 sp2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                        Integer item = Integer.parseInt(spinner.getSelectedItem().toString());
-                        Integer item2 = Integer.parseInt(sp1.getSelectedItem().toString());
-                        if(item < item2){
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp1.getSelectedItemPosition();
+                        if(item < item2 && item != 0){
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -532,15 +541,18 @@ public class MainActivity extends ActionBarActivity
                 sp1 = (Spinner) findViewById(R.id.spinner_label_mileage_from);
                 sp2 = (Spinner) findViewById(R.id.spinner_label_mileage_to);
 
+                data_view[0]="От";
                 fillSpinner(sp1, data_view, 0);
-                fillSpinner(sp2, data_view, data.length);
+                data2 = (String[])data_view.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
 
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                        Integer item = Integer.parseInt(data[spinner.getSelectedItemPosition()]);
-                        Integer item2 = Integer.parseInt(data[sp2.getSelectedItemPosition()]);
-                        if (item > item2) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp2.getSelectedItemPosition();
+                        if (item > item2  && item2 != 0) {
                             spinner.setSelection(sp2.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -550,9 +562,9 @@ public class MainActivity extends ActionBarActivity
                 sp2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                        Integer item = Integer.parseInt(data[spinner.getSelectedItemPosition()]);
-                        Integer item2 = Integer.parseInt(data[sp1.getSelectedItemPosition()]);
-                        if (item < item2) {
+                        Integer item = spinner.getSelectedItemPosition();
+                        Integer item2 = sp1.getSelectedItemPosition();
+                        if (item < item2 && item != 0) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -574,15 +586,18 @@ public class MainActivity extends ActionBarActivity
                 sp1 = (Spinner) findViewById(R.id.spinner_label_engine_volume_from);
                 sp2 = (Spinner) findViewById(R.id.spinner_label_engine_volume_to);
 
+                data[0]="От";
                 fillSpinner(sp1, data, 0);
-                fillSpinner(sp2, data, data.length);
+                data2 = (String[])data.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
 
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp2.getSelectedItemPosition();
-                        if (item > item2) {
+                        if (item > item2  && item2 != 0) {
                             spinner.setSelection(sp2.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -594,7 +609,7 @@ public class MainActivity extends ActionBarActivity
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp1.getSelectedItemPosition();
-                        if (item < item2) {
+                        if (item < item2 && item != 0) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -609,6 +624,8 @@ public class MainActivity extends ActionBarActivity
                 expand(ll);
                 break;
             case R.id.search_ll_trans:
+                v.setClickable(false);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
                 b = (Button) findViewById(R.id.search_ll_trans_clear);
                 b.setVisibility(View.VISIBLE);
@@ -617,6 +634,7 @@ public class MainActivity extends ActionBarActivity
                 expand(ll);
                 break;
             case R.id.search_ll_body_type:
+                v.setClickable(false);
                 ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_body_type_clear);
                 b.setVisibility(View.VISIBLE);
@@ -625,6 +643,7 @@ public class MainActivity extends ActionBarActivity
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 break;
             case R.id.search_ll_drive:
+                v.setClickable(false);
                 ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
                 b = (Button) findViewById(R.id.search_ll_drive_clear);
                 b.setVisibility(View.VISIBLE);
@@ -644,6 +663,7 @@ public class MainActivity extends ActionBarActivity
         android.support.v7.widget.AppCompatTextView t;
         SharedPreferences sPref;
         SharedPreferences.Editor ed;
+        Spinner sp;
         switch (v.getId()){
             case R.id.search_ll_year_clear:
 
@@ -653,6 +673,11 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
                 b = (Button) findViewById(R.id.search_ll_year_clear);
                 b.setVisibility(View.INVISIBLE);
+
+                sp = (Spinner) findViewById(R.id.spinner_label_year_from);
+                sp.setSelection(0);
+                sp = (Spinner) findViewById(R.id.spinner_label_year_to);
+                sp.setSelection(0);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 collapse(ll);
                 //ll.setVisibility(View.GONE);
@@ -665,6 +690,11 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.INVISIBLE);
+
+                sp = (Spinner) findViewById(R.id.spinner_label_price_from);
+                sp.setSelection(0);
+                sp = (Spinner) findViewById(R.id.spinner_label_price_to);
+                sp.setSelection(0);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 collapse(ll);
                 break;
@@ -676,6 +706,11 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.INVISIBLE);
+
+                sp = (Spinner) findViewById(R.id.spinner_label_mileage_from);
+                sp.setSelection(0);
+                sp = (Spinner) findViewById(R.id.spinner_label_mileage_to);
+                sp.setSelection(0);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 collapse(ll);
                 break;
@@ -686,10 +721,18 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.INVISIBLE);
+
+                sp = (Spinner) findViewById(R.id.spinner_label_engine_volume_from);
+                sp.setSelection(0);
+                sp = (Spinner) findViewById(R.id.spinner_label_engine_volume_to);
+                sp.setSelection(0);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 collapse(ll);
                 break;
             case R.id.search_ll_engine_type_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_engine_type);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_type_clear);
                 b.setVisibility(View.INVISIBLE);
@@ -707,6 +750,9 @@ public class MainActivity extends ActionBarActivity
                 collapse(ll);
                 break;
             case R.id.search_ll_trans_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_trans);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
                 b = (Button) findViewById(R.id.search_ll_trans_clear);
                 b.setVisibility(View.INVISIBLE);
@@ -722,6 +768,9 @@ public class MainActivity extends ActionBarActivity
                 collapse(ll);
                 break;
             case R.id.search_ll_body_type_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_body_type);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_body_type_clear);
                 b.setVisibility(View.INVISIBLE);
@@ -751,6 +800,9 @@ public class MainActivity extends ActionBarActivity
                 collapse(ll);
                 break;
             case R.id.search_ll_drive_clear:
+                ll = (LinearLayout)findViewById(R.id.search_ll_drive);
+                ll.setClickable(true);
+
                 ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
                 b = (Button) findViewById(R.id.search_ll_drive_clear);
                 b.setVisibility(View.INVISIBLE);
@@ -857,6 +909,7 @@ public class MainActivity extends ActionBarActivity
         adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
         sp.setAdapter(adapter);
         sp.setSelection(pos);
+
     }
 
     public void setNavigationDrawerItem(int itemNumber) {
