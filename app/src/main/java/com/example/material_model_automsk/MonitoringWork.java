@@ -15,6 +15,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -39,6 +40,8 @@ public class MonitoringWork extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
+        Log.d("notification","NOW");
+
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 final SQLiteDatabase db = new DbHelper(getBaseContext()).getWritableDatabase();
@@ -51,13 +54,19 @@ public class MonitoringWork extends Service {
                 int iLastCarDateAvito = cursorMonitors.getColumnIndex("date_avito");
                 int iLastCarIdDrom = cursorMonitors.getColumnIndex("id_drom");
                 int iIsActive = cursorMonitors.getColumnIndex("is_active");
-
+                int iCONC = cursorMonitors.getColumnIndex("count_of_new_cars");
                 final int[][] counter = {{0}};
+                Integer CONC_counter = 0;
 
                 if (cursorMonitors.moveToFirst()) {
                     do {
+                        Log.d("notification", String.valueOf(cursorMonitors.getInt(iIsActive)));
+                        Log.d("notification", String.valueOf(cursorMonitors.getInt(iCONC)));
                         if(cursorMonitors.getInt(iIsActive) == 1){
-                            Log.d("monitor","inProcess " + cursorMonitors.getInt(iMonitorID));
+                            if(cursorMonitors.getInt(iCONC) >= 100){
+                                CONC_counter++;
+                                continue;
+                            }
                             final int[] monitorCounter = {0};
                             final String requestAuto = cursorMonitors.getString(iHrefAuto);
                             final String requestAvito = cursorMonitors.getString(iHrefAvito);
@@ -192,13 +201,12 @@ public class MonitoringWork extends Service {
                             ContentValues container = new ContentValues();
                             container.put("count_of_new_cars", monitorCounter[0]);
                             db.update("monitors", container, "id = ?", new String[]{String.valueOf(cursorMonitors.getInt(iMonitorID))});
-                            Log.d("monitor", "outProcess " + monitorCounter[0]);
                         }
                     } while (cursorMonitors.moveToNext());
                 }
                 db.close();
-                if (counter[0][0] != 0) {
-                    sendNotification(counter[0][0]);
+                if (counter[0][0]+100*CONC_counter != 0) {
+                    sendNotification(counter[0][0]+100*CONC_counter, CONC_counter);
                 }
                 stopSelf();
 
@@ -217,7 +225,7 @@ public class MonitoringWork extends Service {
     }
 
 
-    void sendNotification(int countOfNewCars) {
+    void sendNotification(int countOfNewCars, Integer CONC_counter) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -226,9 +234,17 @@ public class MonitoringWork extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 this);
         Notification notification = builder.setContentIntent(pIntent)
-                .setSmallIcon(R.drawable.status_bar).setTicker("Свежие авто!").setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.status_bar).setTicker("Свежие авто!")
                 .setAutoCancel(true).setContentTitle("Авто Москва")
-                .setContentText(countOfNewCars+" cвежих авто! Кликай скорей!").build();
+                .setContentText((CONC_counter > 0 ? "Более " : "") +countOfNewCars +" cвежих авто! Кликай скорей!").build();
+
+
+        SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);
+        notification.defaults = 0;
+        if(sPref.getBoolean("soundIsActive",true))
+            notification.defaults |= Notification.DEFAULT_SOUND;
+        if(sPref.getBoolean("vibrationIsActive",true))
+            notification.defaults |= Notification.DEFAULT_VIBRATE;
 
         nm.notify(NOTIFY_ID, notification);
 

@@ -57,7 +57,8 @@ public class LOCfragment extends Fragment {
 
     final public static int RND_PXLS = 10;
     private int numberOfSite;
-    private String href;
+    private String href, dateOrID;
+    private Integer monitorID;
     ProgressView pvCircular;
     LinearLayout ll;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -68,10 +69,12 @@ public class LOCfragment extends Fragment {
     LOCcardAdapter adapter;
     DbHelper dbHelper;
 
-    public static LOCfragment newInstance(int page, String href) {
+    public static LOCfragment newInstance(int page, String href, String dateOrID, Integer monitorID) {
         LOCfragment fragment = new LOCfragment();
         fragment.numberOfSite = page;
         fragment.href = href;
+        fragment.dateOrID = dateOrID;
+        fragment.monitorID = monitorID;
         return fragment;
     }
 
@@ -196,6 +199,7 @@ public class LOCfragment extends Fragment {
                         }
 
                     }
+
                     break;
                 case 1:
                     try {

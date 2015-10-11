@@ -641,6 +641,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         }
 
         monitorViewHolder.cv.setVisibility(View.VISIBLE);
+        monitorViewHolder.ll.setMinimumHeight(180);
         monitorViewHolder.ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
 

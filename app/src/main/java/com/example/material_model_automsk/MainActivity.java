@@ -68,7 +68,6 @@ public class MainActivity extends ActionBarActivity
     private Toast backToast = null;
     final String SAVED_TEXT_WITH_VERSION = "checkVersion";
     final String DO_NOT_REMIND = "DontRemind";
-    static android.app.Dialog dialogPicker ;
     private AlarmManager am;
 
 
@@ -76,19 +75,23 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         Fabric.with(this, new Crashlytics());
         super.onCreate(savedInstanceState);
-
-        Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
-        Boolean alrarmIsActive = false;
-        if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
-            alrarmIsActive = true;
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
-        PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
-        am.cancel(pIntent);
-        //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
-
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if(pref.getBoolean("notificationIsActive",true)) {
+            Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+            Boolean alrarmIsActive = false;
+            if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
+                alrarmIsActive = true;
+            am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            Log.d("notifiation", "alarmIsActive "+String.valueOf(alrarmIsActive));
+            if (!alrarmIsActive) {
+                Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+                PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
+                am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 60000, pIntent);
+            }
+        }
+
         String themeName = pref.getString("theme", "1");
         if (themeName.equals("1"))
             setTheme(R.style.AppTheme);

@@ -15,27 +15,43 @@ public class LOC_FragmentPagerAdapter extends FragmentPagerAdapter {
     String hrefAuto;
     String hrefAvito;
     String hrefDrom;
+    String lastCarDateAuto;
+    String lastCarDateAvito;
+    String lastCarIdDrom;
+    Integer monitorID;
 
     public LOC_FragmentPagerAdapter(FragmentManager fm, Context context, Integer monitorID) {
         super(fm);
+        this.monitorID = monitorID;
         this.context = context;
 
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
-        Cursor cursorMonitors = db.query("monitors", new String[]{"id,href_auto,href_avito,href_drom"}, "id = ?", new String[]{String.valueOf(monitorID)}, null, null, null);
+        Cursor cursorMonitors = db.query("monitors",
+                new String[]{"id,href_auto,href_avito,href_drom, date_auto, date_avito, id_drom"},
+                "id = ?", new String[]{String.valueOf(monitorID)}, null, null, null);
 
         int iHrefAuto = cursorMonitors.getColumnIndex("href_auto");
         int iHrefAvito = cursorMonitors.getColumnIndex("href_avito");
         int iHrefDrom = cursorMonitors.getColumnIndex("href_drom");
+        int iLastCarDateAuto = cursorMonitors.getColumnIndex("date_auto");
+        int iLastCarDateAvito = cursorMonitors.getColumnIndex("date_avito");
+        int iLastCarIdDrom = cursorMonitors.getColumnIndex("id_drom");
 
         if (cursorMonitors.moveToFirst()) {
             this.hrefAuto = cursorMonitors.getString(iHrefAuto);
             this.hrefAvito = cursorMonitors.getString(iHrefAvito);
             this.hrefDrom = cursorMonitors.getString(iHrefDrom);
+            this.lastCarDateAuto = cursorMonitors.getString(iLastCarDateAuto) != null ? cursorMonitors.getString(iLastCarDateAuto) : "###";
+            this.lastCarDateAvito = cursorMonitors.getString(iLastCarDateAvito) != null ? cursorMonitors.getString(iLastCarDateAvito) : "###";
+            this.lastCarIdDrom = cursorMonitors.getString(iLastCarIdDrom) != null ? cursorMonitors.getString(iLastCarIdDrom) : "###";
         }
         else {
             this.hrefAuto = "###";
             this.hrefAvito = "###";
             this.hrefDrom = "###";
+            this.lastCarDateAuto = "###";
+            this.lastCarDateAvito = "###";
+            this.lastCarIdDrom = "###";
         }
 
         db.close();
@@ -52,13 +68,13 @@ public class LOC_FragmentPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                return LOCfragment.newInstance(position, hrefAuto);
+                return LOCfragment.newInstance(position, hrefAuto, lastCarDateAuto, monitorID);
             case 1:
-                return LOCfragment.newInstance(position, hrefAvito);
+                return LOCfragment.newInstance(position, hrefAvito, lastCarDateAvito, monitorID);
             case 2:
-                return LOCfragment.newInstance(position, hrefDrom);
+                return LOCfragment.newInstance(position, hrefDrom, lastCarDateAvito, monitorID);
         }
-        return LOCfragment.newInstance(position, "###");
+        return LOCfragment.newInstance(position, "###", "###", 0);
     }
 
     @Override
