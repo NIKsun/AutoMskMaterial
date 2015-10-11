@@ -53,7 +53,13 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
         fab.startAnimation(anim);
         fab.setVisibility(View.VISIBLE);
         fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);
-        fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1")) {
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

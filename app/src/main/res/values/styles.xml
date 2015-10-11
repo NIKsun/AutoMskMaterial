@@ -18,14 +18,14 @@
     <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/myPrimaryColor2</item>
-        <item name="colorPrimaryDark">@color/myPrimaryDarkColor</item>
-        <item name="colorAccent">@color/myAccentColor</item>
-        <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
-        <item name="android:navigationBarColor">@color/myNavigationColor</item>
+        <item name="colorPrimaryDark">@color/myPrimaryDarkColor2</item>
+        <item name="colorAccent">@color/myAccentColor2</item>
+        <item name="android:textColorPrimary">@color/myTextPrimaryColor2</item>
+        <item name="android:navigationBarColor">@color/myNavigationColor2</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
 
-        <item name="android:windowBackground">@color/myWindowBackground</item>
+        <item name="android:windowBackground">@color/myWindowBackground2</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 

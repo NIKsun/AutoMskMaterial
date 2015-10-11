@@ -10,6 +10,7 @@
 
 
     <color name="colorPrimary">#1E88E5</color>
+    <color name="colorPrimary2">#8BC34A</color>
     <color name="colorPrimaryHalf">#9003A9F4</color>
     <color name="myPrimaryColor">#1E88E5</color>
     <color name="myPrimaryColor2">#8BC34A</color>
@@ -18,11 +19,21 @@
     <color name="colorControlNormal">#FF78909C</color>
 
     <color name="myPrimaryDarkColor">#1565C0</color>
+    <color name="myPrimaryDarkColor2">#1565C0</color>
+
     <color name="myAccentColor">#EC407A</color>
+    <color name="myAccentColor2">#EC407A</color>
+
     <color name="myDrawerBackground">#FFF</color>
     <color name="myWindowBackground">#FFF</color>
+    <color name="myWindowBackground2">#FFF</color>
+
     <color name="myTextPrimaryColor">#212121</color>
+    <color name="myTextPrimaryColor2">#212121</color>
+
     <color name="myNavigationColor">#000</color>
+    <color name="myNavigationColor2">#000</color>
+
     <color name="myTransparent">@android:color/transparent</color>
 
     <array name="progress_colors_light">
