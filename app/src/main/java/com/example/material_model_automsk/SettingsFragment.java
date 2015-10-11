@@ -186,12 +186,12 @@ public class SettingsFragment extends Fragment
     }
     public void setRadio_button_checked(int i)
     {
-        ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_1)).setChecked(false);
-        ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_2)).setChecked(false);
+        ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_1)).setCheckedImmediately(false);
+        ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_2)).setCheckedImmediately(false);
         if (i==1)
-            ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_1)).setChecked(true);
+            ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_1)).setCheckedImmediately(true);
         if (i== 2)
-            ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_2)).setChecked(true);
+            ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_2)).setCheckedImmediately(true);
     }
 
     public void showDialogTheme(final int themeNumber) {
