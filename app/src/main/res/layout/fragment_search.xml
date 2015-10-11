@@ -25,8 +25,8 @@
             android:onClick="onClickMarkorModel"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,16 +44,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_mark_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_mark"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_mark_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
 
@@ -92,7 +102,10 @@
             android:onClick="onClickMarkorModel"
             card_view:cardUseCompatPadding="true"
             card_view:cardElevation="4dp"
-            android:layout_margin="@dimen/activity_horizontal_margin">
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,16 +123,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+                    <ImageView
+                        android:id="@+id/arrow_model"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/cross_6"/>
                     <com.rey.material.widget.Button
                         android:id="@+id/search_ll_model_clear"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_gravity="right"
                         android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
+                        android:background="@drawable/cross_1"
                         style="@style/LightFlatButtonRippleStyle"
                         android:visibility="invisible"
                         android:onClick="onClickClearSelection"/>
+                </FrameLayout>
                 </FrameLayout>
 
                 <LinearLayout
@@ -157,10 +180,10 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
 
-             >
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -180,16 +203,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_year_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_year"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_year_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
                 <LinearLayout
@@ -238,8 +271,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
              >
 
             <LinearLayout
@@ -260,16 +293,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_price_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_price"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_price_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
 
@@ -318,8 +361,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
              >
 
             <LinearLayout
@@ -340,16 +383,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_mileage_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_mileage"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_mileage_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
 
@@ -398,8 +451,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -419,16 +472,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_engine_volume_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_volume"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_engine_volume_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
 
@@ -478,8 +541,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -497,16 +560,26 @@
                     android:textSize="25sp"
                     android:layout_gravity="start"
                     style="@style/LightTitleText"/>
-                <com.rey.material.widget.Button
-                    android:id="@+id/search_ll_engine_type_clear"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/cross_48dp"
-                    style="@style/LightFlatButtonRippleStyle"
-                    android:visibility="invisible"
-                    android:onClick="onClickClearSelection"/>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+                    <ImageView
+                        android:id="@+id/arrow_engine_type"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/cross_6"/>
+                    <com.rey.material.widget.Button
+                        android:id="@+id/search_ll_engine_type_clear"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/cross_1"
+                        style="@style/LightFlatButtonRippleStyle"
+                        android:visibility="invisible"
+                        android:onClick="onClickClearSelection"/>
+                </FrameLayout>
             </FrameLayout>
 
             <LinearLayout
@@ -595,8 +668,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -614,16 +687,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_trans_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_trans"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_trans_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
 
@@ -704,8 +787,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -723,16 +806,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_body_type_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_body_type"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_body_type_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
                 <LinearLayout
@@ -857,8 +950,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -876,16 +969,26 @@
                         android:textSize="25sp"
                         android:layout_gravity="start"
                         style="@style/LightTitleText"/>
-                    <com.rey.material.widget.Button
-                        android:id="@+id/search_ll_drive_clear"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="right"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cross_48dp"
-                        style="@style/LightFlatButtonRippleStyle"
-                        android:visibility="invisible"
-                        android:onClick="onClickClearSelection"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+                        <ImageView
+                            android:id="@+id/arrow_drive"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/cross_6"/>
+                        <com.rey.material.widget.Button
+                            android:id="@+id/search_ll_drive_clear"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/cross_1"
+                            style="@style/LightFlatButtonRippleStyle"
+                            android:visibility="invisible"
+                            android:onClick="onClickClearSelection"/>
+                    </FrameLayout>
                 </FrameLayout>
 
                 <LinearLayout
@@ -955,8 +1058,8 @@
             card_view:cardElevation="4dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
