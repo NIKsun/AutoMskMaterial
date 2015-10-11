@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -56,6 +57,18 @@ public class MarkFilter extends Activity {
         setContentView(R.layout.activity_list_of_marks);
 
         TextView tvHeader = (TextView)findViewById(R.id.text_view_title);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1")) {
+            tvHeader.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+        else {
+            tvHeader.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
+
+        }
 
         //String[] models_arra = getIntent().getStringArrayExtra("Models");
 
