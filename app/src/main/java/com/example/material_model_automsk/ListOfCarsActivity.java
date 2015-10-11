@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
 
 import io.fabric.sdk.android.Fabric;
@@ -42,6 +43,21 @@ public class ListOfCarsActivity extends ActionBarActivity
         setContentView(R.layout.activity_list_of_cars);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
+
+        final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar_actionbar);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final android.support.design.widget.TabLayout tabLayout2 = (android.support.design.widget.TabLayout) findViewById(R.id.sliding_tabs_LOC);
+
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1")) {
+            tabLayout2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else {
+            tabLayout2.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
+        }
+
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_LOC);
         viewPager.setAdapter(new LOC_FragmentPagerAdapter(getSupportFragmentManager(),
