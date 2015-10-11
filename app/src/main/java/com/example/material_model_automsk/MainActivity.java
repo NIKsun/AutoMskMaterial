@@ -12,6 +12,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -31,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -380,6 +382,8 @@ public class MainActivity extends ActionBarActivity
     public void onClickHandlerHidden(View v){
         LinearLayout ll;
         Button b;
+        ImageView iv;
+
         final Spinner sp1;
         final Spinner sp2;
 
@@ -395,6 +399,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_type_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_engine_type);
+                iv.setVisibility(View.INVISIBLE);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -459,7 +465,7 @@ public class MainActivity extends ActionBarActivity
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp1.getSelectedItemPosition();
-                        if (item < item2 && item!=0) {
+                        if (item < item2 && item != 0) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -469,6 +475,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_price);
+                iv.setVisibility(View.INVISIBLE);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -510,7 +518,7 @@ public class MainActivity extends ActionBarActivity
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
                         Integer item = spinner.getSelectedItemPosition();
                         Integer item2 = sp1.getSelectedItemPosition();
-                        if(item < item2 && item != 0){
+                        if (item < item2 && item != 0) {
                             spinner.setSelection(sp1.getSelectedItemPosition());
                             Toast.makeText(MainActivity.this, R.string.incorrect_param_search, Toast.LENGTH_SHORT).show();
                         }
@@ -520,7 +528,11 @@ public class MainActivity extends ActionBarActivity
 
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
                 b = (Button) findViewById(R.id.search_ll_year_clear);
+                //b.setVisibility(View.INVISIBLE);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_year);
+                iv.setVisibility(View.INVISIBLE);
+
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -574,6 +586,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_mileage);
+                iv.setVisibility(View.INVISIBLE);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -619,6 +633,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_volume);
+                iv.setVisibility(View.INVISIBLE);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -629,6 +645,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
                 b = (Button) findViewById(R.id.search_ll_trans_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_trans);
+                iv.setVisibility(View.INVISIBLE);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -638,6 +656,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_body_type_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_body_type);
+                iv.setVisibility(View.INVISIBLE);
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -647,6 +667,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
                 b = (Button) findViewById(R.id.search_ll_drive_clear);
                 b.setVisibility(View.VISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_drive);
+                iv.setVisibility(View.INVISIBLE);
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 expand(ll);
@@ -664,6 +686,7 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences sPref;
         SharedPreferences.Editor ed;
         Spinner sp;
+        ImageView iv;
         switch (v.getId()){
             case R.id.search_ll_year_clear:
 
@@ -673,6 +696,10 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_year_hidden);
                 b = (Button) findViewById(R.id.search_ll_year_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_year);
+                iv.setVisibility(View.VISIBLE);
+
+
 
                 sp = (Spinner) findViewById(R.id.spinner_label_year_from);
                 sp.setSelection(0);
@@ -690,6 +717,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_price_hidden);
                 b = (Button) findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_price);
+                iv.setVisibility(View.VISIBLE);
 
                 sp = (Spinner) findViewById(R.id.spinner_label_price_from);
                 sp.setSelection(0);
@@ -706,6 +735,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_mileage);
+                iv.setVisibility(View.VISIBLE);
 
                 sp = (Spinner) findViewById(R.id.spinner_label_mileage_from);
                 sp.setSelection(0);
@@ -721,6 +752,8 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_volume);
+                iv.setVisibility(View.VISIBLE);
 
                 sp = (Spinner) findViewById(R.id.spinner_label_engine_volume_from);
                 sp.setSelection(0);
@@ -736,6 +769,9 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_engine_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_engine_type_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_engine_type);
+                iv.setVisibility(View.VISIBLE);
+
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_diesel);
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_engine_type_electro);
@@ -756,6 +792,9 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_trans_hidden);
                 b = (Button) findViewById(R.id.search_ll_trans_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_trans);
+                iv.setVisibility(View.VISIBLE);
+
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_auto);
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_trans_man);
@@ -774,6 +813,9 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_body_type_hidden);
                 b = (Button) findViewById(R.id.search_ll_body_type_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_body_type);
+                iv.setVisibility(View.VISIBLE);
+
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_cabrio);
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_body_coupe);
@@ -806,6 +848,9 @@ public class MainActivity extends ActionBarActivity
                 ll = (LinearLayout)findViewById(R.id.search_ll_drive_hidden);
                 b = (Button) findViewById(R.id.search_ll_drive_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_drive);
+                iv.setVisibility(View.VISIBLE);
+
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_drive_backward);
                 ch.setChecked(false);
                 ch = (com.rey.material.widget.CheckBox) findViewById(R.id.switches_cb_drive_forward);
@@ -818,6 +863,9 @@ public class MainActivity extends ActionBarActivity
             case R.id.search_ll_mark_clear:
                 b = (Button) findViewById(R.id.search_ll_mark_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_mark);
+                iv.setVisibility(View.VISIBLE);
+
 
                 t = (android.support.v7.widget.AppCompatTextView) findViewById(R.id.search_ll_mark_text);
                 t.setText("Любая");
@@ -833,6 +881,8 @@ public class MainActivity extends ActionBarActivity
             case R.id.search_ll_model_clear:
                 b = (Button) findViewById(R.id.search_ll_model_clear);
                 b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) findViewById(R.id.arrow_model);
+                iv.setVisibility(View.VISIBLE);
 
                 t = (android.support.v7.widget.AppCompatTextView) findViewById(R.id.search_ll_model_text);
                 t.setText("Любая");

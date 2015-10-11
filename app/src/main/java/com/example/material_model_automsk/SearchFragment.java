@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,8 @@ public class SearchFragment extends Fragment {
         String mark = sPref.getString("SelectedMark", "Любая");
         String model = sPref.getString("SelectedModel", "Любая");
 
+        ImageView iv;
+
         TextView t = (TextView) getActivity().findViewById(R.id.search_ll_mark_text);
         t.setText(mark);
 
@@ -72,6 +75,8 @@ public class SearchFragment extends Fragment {
         {
             Button b = (Button) getActivity().findViewById(R.id.search_ll_mark_clear);
             b.setVisibility(View.VISIBLE);
+            iv = (ImageView) getActivity().findViewById(R.id.arrow_mark);
+            iv.setVisibility(View.INVISIBLE);
             ll.setVisibility(View.VISIBLE);
         }
         else
@@ -80,11 +85,15 @@ public class SearchFragment extends Fragment {
         {
             Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
             b2.setVisibility(View.VISIBLE);
+            iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
+            iv.setVisibility(View.INVISIBLE);
         }
         else
         {
             Button b3 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
             b3.setVisibility(View.INVISIBLE);
+            iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
+            iv.setVisibility(View.VISIBLE);
         }
 
     }
