@@ -29,6 +29,7 @@ import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.Switch;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -548,15 +549,20 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     Activity parentActivity;
     RecyclerView rv;
 
-    Monitor tempMonitor;
-    int tempPosition;
+    private Monitor tempMonitor;
+    private int tempPosition;
+    private Boolean tempSwitchValue;
     private int activeMonitorCounter;
+    List<Boolean> switchValues;
 
     MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity, RecyclerView myself, int startActiveMonitorCounter){
         this.monitors = monitors;
         this.parentActivity = parentActivity;
         this.rv = myself;
         this.activeMonitorCounter = startActiveMonitorCounter;
+        switchValues = new ArrayList<>();
+        for (int i = 0;i<monitors.size();i++)
+            switchValues.add(monitors.get(i).isActive);
     }
 
     @Override
@@ -588,8 +594,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         monitorViewHolder.monitorMarkAndModel.setTypeface(null, Typeface.BOLD);
         monitorViewHolder.monitorFilterInfo.setText(monitors.get(i).filter.getMessage());
 
-        monitorViewHolder.monitorSwitch.setChecked(monitors.get(i).isActive);
         monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(null);
+        monitorViewHolder.monitorSwitch.setChecked(switchValues.get(i));
         monitorViewHolder.monitorSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(Switch aSwitch, boolean b) {
@@ -608,7 +614,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
 
                 monitors.get(i).isActive = b;
-                notifyDataSetChanged();
+                switchValues.set(i, b);
                 SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
                 ContentValues cv = new ContentValues();
                 cv.put("is_active", b);
@@ -712,6 +718,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     }
 
     public void remove(final int position) {
+        tempSwitchValue = switchValues.get(position);
+        switchValues.remove(position);
         activeMonitorCounter--;
 
         if(tempMonitor != null)
@@ -733,6 +741,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 .actionClickListener(new SnackBar.OnActionClickListener() {
                     @Override
                     public void onActionClick(SnackBar snackBar, int i) {
+                        switchValues.add(tempPosition,tempSwitchValue);
                         activeMonitorCounter++;
                         monitors.add(tempPosition, tempMonitor);
                         notifyItemInserted(tempPosition);

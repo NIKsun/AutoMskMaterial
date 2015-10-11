@@ -51,22 +51,8 @@ public class SettingsFragment extends Fragment
                              Bundle savedInstanceState) {
         savedView = inflater.inflate(R.layout.fragment_settings, container, false);
         LinearLayout changeTheme = (LinearLayout)savedView.findViewById(R.id.change_theme);
-        changeTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayout Theme = (LinearLayout) savedView.findViewById(R.id.change_theme_hidden);
-                if (!visible)  // Если тема первый раз открывается
-                {
-                    visible = true;
-                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    setRadio_button_checked(radio_button_checked);
-                } else {
-                    visible = false;
-                    setRadio_button_checked(radio_button_checked);
-                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
-                }
-            }
-        });
+
+        setRadio_button_checked(radio_button_checked);
         rb1 = (RadioButton)savedView.findViewById(R.id.radio_button_1);
         rb2 = (RadioButton)savedView.findViewById(R.id.radio_button_2);
         rb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -86,22 +72,29 @@ public class SettingsFragment extends Fragment
         final com.rey.material.widget.Switch changeNotification = (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_notification_switch);
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         changeNotification.setChecked(sPref.getBoolean("Notification", false));
+
+
+        final LinearLayout notificationLayout = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
+        if (changeNotification.isChecked())
+            notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        else
+            notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+
         changeNotification.setOnCheckedChangeListener(new com.rey.material.widget.Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(com.rey.material.widget.Switch aSwitch, boolean b) {
-                LinearLayout Theme = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
                 if (changeNotification.isChecked()) {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("Notification", true);
                     ed.commit();
-                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 } else {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("Notification", false);
                     ed.commit();
-                    Theme.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                    notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
                 }
             }
 
