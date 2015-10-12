@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    >
     <TextView
         android:id="@+id/text_view_title"
         android:layout_gravity="center"
@@ -11,14 +12,29 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textColor="#ffffffff"
-        android:paddingTop="10dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10dp" />
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+    />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow"
+        android:layout_below="@+id/sliding_tabs"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
     <EditText
         android:id="@+id/searchBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"  />
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:hint="Начните вводить название"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow"
+        android:layout_below="@+id/sliding_tabs" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
