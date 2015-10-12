@@ -18,8 +18,9 @@
     <color name="colorPrimaryQuarter">#9FA8DA</color>
     <color name="colorControlNormal">#FF78909C</color>
 
-    <color name="myPrimaryDarkColor">#8BC94A</color>
-    <color name="myPrimaryDarkColor2">#1565C0</color>
+    <!-- Исправить цвета -->
+    <color name="myPrimaryDarkColor">#1565C0</color>
+    <color name="myPrimaryDarkColor2">#8BC94A</color>
 
     <color name="myAccentColor">#EC407A</color>
     <color name="myAccentColor2">#EC407A</color>
