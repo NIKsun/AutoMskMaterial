@@ -366,6 +366,14 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 5:
+                mToolbar.setTitle("Покупки");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new PurchaseFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
+            case 6:
                 mToolbar.setTitle("Справка");
                 fTrans.hide(mainFragment);
                 if(secondFragment != null)
