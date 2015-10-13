@@ -92,7 +92,7 @@ public class SettingsFragment extends Fragment
                 PendingIntent pIntent = PendingIntent.getService(getActivity().getApplicationContext(), 0, serviceIntent, 0);
 
                 if (changeNotification.isChecked()) {
-                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 60000, pIntent);
+                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("notificationIsActive", true);

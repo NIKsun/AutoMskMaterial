@@ -159,6 +159,7 @@ public class LOCfragment extends Fragment {
             Elements mainElems;
             Boolean isNotFound = false, isNotConnected = false;
             Cars carsBuf = null;
+            String dateOrIdParamName = "";
 
             switch (numberOfSite){
                 case 0:
@@ -199,7 +200,7 @@ public class LOCfragment extends Fragment {
                         }
 
                     }
-
+                    dateOrIdParamName = "date_auto";
                     break;
                 case 1:
                     try {
@@ -232,6 +233,7 @@ public class LOCfragment extends Fragment {
                             carsBuf.addFromAvito(mainElems.get(i).children().get(j));
                         }
                     carsBuf.sortByDateAvito();
+                    dateOrIdParamName = "date_avito";
                     break;
                 case 2:
                     int counter = 0;
@@ -287,7 +289,32 @@ public class LOCfragment extends Fragment {
                     }
                     if(carsBuf.getLength() == 0)
                         carsBuf = null;
+                    dateOrIdParamName = "id_drom";
                     break;
+            }
+
+            if(carsBuf != null)
+            {
+                ContentValues cv = null;
+                if(numberOfSite == 3)
+                {
+                    if (!dateOrID.equals(String.valueOf(carsBuf.cars[0].id))) {
+                        cv = new ContentValues();
+                        cv.put(dateOrIdParamName, String.valueOf(carsBuf.cars[0].id));
+                    }
+                }
+                else {
+                    if (!dateOrID.equals(String.valueOf(carsBuf.getCarDateLong(0)))) {
+                        cv = new ContentValues();
+                        cv.put(dateOrIdParamName, String.valueOf(carsBuf.getCarDateLong(0)));
+                    }
+                }
+                if(cv != null){
+                    SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+                    cv.put("count_of_new_cars", 0);
+                    db.update("monitors", cv, "id = ?", new String[]{String.valueOf(monitorID)});
+                    db.close();
+                }
             }
 
             if(isNotConnected || isNotFound)

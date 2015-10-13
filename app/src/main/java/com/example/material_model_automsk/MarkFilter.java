@@ -112,6 +112,7 @@ public class MarkFilter extends Activity {
         listMark.setAdapter(adapter);
 
         final EditText searchBox = (EditText) findViewById(R.id.searchBox);
+
         searchBox.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
