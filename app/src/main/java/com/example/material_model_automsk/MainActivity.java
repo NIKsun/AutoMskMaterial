@@ -40,11 +40,16 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.example.material_model_automsk.inappbilling.util.IabHelper;
+import com.example.material_model_automsk.inappbilling.util.IabResult;
+import com.example.material_model_automsk.inappbilling.util.Inventory;
+import com.example.material_model_automsk.inappbilling.util.Purchase;
 import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.Spinner;
 
@@ -75,6 +80,15 @@ public class MainActivity extends ActionBarActivity
     private AlarmManager am;
 
 
+    private static final String TAG =
+            "Pasha i Nikita";//
+    IabHelper mHelper;
+
+    static final String ITEM_SKU = "android.test.purchased";
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Fabric.with(this, new Crashlytics());
@@ -91,9 +105,29 @@ public class MainActivity extends ActionBarActivity
         am.cancel(pIntent);
         //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
 
+        //Danger! Auchtung! Никита, Паша!!!
+        String base64EncodedPublicKey =
+                "<your license key here>";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на
+        // github с реальным ключом. Иначе он будет в открытом виде в инете висеть!!!
+
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Log.d(TAG, "In-app Billing setup failed: " +
+                            result);
+                } else {
+                    Log.d(TAG, "In-app Billing is set up OK");
+                }
+            }
+        });
+
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
         View decorView = getWindow().getDecorView();
+
 
         if (themeName.equals("1")) {
             setTheme(R.style.AppTheme);
@@ -114,7 +148,6 @@ public class MainActivity extends ActionBarActivity
             }
         }
         ThemeManager.init(this, 2, 0, null);
-
 
 
 
@@ -277,7 +310,6 @@ public class MainActivity extends ActionBarActivity
                 ad.show();
             }
         }
-
     }
 
     @Override
@@ -366,12 +398,8 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 5:
-                mToolbar.setTitle("Покупки");
-                fTrans.hide(mainFragment);
-                if(secondFragment != null)
-                    fTrans.remove(secondFragment);
-                secondFragment = new PurchaseFragment();
-                fTrans.add(R.id.container, secondFragment);
+                mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001,
+                        mPurchaseFinishedListener, "mypurchasetoken2");
                 break;
             case 6:
                 mToolbar.setTitle("Справка");
@@ -1075,6 +1103,84 @@ public class MainActivity extends ActionBarActivity
         // 1dp/ms
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
+    }
+
+
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                public void onConsumeFinished(Purchase purchase,
+                                              IabResult result) {
+
+                    if (result.isSuccess()) {
+                        //clickButton.setEnabled(true);
+                    } else {
+                        // handle error
+                    }
+                }
+            };
+    public void consumeItem() {
+        mHelper.queryInventoryAsync(mReceivedInventoryListener);
+    }
+
+    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
+            = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result,
+                                             Inventory inventory) {
+
+            if (result.isFailure()) {
+                // Handle failure
+            } else {
+                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
+                        mConsumeFinishedListener);
+            }
+        }
+    };
+
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result,
+                                          Purchase purchase)
+        {
+            if (result.isFailure()) {
+                // Handle error
+                return;
+            }
+            else if (purchase.getSku().equals(ITEM_SKU)) {
+                consumeItem();
+                Log.d( "3333333333", "8888888888888888888888888888");
+
+
+                // Если наш ITEM_SKU совпадает с соответсвующем для рекламы ITEM_SKU
+                // В sharedPreference сохраняем, что реклама отключена. Нужно, чтобы при обновления приложения покупка оставалась.
+                //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                //SharedPreferences.Editor editor = settings.edit();
+                //editor.putBoolean("TAG_DISABLED_ADS", true);
+                //editor.commit();
+
+            }
+
+        }
+    };
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mHelper != null) mHelper.dispose();
+        mHelper = null;
+    }
+
+
+    //Создать новое activity, иначе не работает
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data)
+    {
+        if (!mHelper.handleActivityResult(requestCode,
+                resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

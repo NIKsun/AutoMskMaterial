@@ -58,3 +58,8 @@ public class PreferencesHelper {
 }
 
 */
+
+public class PreferencesHelper
+{
+    public static int value = 10;
+}
