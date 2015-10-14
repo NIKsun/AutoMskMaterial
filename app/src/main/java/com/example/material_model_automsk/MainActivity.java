@@ -80,12 +80,13 @@ public class MainActivity extends ActionBarActivity
     private AlarmManager am;
 
 
+    /*ForEasyDelete
     private static final String TAG =
             "Pasha i Nikita";//
     IabHelper mHelper;
 
     static final String ITEM_SKU = "android.test.purchased";
-
+*/
 
 
 
@@ -105,6 +106,8 @@ public class MainActivity extends ActionBarActivity
         am.cancel(pIntent);
         //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
 
+            /*ForEasyDelete
+
         //Danger! Auchtung! Никита, Паша!!!
         String base64EncodedPublicKey =
                 "<your license key here>";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на
@@ -122,7 +125,7 @@ public class MainActivity extends ActionBarActivity
                 }
             }
         });
-
+*/
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
@@ -398,9 +401,19 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 5:
-                mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001,
+                mToolbar.setTitle("Покупки");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new PurchaseFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
+
+            /*ForEasyDelete
+              mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001,
                         mPurchaseFinishedListener, "mypurchasetoken2");
                 break;
+*/
             case 6:
                 mToolbar.setTitle("Справка");
                 fTrans.hide(mainFragment);
@@ -1105,7 +1118,7 @@ public class MainActivity extends ActionBarActivity
         v.startAnimation(a);
     }
 
-
+ /*ForEasyDelete
     IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
             new IabHelper.OnConsumeFinishedListener() {
                 public void onConsumeFinished(Purchase purchase,
@@ -1162,13 +1175,13 @@ public class MainActivity extends ActionBarActivity
 
         }
     };
-
+*/
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mHelper != null) mHelper.dispose();
-        mHelper = null;
+        if (PurchaseFragment.mHelper != null) PurchaseFragment.mHelper.dispose();
+        PurchaseFragment.mHelper = null;
     }
 
 
@@ -1177,10 +1190,12 @@ public class MainActivity extends ActionBarActivity
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data)
     {
-        if (!mHelper.handleActivityResult(requestCode,
+        if (!PurchaseFragment.mHelper.handleActivityResult(requestCode,
                 resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+
 
 }
