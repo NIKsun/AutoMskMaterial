@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 /**
@@ -64,6 +67,17 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         savedView = inflater.inflate(R.layout.fragment_purchase, container, false);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean bool = settings.getBoolean("TAG_DISABLED_ADS", false);
+
+        if (bool) {
+            Toast.makeText(getActivity(), bool.toString() + "   111111" + " \n", Toast.LENGTH_LONG);
+            Log.d("In App Purchase", "1111111111111");
+        } else {
+            Toast.makeText(getActivity(), bool.toString() + "   222222" + " \n", Toast.LENGTH_LONG);
+            Log.d("In App Purchase", "2222222222222");
+        }
 
         //Danger! Auchtung! Никита, Паша!!!
         String base64EncodedPublicKey =
@@ -102,6 +116,50 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle ownedItems;
+                try {
+                    ownedItems = MainActivity.mService.getPurchases(3, getActivity().getPackageName(), "inapp", null);
+
+                    Toast.makeText(getContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
+                    Log.i("222", "getPurchases() - success return Bundle");
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+
+                    Toast.makeText(getContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
+                    Log.w("222", "getPurchases() - fail!");
+                    return;
+                }
+
+                int response = ownedItems.getInt("RESPONSE_CODE");
+                Toast.makeText(getContext(), "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response), Toast.LENGTH_SHORT).show();
+                Log.i("222", "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response));
+
+                if (response != 0) return;
+
+                ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItems.getStringArrayList("INAPP_DATA_SIGNATURE");
+                String continuationToken = ownedItems.getString("INAPP_CONTINUATION_TOKEN");
+                if(purchaseDataList.size() > 0)
+                {
+                    //Item(s) owned
+
+                    for(int i=0; i<purchaseDataList.size(); ++i)
+                    {
+
+                        String purchaseData = purchaseDataList.get(i);
+                        //String signature = signatureList.get(i); //Note signatures do not appear to work with android.test.purchased (silly google)
+                        String sku = ownedSkus.get(i);
+
+                        Log.i("222", purchaseData+"\n 1111     "+"\n 1111     "+sku);
+                    }
+                }
+
+                Log.i("222", "getPurchases() - \"INAPP_PURCHASE_ITEM_LIST\" return " + ownedSkus.toString());
+                Log.i("222", "getPurchases() - \"INAPP_PURCHASE_DATA_LIST\" return " + purchaseDataList.toString());
+                Log.i("222", "getPurchases() - \"INAPP_DATA_SIGNATURE\" return " + (signatureList != null ? signatureList.toString() : "null"));
+                Log.i("222", "getPurchases() - \"INAPP_CONTINUATION_TOKEN\" return " + (continuationToken != null ? continuationToken : "null"));
+
                 mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU, 10001,
                         mPurchaseFinishedListener, "mypurchasetoken2");
             }
@@ -159,10 +217,10 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
 
                     // Если наш ITEM_SKU совпадает с соответсвующем для рекламы ITEM_SKU
                     // В sharedPreference сохраняем, что реклама отключена. Нужно, чтобы при обновления приложения покупка оставалась.
-                    //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-                    //SharedPreferences.Editor editor = settings.edit();
-                    //editor.putBoolean("TAG_DISABLED_ADS", true);
-                    //editor.commit();
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean("TAG_DISABLED_ADS", true);
+                    editor.commit();
 
                 }
                 /*  Изменить и сделать нужное количество.

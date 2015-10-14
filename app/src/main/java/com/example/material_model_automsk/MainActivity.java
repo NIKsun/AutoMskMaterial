@@ -5,9 +5,11 @@ import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -39,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.crashlytics.android.Crashlytics;
 import com.example.material_model_automsk.inappbilling.util.IabHelper;
 import com.example.material_model_automsk.inappbilling.util.IabResult;
@@ -126,6 +130,13 @@ public class MainActivity extends ActionBarActivity
             }
         });
 */
+
+        //Service inapp
+        final boolean blnBind = bindService(new Intent(
+                        "com.android.vending.billing.InAppBillingService.BIND"),
+                mServiceConn, Context.BIND_AUTO_CREATE);
+        Log.i("11111111", "bindService - return " + String.valueOf(blnBind));
+        //
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
@@ -1195,7 +1206,20 @@ public class MainActivity extends ActionBarActivity
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+// Добавлено для сервиса.
 
+    public static IInAppBillingService mService;
+    private ServiceConnection mServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = IInAppBillingService.Stub.asInterface(service);
+        }
+    };
 
 
 }
