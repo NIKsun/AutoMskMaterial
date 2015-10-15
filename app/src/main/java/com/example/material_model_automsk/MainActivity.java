@@ -118,9 +118,6 @@ public class MainActivity extends ActionBarActivity
         }
         ThemeManager.init(this, 2, 0, null);
 
-
-
-
         if(isFirstLaunch) {
             FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
             mainFragment = SearchAndMonitorsFragment.newInstance(1);
@@ -248,7 +245,6 @@ public class MainActivity extends ActionBarActivity
             Log.d("aaffa", "remind= "+remind);
 
             if ((!dontRemind) && (!remind)) {
-
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(this);
                 ad.setTitle("Обновление");
@@ -288,6 +284,8 @@ public class MainActivity extends ActionBarActivity
         super.onResume();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
+        if(getIntent().hasExtra("isFromNotification") && getIntent().getBooleanExtra("isFromNotification",false))
+            numberOfCallingFragment = 0;
         if(numberOfCallingFragment != -1) {
             if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
                     (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))
@@ -308,6 +306,9 @@ public class MainActivity extends ActionBarActivity
             }
             pref.edit().remove("NumberOfCallingFragment").commit();
         }
+
+        if(mNavigationDrawerFragment.getCurrentItemSelected() == 0)
+            mainFragment.updateMonitorsFragment();
     }
 
     @Override
@@ -325,6 +326,7 @@ public class MainActivity extends ActionBarActivity
 
         if(mSnackBar!=null)
             mSnackBar.dismiss();
+
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         switch (position){

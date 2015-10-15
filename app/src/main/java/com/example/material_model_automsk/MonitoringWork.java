@@ -40,8 +40,6 @@ public class MonitoringWork extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
-        Log.d("notification","NOW");
-
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 final SQLiteDatabase db = new DbHelper(getBaseContext()).getWritableDatabase();
@@ -187,6 +185,8 @@ public class MonitoringWork extends Service {
                                                         break;
                                                 }
                                                 pageCounter++;
+                                                if (pageCounter > 8)
+                                                    break;
                                             }
                                         }
                                         if (isConnectedAuto && isConnectedAvito && isConnectedDrom)
@@ -229,6 +229,7 @@ public class MonitoringWork extends Service {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("isFromNotification",true);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
@@ -247,24 +248,6 @@ public class MonitoringWork extends Service {
             notification.defaults |= Notification.DEFAULT_VIBRATE;
 
         nm.notify(NOTIFY_ID, notification);
-
-        /*
-        Notification notif = new Notification(R.drawable.status_bar, "Новое авто!",
-                System.currentTimeMillis());
-
-        String shrtMessage = "";
-        SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
-        if(!sPref.getString("SearchMyCarService_shortMessage"+serviceID,"###").equals("###"))
-            shrtMessage = sPref.getString("SearchMyCarService_shortMessage"+serviceID,"###");
-        else
-            shrtMessage = "авто";
-
-        Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notif.number = countOfNewCars;
-        notif.sound = ringURI;
-        notif.flags |= Notification.FLAG_AUTO_CANCEL | Notification.DEFAULT_SOUND | Notification.FLAG_ONLY_ALERT_ONCE;
-        nm.notify(serviceID, notif);
-        */
     }
 
 }

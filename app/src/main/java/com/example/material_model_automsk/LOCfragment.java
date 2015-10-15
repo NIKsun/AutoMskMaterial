@@ -240,12 +240,14 @@ public class LOCfragment extends Fragment {
                     int pageCounter = 1;
                     carsBuf = new Cars(50);
                     while(counter < 20) {
+                        Log.d("drom",pageCounter +" " + counter);
                         try {
                             doc = Jsoup.connect(href.replace("page@@@page", "page" + pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                         }
                         catch (HttpStatusException e)
                         {
                             isNotFound = true;
+                            Log.d("drom", "httpExc");
                             break;
                         }
                         catch (IOException e) {
@@ -281,7 +283,7 @@ public class LOCfragment extends Fragment {
                                 break;
                         }
                         pageCounter++;
-                        if (pageCounter > 5)
+                        if (pageCounter > 8)
                         {
                             isNotFound = true;
                             break;
@@ -296,7 +298,7 @@ public class LOCfragment extends Fragment {
             if(carsBuf != null)
             {
                 ContentValues cv = null;
-                if(numberOfSite == 3)
+                if(numberOfSite == 2)
                 {
                     if (!dateOrID.equals(String.valueOf(carsBuf.cars[0].id))) {
                         cv = new ContentValues();
@@ -371,7 +373,7 @@ public class LOCfragment extends Fragment {
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
                 rv.setEnabled(true);
                 rv.setVisibility(View.VISIBLE);
-                adapter = new LOCcardAdapter(cars, images);
+                adapter = new LOCcardAdapter(cars, images, dateOrID, numberOfSite);
                 rv.setAdapter(adapter);
             }
             else

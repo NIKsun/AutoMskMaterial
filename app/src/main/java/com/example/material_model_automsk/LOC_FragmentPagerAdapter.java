@@ -72,7 +72,7 @@ public class LOC_FragmentPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return LOCfragment.newInstance(position, hrefAvito, lastCarDateAvito, monitorID);
             case 2:
-                return LOCfragment.newInstance(position, hrefDrom, lastCarDateAvito, monitorID);
+                return LOCfragment.newInstance(position, hrefDrom, lastCarIdDrom, monitorID);
         }
         return LOCfragment.newInstance(position, "###", "###", 0);
     }

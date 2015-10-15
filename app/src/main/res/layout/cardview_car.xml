@@ -32,7 +32,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/isNew"
                         android:text="NEW!"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:textSize="12sp"
                         android:layout_marginLeft="3dp"
                         android:textColor="#e00004" />

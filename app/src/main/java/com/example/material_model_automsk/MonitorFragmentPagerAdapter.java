@@ -21,11 +21,12 @@ public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return PAGE_COUNT;
     }
-
+    public void updateMonitorsFragment() {
+        monitorsFragment.update();
+    }
 
     @Override
     public Fragment getItem(int position) {
-        Log.d("now", "getItem " + position);
         if(position == 0) {
             monitorsFragment = MonitorsFragment.newInstance(position + 1);
             return monitorsFragment;

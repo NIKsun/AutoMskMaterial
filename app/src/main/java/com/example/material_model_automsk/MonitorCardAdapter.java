@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Vibrator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -688,6 +689,35 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         });
 
 
+        monitorViewHolder.ll.setLongClickable(true);
+        monitorViewHolder.ll.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Vibrator vibrator = (Vibrator) parentActivity.getSystemService(parentActivity.VIBRATOR_SERVICE);
+                vibrator.vibrate(50);
+
+                PopupMenu popup = new PopupMenu(monitorViewHolder.iv.getContext(), monitorViewHolder.iv);
+                popup.getMenu().add(R.string.popup_edit);
+                popup.getMenu().add(R.string.popup_delete);
+                popup.show();
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch ((String) item.getTitle()) {
+                            case "Изменить":
+                                ;
+                                break;
+                            case "Удалить":
+                                remove(i);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                return true;
+            }
+        });
+
         monitorViewHolder.iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -705,7 +735,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                                 remove(i);
                                 break;
                         }
-
                         return false;
                     }
                 });
