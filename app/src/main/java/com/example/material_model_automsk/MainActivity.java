@@ -1,6 +1,7 @@
 package com.example.material_model_automsk;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -28,6 +29,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
@@ -93,12 +96,29 @@ public class MainActivity extends ActionBarActivity
         }
 
         String themeName = pref.getString("theme", "1");
-        if (themeName.equals("1"))
-            setTheme(R.style.AppTheme);
-         else if (themeName.equals("2"))
-            setTheme(R.style.AppTheme2);
+        View decorView = getWindow().getDecorView();
 
+        if (themeName.equals("1")) {
+            setTheme(R.style.AppTheme);
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
+            }
+        }
+        else if (themeName.equals("2")) {
+            setTheme(R.style.AppTheme2);
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor2));
+            }
+        }
         ThemeManager.init(this, 2, 0, null);
+
+
 
 
         if(isFirstLaunch) {
