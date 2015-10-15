@@ -87,11 +87,15 @@ public class MainActivity extends ActionBarActivity
                 alrarmIsActive = true;
             am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-            Log.d("notifiation", "alarmIsActive "+String.valueOf(alrarmIsActive));
             if (!alrarmIsActive) {
                 Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
                 PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
-                am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 60000, pIntent);
+
+                int period = pref.getInt("numberOfActiveMonitors", 0) * 180000;
+                Toast.makeText(this, "Текущий период: " + period, Toast.LENGTH_SHORT).show();
+
+                if(period != 0)
+                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
             }
         }
 

@@ -1,9 +1,12 @@
 package com.example.material_model_automsk;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -12,7 +15,9 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.SystemClock;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -548,7 +553,7 @@ class Monitor {
     Monitor() {
     }
     Monitor(Filter filter,Context context) {
-        isActive = true;
+        isActive = false;
         this.filter = filter;
         countOfNewCars = 0;
         filter.getHref(context);
@@ -666,17 +671,15 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             public void onCheckedChanged(Switch aSwitch, boolean b) {
                 Resources resources = monitorViewHolder.monitorStatus.getContext().getResources();
                 if (b) {
-                    activeMonitorCounter++;
+                    increaseActiveMonitorCounter();
                     monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.myPrimaryDarkColor));
                     monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_active));
                 } else {
-                    activeMonitorCounter--;
+                    reduceActiveMonitorCounter();
                     monitorViewHolder.monitorStatus.setTextColor(resources.getColor(R.color.colorPrimaryQuarter));
                     monitorViewHolder.monitorStatus.setText(resources.getText(R.string.monitor_is_not_active));
                 }
 
-                if (activeMonitorCounter != 0)
-                    Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
 
                 monitors.get(i).isActive = b;
                 switchValues.set(i, b);
@@ -797,8 +800,10 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         });
     }
 
-    private void deleteItemFromDB(String id)
+    private void deleteItemFromDB(String id, Boolean isActive)
     {
+        if(isActive)
+            reduceActiveMonitorCounter();
         SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
         db.delete("monitors", "id = ?", new String[]{id});
         db.close();
@@ -806,17 +811,16 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     public void finableRemove(){
         if(tempMonitor != null)
-            deleteItemFromDB(String.valueOf(tempMonitor.id));
+            deleteItemFromDB(String.valueOf(tempMonitor.id), tempMonitor.isActive);
         tempMonitor = null;
     }
 
     public void remove(final int position) {
         tempSwitchValue = switchValues.get(position);
         switchValues.remove(position);
-        activeMonitorCounter--;
 
         if(tempMonitor != null)
-            deleteItemFromDB(String.valueOf(tempMonitor.id));
+            deleteItemFromDB(String.valueOf(tempMonitor.id), tempMonitor.isActive);
 
         tempMonitor=monitors.get(position);
         tempPosition=position;
@@ -835,7 +839,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     @Override
                     public void onActionClick(SnackBar snackBar, int i) {
                         switchValues.add(tempPosition,tempSwitchValue);
-                        activeMonitorCounter++;
                         monitors.add(tempPosition, tempMonitor);
                         notifyItemInserted(tempPosition);
                         for (int iter = tempPosition; iter <monitors.size(); iter++)
@@ -850,5 +853,42 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    private void reduceActiveMonitorCounter()
+    {
+        activeMonitorCounter--;
+        SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(parentActivity);
+        sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
+
+
+        AlarmManager am = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
+        Intent serviceIntent = new Intent(parentActivity.getApplicationContext(), MonitoringWork.class);
+        PendingIntent pIntent = PendingIntent.getService(parentActivity.getApplicationContext(), 0, serviceIntent, 0);
+        if(activeMonitorCounter != 0)
+        {
+            int period = activeMonitorCounter * 180000;
+            am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
+        }
+        else {
+            am.cancel(pIntent);
+        }
+
+        Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
+    }
+    private void increaseActiveMonitorCounter()
+    {
+        activeMonitorCounter++;
+        SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(parentActivity);
+        sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
+
+
+        AlarmManager am = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
+        Intent serviceIntent = new Intent(parentActivity.getApplicationContext(), MonitoringWork.class);
+        PendingIntent pIntent = PendingIntent.getService(parentActivity.getApplicationContext(), 0, serviceIntent, 0);am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
+        int period = activeMonitorCounter*180000;
+        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
+
+        Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
     }
 }
