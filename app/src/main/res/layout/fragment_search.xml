@@ -1120,7 +1120,7 @@
         android:layout_gravity="bottom|right|center_horizontal"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="20dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         style="@style/LightFABLine" />
 
 </FrameLayout>

@@ -58,6 +58,7 @@ public class MonitorsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditMonitorActivity.class);
+                intent.putExtra("filterID", -1);
                 getContext().startActivity(intent);
             }
         });

@@ -554,12 +554,12 @@ class Filter {
             if((((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItemPosition()!= 0))
                 to = ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString();
         }
-        this.setYear(from,to);
+        this.setYear(from, to);
 
         from = "";
         to = "";
         if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()==-1))
-            this.setMilleage(from,to);
+            this.setMilleage(from, to);
         else
         {
             if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!= 0))
@@ -572,7 +572,7 @@ class Filter {
         from = "";
         to = "";
         if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()==-1))
-            this.setPrice(from,to);
+            this.setPrice(from, to);
         else
         {
             if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!= 0))
@@ -580,12 +580,12 @@ class Filter {
             if((((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItemPosition()!= 0))
                 to = ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString();
         }
-        this.setPrice(from,to);
+        this.setPrice(from, to);
 
         from = "";
         to = "";
         if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()==-1))
-            this.setVolume(from,to);
+            this.setVolume(from, to);
         else
         {
             if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!= 0))
@@ -593,7 +593,7 @@ class Filter {
             if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItemPosition()!= 0))
                 to = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString();
         }
-        this.setVolume(from,to);
+        this.setVolume(from, to);
 
         this.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
         if(!this.mark.equals("Любая"))
@@ -826,7 +826,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     public boolean onMenuItemClick(MenuItem item) {
                         switch ((String) item.getTitle()) {
                             case "Изменить":
-                                ;
+                                Intent intent = new Intent(parentActivity, EditMonitorActivity.class);
+                                intent.putExtra("filterID",monitors.get(i).filter.id);
+                                parentActivity.startActivity(intent);
                                 break;
                             case "Удалить":
                                 remove(i);
@@ -851,7 +853,11 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     public boolean onMenuItemClick(MenuItem item) {
                         switch ((String)item.getTitle())
                         {
-                            case "Изменить": ;break;
+                            case "Изменить":
+                                Intent intent = new Intent(parentActivity, EditMonitorActivity.class);
+                                intent.putExtra("filterID",monitors.get(i).filter.id);
+                                parentActivity.startActivity(intent);
+                                break;
                             case "Удалить":
                                 remove(i);
                                 break;

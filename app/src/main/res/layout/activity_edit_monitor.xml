@@ -5,29 +5,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff">
-    <TextView
-        android:id="@+id/text_view_title"
-        android:layout_gravity="center"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="21sp"
-        android:textColor="#ffffffff"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingLeft="20dp"
-        android:text="Редактор монитора"/>
+        android:id="@+id/title"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="center_vertical|left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21sp"
+            android:textColor="#ffffffff"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="20dp"
+            android:text="Редактор монитора"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="onCheckClicker"
+            android:src="@drawable/ic_check_white_36dp"
+            android:layout_gravity="center_vertical|right"
+            android:paddingRight="20dp"/>
+    </FrameLayout>
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.example.material_model_automsk.SearchFragment"
         android:id="@+id/fragment"
-        android:layout_below="@+id/text_view_title"
+        android:layout_below="@+id/title"
         tools:layout="@layout/fragment_search" />
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:background="@drawable/shadow"
-        android:layout_below="@+id/text_view_title"
+        android:layout_below="@+id/title"
         android:focusable="true"
         android:focusableInTouchMode="true"/>
 

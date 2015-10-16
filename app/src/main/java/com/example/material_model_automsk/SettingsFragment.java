@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.RadioButton;
@@ -92,19 +93,23 @@ public class SettingsFragment extends Fragment
                 PendingIntent pIntent = PendingIntent.getService(getActivity().getApplicationContext(), 0, serviceIntent, 0);
 
                 if (changeNotification.isChecked()) {
-                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
+                    int period = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("numberOfActiveMonitors", 0) * 180000;
+                    Toast.makeText(getActivity(), "Текущий период: " + period, Toast.LENGTH_SHORT).show();
+                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("notificationIsActive", true);
                     ed.commit();
-                    notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                    MainActivity.expand(notificationLayout);
                 } else {
                     am.cancel(pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("notificationIsActive", false);
                     ed.commit();
-                    notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+
+                    MainActivity.collapse(notificationLayout);
                 }
             }
 

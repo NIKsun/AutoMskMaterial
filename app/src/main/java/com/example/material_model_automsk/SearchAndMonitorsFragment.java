@@ -120,6 +120,11 @@ public class SearchAndMonitorsFragment extends Fragment {
 
     }
 
+    public SearchFragment getSearchFragment()
+    {
+        return ((MonitorFragmentPagerAdapter)viewPager.getAdapter()).searchFragment;
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         Button addMonitorButton = myContext.getAddMonitorButton();
