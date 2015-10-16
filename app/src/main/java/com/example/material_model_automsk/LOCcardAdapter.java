@@ -59,11 +59,27 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
     Bitmap images[];
     Boolean isFromFavorites;
     List<CarCard> favorites;
+    String dateOrID;
+    Integer numberOfSite, counterIdDrom;
 
-    LOCcardAdapter(Cars cars,Bitmap[] images){
+    LOCcardAdapter(Cars cars,Bitmap[] images, String dateOrID, Integer numberOfSite){
+        this.dateOrID = dateOrID;
+        this.numberOfSite = numberOfSite;
         this.cars = cars;
         this.images = images;
         isFromFavorites = false;
+
+
+        if(numberOfSite == 2) {
+
+            counterIdDrom = 0;
+            Log.d("IdDrom", dateOrID);
+            Log.d("IdDrom", cars.cars[counterIdDrom].id);
+            while (counterIdDrom != cars.getLength() && !dateOrID.equals(cars.cars[counterIdDrom].id)) {
+                //Log.d("IdDrom", String.valueOf(counterIdDrom));
+                counterIdDrom++;
+            }
+        }
     }
 
     LOCcardAdapter(List<CarCard> cc, Bitmap[] images){
@@ -72,12 +88,12 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
         isFromFavorites = true;
     }
 
-    private int position;
+    private int pos;
     public int getPosition() {
-        return position;
+        return pos;
     }
     public void setPosition(int position) {
-        this.position = position;
+        this.pos = position;
     }
 
     @Override
@@ -134,8 +150,22 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
         else {
             href = cars.getHref(i);
             monitorViewHolder.textViewMessage.setText(Html.fromHtml(cars.getMessage(i)));
-            //monitorViewHolder.textViewIsNew.setHeight(0);
-            monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+
+            if(numberOfSite != 2) {
+                if (dateOrID.equals("###"))
+                    monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+                else {
+                    if (Long.parseLong(dateOrID) / 1000 < cars.getCarDateLong(i) / 1000) {//New cars
+                        monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+                    } else
+                        monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
+                }
+            }
+            else
+                if (dateOrID.equals("###") || i<counterIdDrom)
+                    monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+                else
+                    monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
         }
         final String finalHref = href;
         monitorViewHolder.cv.setOnClickListener(new View.OnClickListener() {

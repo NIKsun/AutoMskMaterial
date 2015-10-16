@@ -1,9 +1,11 @@
 package com.example.material_model_automsk;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.rey.material.app.BottomSheetDialog;
 import com.rey.material.widget.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -53,6 +56,9 @@ public class MonitorsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.Material_App_BottomSheetDialog);
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_search, null);
+                mBottomSheetDialog.contentView(view).show();*/
             }
         });
         rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -206,6 +212,9 @@ public class MonitorsFragment extends Fragment {
                 }
                 else
                     elem.isActive = false;
+
+                SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
 
                 monitors.add(elem);
             } while (cursorMonitors.moveToNext());

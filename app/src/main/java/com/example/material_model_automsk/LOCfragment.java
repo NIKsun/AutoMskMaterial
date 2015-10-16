@@ -57,7 +57,8 @@ public class LOCfragment extends Fragment {
 
     final public static int RND_PXLS = 10;
     private int numberOfSite;
-    private String href;
+    private String href, dateOrID;
+    private Integer monitorID;
     ProgressView pvCircular;
     LinearLayout ll;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -68,10 +69,12 @@ public class LOCfragment extends Fragment {
     LOCcardAdapter adapter;
     DbHelper dbHelper;
 
-    public static LOCfragment newInstance(int page, String href) {
+    public static LOCfragment newInstance(int page, String href, String dateOrID, Integer monitorID) {
         LOCfragment fragment = new LOCfragment();
         fragment.numberOfSite = page;
         fragment.href = href;
+        fragment.dateOrID = dateOrID;
+        fragment.monitorID = monitorID;
         return fragment;
     }
 
@@ -156,6 +159,7 @@ public class LOCfragment extends Fragment {
             Elements mainElems;
             Boolean isNotFound = false, isNotConnected = false;
             Cars carsBuf = null;
+            String dateOrIdParamName = "";
 
             switch (numberOfSite){
                 case 0:
@@ -196,6 +200,7 @@ public class LOCfragment extends Fragment {
                         }
 
                     }
+                    dateOrIdParamName = "date_auto";
                     break;
                 case 1:
                     try {
@@ -228,18 +233,21 @@ public class LOCfragment extends Fragment {
                             carsBuf.addFromAvito(mainElems.get(i).children().get(j));
                         }
                     carsBuf.sortByDateAvito();
+                    dateOrIdParamName = "date_avito";
                     break;
                 case 2:
                     int counter = 0;
                     int pageCounter = 1;
                     carsBuf = new Cars(50);
                     while(counter < 20) {
+                        Log.d("drom",pageCounter +" " + counter);
                         try {
                             doc = Jsoup.connect(href.replace("page@@@page", "page" + pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                         }
                         catch (HttpStatusException e)
                         {
                             isNotFound = true;
+                            Log.d("drom", "httpExc");
                             break;
                         }
                         catch (IOException e) {
@@ -275,7 +283,7 @@ public class LOCfragment extends Fragment {
                                 break;
                         }
                         pageCounter++;
-                        if (pageCounter > 5)
+                        if (pageCounter > 8)
                         {
                             isNotFound = true;
                             break;
@@ -283,7 +291,32 @@ public class LOCfragment extends Fragment {
                     }
                     if(carsBuf.getLength() == 0)
                         carsBuf = null;
+                    dateOrIdParamName = "id_drom";
                     break;
+            }
+
+            if(carsBuf != null)
+            {
+                ContentValues cv = null;
+                if(numberOfSite == 2)
+                {
+                    if (!dateOrID.equals(String.valueOf(carsBuf.cars[0].id))) {
+                        cv = new ContentValues();
+                        cv.put(dateOrIdParamName, String.valueOf(carsBuf.cars[0].id));
+                    }
+                }
+                else {
+                    if (!dateOrID.equals(String.valueOf(carsBuf.getCarDateLong(0)))) {
+                        cv = new ContentValues();
+                        cv.put(dateOrIdParamName, String.valueOf(carsBuf.getCarDateLong(0)));
+                    }
+                }
+                if(cv != null){
+                    SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+                    cv.put("count_of_new_cars", 0);
+                    db.update("monitors", cv, "id = ?", new String[]{String.valueOf(monitorID)});
+                    db.close();
+                }
             }
 
             if(isNotConnected || isNotFound)
@@ -340,7 +373,7 @@ public class LOCfragment extends Fragment {
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
                 rv.setEnabled(true);
                 rv.setVisibility(View.VISIBLE);
-                adapter = new LOCcardAdapter(cars, images);
+                adapter = new LOCcardAdapter(cars, images, dateOrID, numberOfSite);
                 rv.setAdapter(adapter);
             }
             else

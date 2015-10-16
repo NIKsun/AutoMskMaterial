@@ -71,7 +71,6 @@ public class MainActivity extends ActionBarActivity
     private Toast backToast = null;
     final String SAVED_TEXT_WITH_VERSION = "checkVersion";
     final String DO_NOT_REMIND = "DontRemind";
-    static android.app.Dialog dialogPicker ;
     private AlarmManager am;
 
 
@@ -79,19 +78,27 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         Fabric.with(this, new Crashlytics());
         super.onCreate(savedInstanceState);
-
-        Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
-        Boolean alrarmIsActive = false;
-        if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
-            alrarmIsActive = true;
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
-        PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
-        am.cancel(pIntent);
-        //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
-
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if(pref.getBoolean("notificationIsActive",true)) {
+            Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+            Boolean alrarmIsActive = false;
+            if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
+                alrarmIsActive = true;
+            am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            if (!alrarmIsActive) {
+                Intent serviceIntent = new Intent(getApplicationContext(), MonitoringWork.class);
+                PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
+
+                int period = pref.getInt("numberOfActiveMonitors", 0) * 180000;
+                Toast.makeText(this, "Текущий период: " + period, Toast.LENGTH_SHORT).show();
+
+                if(period != 0)
+                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
+            }
+        }
+
         String themeName = pref.getString("theme", "1");
         View decorView = getWindow().getDecorView();
 
@@ -114,9 +121,6 @@ public class MainActivity extends ActionBarActivity
             }
         }
         ThemeManager.init(this, 2, 0, null);
-
-
-
 
         if(isFirstLaunch) {
             FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
@@ -245,7 +249,6 @@ public class MainActivity extends ActionBarActivity
             Log.d("aaffa", "remind= "+remind);
 
             if ((!dontRemind) && (!remind)) {
-
                 AlertDialog.Builder ad;
                 ad = new AlertDialog.Builder(this);
                 ad.setTitle("Обновление");
@@ -285,6 +288,8 @@ public class MainActivity extends ActionBarActivity
         super.onResume();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
+        if(getIntent().hasExtra("isFromNotification") && getIntent().getBooleanExtra("isFromNotification",false))
+            numberOfCallingFragment = 0;
         if(numberOfCallingFragment != -1) {
             if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
                     (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))
@@ -305,6 +310,9 @@ public class MainActivity extends ActionBarActivity
             }
             pref.edit().remove("NumberOfCallingFragment").commit();
         }
+
+        if(mNavigationDrawerFragment.getCurrentItemSelected() == 0)
+            mainFragment.updateMonitorsFragment();
     }
 
     @Override
@@ -322,6 +330,7 @@ public class MainActivity extends ActionBarActivity
 
         if(mSnackBar!=null)
             mSnackBar.dismiss();
+
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         switch (position){

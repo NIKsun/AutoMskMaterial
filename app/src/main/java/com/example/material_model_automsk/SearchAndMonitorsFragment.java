@@ -138,4 +138,8 @@ public class SearchAndMonitorsFragment extends Fragment {
     {
         return tabLayout.getSelectedTabPosition();
     }
+
+    public void updateMonitorsFragment() {
+        ((MonitorFragmentPagerAdapter)viewPager.getAdapter()).updateMonitorsFragment();
+    }
 }

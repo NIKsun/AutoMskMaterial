@@ -1,11 +1,15 @@
 package com.example.material_model_automsk;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -71,7 +75,7 @@ public class SettingsFragment extends Fragment
 
         final com.rey.material.widget.Switch changeNotification = (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_notification_switch);
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        changeNotification.setChecked(sPref.getBoolean("Notification", false));
+        changeNotification.setChecked(sPref.getBoolean("notificationIsActive", false));
 
 
         final LinearLayout notificationLayout = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
@@ -83,16 +87,22 @@ public class SettingsFragment extends Fragment
         changeNotification.setOnCheckedChangeListener(new com.rey.material.widget.Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(com.rey.material.widget.Switch aSwitch, boolean b) {
+                AlarmManager am = (AlarmManager) getActivity().getSystemService(getActivity().ALARM_SERVICE);
+                Intent serviceIntent = new Intent(getActivity().getApplicationContext(), MonitoringWork.class);
+                PendingIntent pIntent = PendingIntent.getService(getActivity().getApplicationContext(), 0, serviceIntent, 0);
+
                 if (changeNotification.isChecked()) {
+                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putBoolean("Notification", true);
+                    ed.putBoolean("notificationIsActive", true);
                     ed.commit();
                     notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 } else {
+                    am.cancel(pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putBoolean("Notification", false);
+                    ed.putBoolean("notificationIsActive", false);
                     ed.commit();
                     notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
                 }
@@ -101,7 +111,7 @@ public class SettingsFragment extends Fragment
         });
 
         final com.rey.material.widget.Switch switchVibration= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_vibration_switch_status);
-        switchVibration.setChecked(sPref.getBoolean("Vibration", false));
+        switchVibration.setChecked(sPref.getBoolean("vibrationIsActive", false));
         switchVibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,20 +119,20 @@ public class SettingsFragment extends Fragment
                 {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putBoolean("Vibration", true);
+                    ed.putBoolean("vibrationIsActive", true);
                     ed.commit();
                 }
                 else {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putBoolean("Vibration", false);
+                    ed.putBoolean("vibrationIsActive", false);
                     ed.commit();
                 }
             }
         });
 
         final com.rey.material.widget.Switch switchSound= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_sound_switch);
-        switchSound.setChecked(sPref.getBoolean("Sound", false));
+        switchSound.setChecked(sPref.getBoolean("soundIsActive", false));
         switchSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,13 +140,13 @@ public class SettingsFragment extends Fragment
                 {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putBoolean("Sound", true);
+                    ed.putBoolean("soundIsActive", true);
                     ed.commit();
                 }
                 else {
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
-                    ed.putBoolean("Sound", false);
+                    ed.putBoolean("soundIsActive", false);
                     ed.commit();
                 }
             }
