@@ -43,6 +43,8 @@
                         android:text="Maрка"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -122,6 +124,8 @@
                         android:text="Mодель"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -202,6 +206,8 @@
                         android:text="Год выпуска"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -292,6 +298,8 @@
                         android:text="Цена"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -382,6 +390,8 @@
                         android:text="Пробег"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -471,6 +481,8 @@
                         android:text="Объем двигателя"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -559,6 +571,8 @@
                     android:text="Тип двигателя"
                     android:textSize="25sp"
                     android:layout_gravity="start"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="italic"
                     style="@style/LightTitleText"/>
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -686,6 +700,8 @@
                         android:text="КПП"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -805,6 +821,8 @@
                         android:text="Тип кузова"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -968,6 +986,8 @@
                         android:text="Привод"
                         android:textSize="25sp"
                         android:layout_gravity="start"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="italic"
                         style="@style/LightTitleText"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -1071,6 +1091,8 @@
                     android:text="Только с фото"
                     android:textSize="20sp"
                     android:layout_gravity="start"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="italic"
                     style="@style/Base.TextAppearance.AppCompat.Title" />
 
                 <com.rey.material.widget.Switch
