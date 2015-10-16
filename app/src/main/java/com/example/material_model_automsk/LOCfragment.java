@@ -151,7 +151,6 @@ public class LOCfragment extends Fragment {
         protected Boolean doInBackground(final Void... params) {
 
             //РАБОТА С БД, ВЫЗОВ onProgressUpdate
-            Log.d("href",href);
             if(href.equals("###"))
                 return true;
 
@@ -240,14 +239,12 @@ public class LOCfragment extends Fragment {
                     int pageCounter = 1;
                     carsBuf = new Cars(50);
                     while(counter < 20) {
-                        Log.d("drom",pageCounter +" " + counter);
                         try {
                             doc = Jsoup.connect(href.replace("page@@@page", "page" + pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
                         }
                         catch (HttpStatusException e)
                         {
                             isNotFound = true;
-                            Log.d("drom", "httpExc");
                             break;
                         }
                         catch (IOException e) {

@@ -6,7 +6,11 @@ import android.util.Log;
 
 import org.jsoup.nodes.Element;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,8 +19,9 @@ import java.util.regex.Pattern;
  */
 
 
-public class Cars {
-    class Car {
+public class Cars  {
+
+    class Car implements Comparable{
         String id;
         String href;
         String img;
@@ -26,9 +31,16 @@ public class Cars {
         String year;
         String city;
         Date timeOfCreate;
-        Boolean isFromAuto = false;
-        Boolean isFromAvito = false;
-        boolean sorted;
+
+        @Override
+        public int compareTo(Object another) {
+            if(this.timeOfCreate.getTime() / 1000 < ((Car)another).timeOfCreate.getTime() / 1000)
+                return -1;
+            else if(this.timeOfCreate.getTime() / 1000 > ((Car)another).timeOfCreate.getTime() / 1000)
+                return 1;
+            else
+                return 0;
+        }
     }
 
     Car[] cars;
@@ -94,7 +106,6 @@ public class Cars {
         if(lastCar >= capacity)
             return false;
         Car currentCar = new Car();
-        currentCar.isFromAuto = true;
         if(elem == null){
             return false;
         }
@@ -201,36 +212,7 @@ public class Cars {
 
     public void sortByDateAvito()
     {
-        int pointer = 0;
-        while(cars[pointer].sorted)
-            pointer++;
-        Car[] result = new Car[getLength()];
-        int counter1 = pointer, counter2 = getLength()-pointer,i=0;
-        while ((counter1 != 0) && (counter2 != 0))
-        {
-            if(cars[pointer-counter1].timeOfCreate.after(cars[getLength() - counter2].timeOfCreate)) {
-                result[i] = cars[pointer - counter1];
-                counter1--;
-            }
-            else {
-                result[i] = cars[getLength() - counter2];
-                counter2--;
-            }
-            i++;
-        }
-        while(counter1 != 0)
-        {
-            result[i] = cars[pointer - counter1];
-            counter1--;
-            i++;
-        }
-        while(counter2 != 0)
-        {
-            result[i] = cars[getLength() - counter2];
-            counter2--;
-            i++;
-        }
-        cars = result;
+        Arrays.sort(cars, Collections.reverseOrder());
     }
 
     public void addSeparator(String resourceName, int countOfCars)
@@ -284,19 +266,11 @@ public class Cars {
         return result;
     }
 
-    public boolean carFromAuto(int position)
-    {
-        return cars[position].isFromAuto;
-    }
-    public boolean carFromAvito(int position)
-    {
-        return cars[position].isFromAvito;
-    }
+
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public boolean addFromAvito(Element elem)
     {
         Car currentCar = new Car();
-        currentCar.isFromAvito = true;
         if(elem == null){
             return false;
         }
@@ -310,9 +284,6 @@ public class Cars {
         currentCar.img = "http:" + currentCar.img;
 
         currentCar.href = "https://www.avito.ru" + elem.select("div.description > h3 > a").attr("href");
-
-
-        currentCar.sorted = elem.select("div.description").first().children().hasClass("vas-applied");
 
         currentCar.message = elem.select("div.description > h3 > a").text();
         currentCar.year = currentCar.message.split(", ")[1];

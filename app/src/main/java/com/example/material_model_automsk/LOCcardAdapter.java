@@ -71,14 +71,9 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
 
 
         if(numberOfSite == 2) {
-
             counterIdDrom = 0;
-            Log.d("IdDrom", dateOrID);
-            Log.d("IdDrom", cars.cars[counterIdDrom].id);
-            while (counterIdDrom != cars.getLength() && !dateOrID.equals(cars.cars[counterIdDrom].id)) {
-                //Log.d("IdDrom", String.valueOf(counterIdDrom));
+            while (counterIdDrom != cars.getLength() && !dateOrID.equals(cars.cars[counterIdDrom].id))
                 counterIdDrom++;
-            }
         }
     }
 

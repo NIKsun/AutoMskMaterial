@@ -58,8 +58,6 @@ public class MonitoringWork extends Service {
 
                 if (cursorMonitors.moveToFirst()) {
                     do {
-                        Log.d("notification", String.valueOf(cursorMonitors.getInt(iIsActive)));
-                        Log.d("notification", String.valueOf(cursorMonitors.getInt(iCONC)));
                         if(cursorMonitors.getInt(iIsActive) == 1){
                             if(cursorMonitors.getInt(iCONC) >= 100){
                                 CONC_counter++;
