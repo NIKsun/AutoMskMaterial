@@ -77,10 +77,13 @@ public class SearchAndMonitorsFragment extends Fragment {
                 myContext.setNavigationDrawerItem(position);
                 Button addMonitorButton = myContext.getAddMonitorButton();
                 MonitorsFragment mf = ((MonitorFragmentPagerAdapter)viewPager.getAdapter()).monitorsFragment;
+                SearchFragment sf = ((MonitorFragmentPagerAdapter)viewPager.getAdapter()).searchFragment;
                 if (position == 0)
                 {
                     if(mf != null)
                         mf.update();
+                    if(sf != null)
+                        sf.hideFAB();
                     Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_right);
                     addMonitorButton.setVisibility(View.INVISIBLE);
                     addMonitorButton.startAnimation(anim);
@@ -88,6 +91,8 @@ public class SearchAndMonitorsFragment extends Fragment {
                 {
                     if(mf != null)
                         mf.hideFAB();
+                    if(sf != null)
+                        sf.showFAB();
 
                     Animation anim = AnimationUtils.loadAnimation(myContext, R.anim.anim_translate_left);
                     addMonitorButton.setVisibility(View.VISIBLE);
@@ -96,7 +101,6 @@ public class SearchAndMonitorsFragment extends Fragment {
                 myContext.getSnackBar().dismiss();
             }
 
-            private Boolean isHidden = true;
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
             }

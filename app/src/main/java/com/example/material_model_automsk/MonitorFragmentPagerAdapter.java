@@ -11,6 +11,7 @@ public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
     private String tabTitles[] = new String[] { "Мониторы", "Поиск"};
     private Context context;
     MonitorsFragment monitorsFragment;
+    SearchFragment searchFragment;
 
     public MonitorFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -32,7 +33,8 @@ public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
             return monitorsFragment;
         }
         else
-            return SearchFragment.newInstance(position + 1);
+            searchFragment = SearchFragment.newInstance();
+            return searchFragment;
     }
 
     @Override

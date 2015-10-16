@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rey.material.widget.SnackBar;
+import com.rey.material.widget.Spinner;
 import com.rey.material.widget.Switch;
 
 import java.lang.reflect.Array;
@@ -538,6 +539,123 @@ class Filter {
 
         db.close();
     }
+
+    void fillFilter(View view){
+        String from = "";
+        String to = "";
+        Log.d("sp", String.valueOf(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()));
+
+        if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()==-1))
+            this.setYear(from,to);
+        else
+        {
+            if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()!= 0))
+                from = ((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString();
+            if((((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItemPosition()!= 0))
+                to = ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString();
+        }
+        this.setYear(from,to);
+
+        from = "";
+        to = "";
+        if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()==-1))
+            this.setMilleage(from,to);
+        else
+        {
+            if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!= 0))
+                from = ((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString();
+            if((((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItemPosition()!= 0))
+                to = ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString();
+        }
+        this.setMilleage(from, to);
+
+        from = "";
+        to = "";
+        if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()==-1))
+            this.setPrice(from,to);
+        else
+        {
+            if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!= 0))
+                from = ((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString();
+            if((((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItemPosition()!= 0))
+                to = ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString();
+        }
+        this.setPrice(from,to);
+
+        from = "";
+        to = "";
+        if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()==-1))
+            this.setVolume(from,to);
+        else
+        {
+            if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!= 0))
+                from = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString();
+            if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItemPosition()!= 0))
+                to = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString();
+        }
+        this.setVolume(from,to);
+
+        this.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
+        if(!this.mark.equals("Любая"))
+            this.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
+        else
+            this.model = "Любая";
+
+        this.withPhoto = ((Switch) view.findViewById(R.id.search_ll_withPhoto)).isChecked();
+
+        this.transmission="";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_man)).isChecked())
+            this.transmission+="2";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_auto)).isChecked())
+            this.transmission+="1";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_robot)).isChecked())
+            this.transmission+="3";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_var)).isChecked())
+            this.transmission+="4";
+
+        this.typeOfEngine="";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_gasoline)).isChecked())
+            this.typeOfEngine+="1";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_diesel)).isChecked())
+            this.typeOfEngine+="2";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_hybrid)).isChecked())
+            this.typeOfEngine+="3";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_gas)).isChecked())
+            this.typeOfEngine+="4";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_electro)).isChecked())
+            this.typeOfEngine+="5";
+
+        this.typeOfWheelDrive="";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_forward)).isChecked())
+            this.typeOfWheelDrive+="1";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_backward)).isChecked())
+            this.typeOfWheelDrive+="2";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_full)).isChecked())
+            this.typeOfWheelDrive+="3";
+
+        this.typeOfCarcase="";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_sed)).isChecked())
+            this.typeOfCarcase+="1";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_hatch)).isChecked())
+            this.typeOfCarcase+="2";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_univ)).isChecked())
+            this.typeOfCarcase+="3";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_minivan)).isChecked())
+            this.typeOfCarcase+="5";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_offroad)).isChecked())
+            this.typeOfCarcase+="4";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_coupe)).isChecked())
+            this.typeOfCarcase+="7";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_van)).isChecked())
+            this.typeOfCarcase+="9";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_limus)).isChecked())
+            this.typeOfCarcase+="6";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_picap)).isChecked())
+            this.typeOfCarcase+="0";
+        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_cabrio)).isChecked())
+            this.typeOfCarcase+="8";
+    }
+
 }
 
 class Monitor {

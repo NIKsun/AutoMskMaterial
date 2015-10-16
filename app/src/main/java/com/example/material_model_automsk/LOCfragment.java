@@ -292,7 +292,7 @@ public class LOCfragment extends Fragment {
                     break;
             }
 
-            if(carsBuf != null)
+            if(carsBuf != null && monitorID != -1)
             {
                 ContentValues cv = null;
                 if(numberOfSite == 2)

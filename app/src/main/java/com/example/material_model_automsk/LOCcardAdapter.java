@@ -146,21 +146,23 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             href = cars.getHref(i);
             monitorViewHolder.textViewMessage.setText(Html.fromHtml(cars.getMessage(i)));
 
-            if(numberOfSite != 2) {
-                if (dateOrID.equals("###"))
-                    monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
-                else {
-                    if (Long.parseLong(dateOrID) / 1000 < cars.getCarDateLong(i) / 1000) {//New cars
+            if(!dateOrID.equals("ItIsJUST_search")) {
+                if (numberOfSite != 2) {
+                    if (dateOrID.equals("###"))
                         monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
-                    } else
-                        monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
-                }
-            }
-            else
-                if (dateOrID.equals("###") || i<counterIdDrom)
+                    else {
+                        if (Long.parseLong(dateOrID) / 1000 < cars.getCarDateLong(i) / 1000) {//New cars
+                            monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
+                        } else
+                            monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
+                    }
+                } else if (dateOrID.equals("###") || i < counterIdDrom)
                     monitorViewHolder.textViewIsNew.setVisibility(View.VISIBLE);
                 else
                     monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
+            }
+            else
+                monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
         }
         final String finalHref = href;
         monitorViewHolder.cv.setOnClickListener(new View.OnClickListener() {

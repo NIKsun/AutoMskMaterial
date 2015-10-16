@@ -1,6 +1,7 @@
 package com.example.material_model_automsk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.Spinner;
 import com.rey.material.widget.Switch;
 
@@ -28,13 +32,10 @@ import com.rey.material.widget.Switch;
  */
 public class SearchFragment extends Fragment {
 
-    public static final String ARG_PAGE = "ARG_PAGE";
+    View view;
 
-    public static SearchFragment newInstance(int page) {
-        Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
+    public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -100,9 +101,31 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_search, container, false);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        /*
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_search);
+        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_simple_grow);
+        fab.startAnimation(anim);
+        fab.setVisibility(View.VISIBLE);
+        fab.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp), false);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Filter filter = new Filter();
+                filter.fillFilter(view);
+                filter.getHref(getContext());
+                SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sPref.edit();
+                ed.putString("hrefAutoRu", filter.hrefAuto);
+                ed.putString("hrefAvitoRu", filter.hrefAvito);
+                ed.putString("hrefDromRu", filter.hrefDrom);
+                ed.commit();
+                Intent intent = new Intent(v.getContext(), ListOfCarsActivity.class);
+                intent.putExtra("monitorID", -1);
+                v.getContext().startActivity(intent);
+            }
+        });
+
         android.widget.Button addMonitorButton = ((MainActivity)getActivity()).getAddMonitorButton();
         addMonitorButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,125 +135,13 @@ public class SearchFragment extends Fragment {
                     public void onPositiveActionClicked(DialogFragment fragment) {
                         super.onPositiveActionClicked(fragment);
                         Filter filter = new Filter();
-                        String from = "";
-                        String to = "";
-                        Log.d("sp", String.valueOf(((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()));
-
-                        if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()==-1))
-                                    filter.setYear(from,to);
-                        else
-                        {
-                            if((((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItemPosition()!= 0))
-                                from = ((Spinner) view.findViewById(R.id.spinner_label_year_from)).getSelectedItem().toString();
-                            if((((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItemPosition()!= 0))
-                                to = ((Spinner) view.findViewById(R.id.spinner_label_year_to)).getSelectedItem().toString();
-                        }
-                        filter.setYear(from,to);
-
-                        from = "";
-                        to = "";
-                        if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()==-1))
-                            filter.setMilleage(from,to);
-                        else
-                        {
-                            if((((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItemPosition()!= 0))
-                                from = ((Spinner) view.findViewById(R.id.spinner_label_mileage_from)).getSelectedItem().toString();
-                            if((((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItemPosition()!= 0))
-                                to = ((Spinner) view.findViewById(R.id.spinner_label_mileage_to)).getSelectedItem().toString();
-                        }
-                        filter.setMilleage(from, to);
-
-                        from = "";
-                        to = "";
-                        if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()==-1))
-                            filter.setPrice(from,to);
-                        else
-                        {
-                            if((((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItemPosition()!= 0))
-                                from = ((Spinner) view.findViewById(R.id.spinner_label_price_from)).getSelectedItem().toString();
-                            if((((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItemPosition()!= 0))
-                                to = ((Spinner) view.findViewById(R.id.spinner_label_price_to)).getSelectedItem().toString();
-                        }
-                        filter.setPrice(from,to);
-
-                        from = "";
-                        to = "";
-                        if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()==-1))
-                            filter.setVolume(from,to);
-                        else
-                        {
-                            if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItemPosition()!= 0))
-                                from = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_from)).getSelectedItem().toString();
-                            if((((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItemPosition()!= 0))
-                                to = ((Spinner) view.findViewById(R.id.spinner_label_engine_volume_to)).getSelectedItem().toString();
-                        }
-                        filter.setVolume(from,to);
-
-                        filter.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
-                        if(!filter.mark.equals("Любая"))
-                            filter.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
-                        else
-                            filter.model = "Любая";
-
-                        filter.withPhoto = ((Switch) view.findViewById(R.id.search_ll_withPhoto)).isChecked();
-
-                        filter.transmission="";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_man)).isChecked())
-                            filter.transmission+="2";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_auto)).isChecked())
-                            filter.transmission+="1";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_robot)).isChecked())
-                            filter.transmission+="3";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_trans_var)).isChecked())
-                            filter.transmission+="4";
-
-                        filter.typeOfEngine="";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_gasoline)).isChecked())
-                            filter.typeOfEngine+="1";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_diesel)).isChecked())
-                            filter.typeOfEngine+="2";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_hybrid)).isChecked())
-                            filter.typeOfEngine+="3";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_gas)).isChecked())
-                            filter.typeOfEngine+="4";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_engine_type_electro)).isChecked())
-                            filter.typeOfEngine+="5";
-
-                        filter.typeOfWheelDrive="";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_forward)).isChecked())
-                            filter.typeOfWheelDrive+="1";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_backward)).isChecked())
-                            filter.typeOfWheelDrive+="2";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_drive_full)).isChecked())
-                            filter.typeOfWheelDrive+="3";
-
-                        filter.typeOfCarcase="";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_sed)).isChecked())
-                            filter.typeOfCarcase+="1";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_hatch)).isChecked())
-                            filter.typeOfCarcase+="2";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_univ)).isChecked())
-                            filter.typeOfCarcase+="3";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_minivan)).isChecked())
-                            filter.typeOfCarcase+="5";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_offroad)).isChecked())
-                            filter.typeOfCarcase+="4";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_coupe)).isChecked())
-                            filter.typeOfCarcase+="7";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_van)).isChecked())
-                            filter.typeOfCarcase+="9";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_limus)).isChecked())
-                            filter.typeOfCarcase+="6";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_picap)).isChecked())
-                            filter.typeOfCarcase+="0";
-                        if(((com.rey.material.widget.CheckBox) view.findViewById(R.id.switches_cb_body_cabrio)).isChecked())
-                            filter.typeOfCarcase+="8";
-
-                        filter.insertToDb(getContext());
+                        filter.fillFilter(view);
 
                         filter.getHref(getContext());
 
-                        Monitor monitor = new Monitor(filter,getContext());
+                        filter.insertToDb(getContext());
+
+                        Monitor monitor = new Monitor(filter, getContext());
                         monitor.insertToDb(getContext());
                     }
 
@@ -248,9 +159,21 @@ public class SearchFragment extends Fragment {
                 DialogFragment fragment = DialogFragment.newInstance(builder);
                 fragment.show(getActivity().getSupportFragmentManager(), null);
             }
-        });*/
+        });
         return view;
     }
 
-
+    public void showFAB(){
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_search);
+        if(fab != null) {
+            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
+            fab.startAnimation(animation);
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
+    public void hideFAB(){
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_search);
+        if(fab != null)
+            fab.setVisibility(View.INVISIBLE);
+    }
 }

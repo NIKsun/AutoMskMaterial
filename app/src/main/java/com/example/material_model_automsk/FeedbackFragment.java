@@ -27,8 +27,6 @@ import com.rey.material.widget.RadioButton;
 public class FeedbackFragment extends android.support.v4.app.Fragment {
     View savedView;
 
-    FloatingActionButton fab;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

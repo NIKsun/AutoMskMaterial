@@ -9,15 +9,15 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="21dp"
         android:textColor="#ffffffff"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:paddingLeft="10dp"
     />
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"
+        android:layout_height="6dp"
         android:background="@drawable/shadow"
         android:layout_below="@+id/sliding_tabs"
         android:focusable="true"
@@ -35,7 +35,7 @@
         >
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"
+        android:layout_height="6dp"
         android:background="@drawable/shadow"
         android:layout_below="@+id/sliding_tabs" />
 

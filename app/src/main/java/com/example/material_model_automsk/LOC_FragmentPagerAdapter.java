@@ -1,6 +1,7 @@
 package com.example.material_model_automsk;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -25,36 +26,46 @@ public class LOC_FragmentPagerAdapter extends FragmentPagerAdapter {
         this.monitorID = monitorID;
         this.context = context;
 
-        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
-        Cursor cursorMonitors = db.query("monitors",
-                new String[]{"id,href_auto,href_avito,href_drom, date_auto, date_avito, id_drom"},
-                "id = ?", new String[]{String.valueOf(monitorID)}, null, null, null);
-
-        int iHrefAuto = cursorMonitors.getColumnIndex("href_auto");
-        int iHrefAvito = cursorMonitors.getColumnIndex("href_avito");
-        int iHrefDrom = cursorMonitors.getColumnIndex("href_drom");
-        int iLastCarDateAuto = cursorMonitors.getColumnIndex("date_auto");
-        int iLastCarDateAvito = cursorMonitors.getColumnIndex("date_avito");
-        int iLastCarIdDrom = cursorMonitors.getColumnIndex("id_drom");
-
-        if (cursorMonitors.moveToFirst()) {
-            this.hrefAuto = cursorMonitors.getString(iHrefAuto);
-            this.hrefAvito = cursorMonitors.getString(iHrefAvito);
-            this.hrefDrom = cursorMonitors.getString(iHrefDrom);
-            this.lastCarDateAuto = cursorMonitors.getString(iLastCarDateAuto) != null ? cursorMonitors.getString(iLastCarDateAuto) : "###";
-            this.lastCarDateAvito = cursorMonitors.getString(iLastCarDateAvito) != null ? cursorMonitors.getString(iLastCarDateAvito) : "###";
-            this.lastCarIdDrom = cursorMonitors.getString(iLastCarIdDrom) != null ? cursorMonitors.getString(iLastCarIdDrom) : "###";
+        if(monitorID == -1)
+        {
+            SharedPreferences sPref = context.getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+            hrefAuto = sPref.getString("hrefAutoRu","###");
+            hrefAvito = sPref.getString("hrefAvitoRu","###");
+            hrefDrom = sPref.getString("hrefDromRu","###");
+            this.lastCarDateAuto = "ItIsJUST_search";
+            this.lastCarDateAvito = "ItIsJUST_search";
+            this.lastCarIdDrom = "ItIsJUST_search";
         }
         else {
-            this.hrefAuto = "###";
-            this.hrefAvito = "###";
-            this.hrefDrom = "###";
-            this.lastCarDateAuto = "###";
-            this.lastCarDateAvito = "###";
-            this.lastCarIdDrom = "###";
-        }
+            SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+            Cursor cursorMonitors = db.query("monitors",
+                    new String[]{"id,href_auto,href_avito,href_drom, date_auto, date_avito, id_drom"},
+                    "id = ?", new String[]{String.valueOf(monitorID)}, null, null, null);
 
-        db.close();
+            int iHrefAuto = cursorMonitors.getColumnIndex("href_auto");
+            int iHrefAvito = cursorMonitors.getColumnIndex("href_avito");
+            int iHrefDrom = cursorMonitors.getColumnIndex("href_drom");
+            int iLastCarDateAuto = cursorMonitors.getColumnIndex("date_auto");
+            int iLastCarDateAvito = cursorMonitors.getColumnIndex("date_avito");
+            int iLastCarIdDrom = cursorMonitors.getColumnIndex("id_drom");
+
+            if (cursorMonitors.moveToFirst()) {
+                this.hrefAuto = cursorMonitors.getString(iHrefAuto);
+                this.hrefAvito = cursorMonitors.getString(iHrefAvito);
+                this.hrefDrom = cursorMonitors.getString(iHrefDrom);
+                this.lastCarDateAuto = cursorMonitors.getString(iLastCarDateAuto) != null ? cursorMonitors.getString(iLastCarDateAuto) : "###";
+                this.lastCarDateAvito = cursorMonitors.getString(iLastCarDateAvito) != null ? cursorMonitors.getString(iLastCarDateAvito) : "###";
+                this.lastCarIdDrom = cursorMonitors.getString(iLastCarIdDrom) != null ? cursorMonitors.getString(iLastCarIdDrom) : "###";
+            } else {
+                this.hrefAuto = "###";
+                this.hrefAvito = "###";
+                this.hrefDrom = "###";
+                this.lastCarDateAuto = "###";
+                this.lastCarDateAvito = "###";
+                this.lastCarIdDrom = "###";
+            }
+            db.close();
+        }
     }
 
     @Override
