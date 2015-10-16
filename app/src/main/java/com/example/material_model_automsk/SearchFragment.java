@@ -29,7 +29,6 @@ import com.rey.material.widget.Switch;
 public class SearchFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
-    private int mPage;
 
     public static SearchFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -42,7 +41,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
         SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("SelectedMark","Любая").commit();
@@ -104,6 +102,7 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        /*
         android.widget.Button addMonitorButton = ((MainActivity)getActivity()).getAddMonitorButton();
         addMonitorButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,9 +248,7 @@ public class SearchFragment extends Fragment {
                 DialogFragment fragment = DialogFragment.newInstance(builder);
                 fragment.show(getActivity().getSupportFragmentManager(), null);
             }
-        });
-        //TextView textView = (TextView) view;
-        //textView.setText("Fragment #" + mPage);
+        });*/
         return view;
     }
 

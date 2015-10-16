@@ -1,5 +1,6 @@
 package com.example.material_model_automsk;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,9 +57,8 @@ public class MonitorsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.Material_App_BottomSheetDialog);
-                View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_search, null);
-                mBottomSheetDialog.contentView(view).show();*/
+                Intent intent = new Intent(v.getContext(), EditMonitorActivity.class);
+                getContext().startActivity(intent);
             }
         });
         rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
