@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rey.material.widget.ProgressView;
 import com.rey.material.widget.SnackBar;
@@ -180,33 +181,42 @@ public class FavoritesFragment extends Fragment {
             super.onPostExecute(isNotFound);
             pvCircular.stop();
             final Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                public void run() {
-                    for (int i = 0; i < favorites.size(); i++) {
-                        try {
-                            if (imageLoaderMayRunning) {
-                                images[i] = LOCfragment.getRoundedCornerBitmap(BitmapFactory.decodeStream((InputStream) new URL(favorites.get(i).img).getContent()),LOCfragment.RND_PXLS);
-                                if (images[i] == null)
-                                    images[i] = BitmapFactory.decodeResource(getResources(), R.drawable.car_loading_pic);
-                            } else
-                                return;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        final int finalI = i;
-                        handler.post(new Runnable() {
-                            public void run() {
-                                RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_favorites);
-                                rv.getAdapter().notifyItemChanged(finalI);
+            if(favorites.size() != 0) {
+                Runnable runnable = new Runnable() {
+                    public void run() {
+                        for (int i = 0; i < favorites.size(); i++) {
+                            try {
+                                if (imageLoaderMayRunning) {
+                                    images[i] = LOCfragment.getRoundedCornerBitmap(BitmapFactory.decodeStream((InputStream) new URL(favorites.get(i).img).getContent()), LOCfragment.RND_PXLS);
+                                    if (images[i] == null)
+                                        images[i] = BitmapFactory.decodeResource(getResources(), R.drawable.car_loading_pic);
+                                } else
+                                    return;
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        });
+                            final int finalI = i;
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_favorites);
+                                    rv.getAdapter().notifyItemChanged(finalI);
+                                }
+                            });
+                        }
                     }
-                }
-            };
-            new Thread(runnable).start();
-            RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_favorites);
-            adapter = new LOCcardAdapter(favorites,images);
-            rv.setAdapter(adapter);
+                };
+                TextView message =(TextView) savedView.findViewById(R.id.message_about_empty);
+                message.setVisibility(View.GONE);
+                new Thread(runnable).start();
+                RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_favorites);
+                adapter = new LOCcardAdapter(favorites, images);
+                rv.setAdapter(adapter);
+            }
+            else
+            {
+                TextView message =(TextView) savedView.findViewById(R.id.message_about_empty);
+                message.setVisibility(View.VISIBLE);
+            }
         }
     }
 

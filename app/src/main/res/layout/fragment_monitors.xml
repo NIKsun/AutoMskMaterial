@@ -3,6 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/message_about_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textSize="22sp"
+        android:textColor="#939393"
+        android:text="На данный момент вы не добавили ни одного монитора. Для создания этого полезного инструмента воспользуютесь кнопкой в правом нижнем углу."
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

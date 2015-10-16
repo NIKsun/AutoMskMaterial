@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.rey.material.app.BottomSheetDialog;
 import com.rey.material.widget.FloatingActionButton;
@@ -122,8 +123,16 @@ public class MonitorsFragment extends Fragment {
         RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv);
         activeMonitorCounter = 0;
         initializeData();
-        MonitorCardAdapter adapter = new MonitorCardAdapter(monitors,getActivity(),rv,activeMonitorCounter);
-        rv.setAdapter(adapter);
+        if(monitors.size() != 1) {
+            TextView message =(TextView) savedView.findViewById(R.id.message_about_empty);
+            message.setVisibility(View.GONE);
+            MonitorCardAdapter adapter = new MonitorCardAdapter(monitors, getActivity(), rv, activeMonitorCounter);
+            rv.setAdapter(adapter);
+        }
+        else {
+            TextView message =(TextView) savedView.findViewById(R.id.message_about_empty);
+            message.setVisibility(View.VISIBLE);
+        }
         if(fab != null) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
             fab.startAnimation(animation);

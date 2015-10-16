@@ -63,8 +63,6 @@ public class SearchAndMonitorsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Log.d("orient","now");
         View v =  inflater.inflate(R.layout.fragment_search_and_monitors, container, false);
         viewPager = (ViewPager) v.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MonitorFragmentPagerAdapter(myContext.getSupportFragmentManager(), myContext));
