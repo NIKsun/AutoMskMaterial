@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -166,6 +167,9 @@ public class MarkFilter extends Activity {
                     Log.d("Tag", String.valueOf(tv.getText()));
                 } else {
                     ed.putString("SelectedModel", String.valueOf(tv.getText()));
+                    if(tv.getText().equals("A4"))
+                        Toast.makeText(MarkFilter.this, "Хороший выбор!", Toast.LENGTH_SHORT).show();
+
                 }
                 ed.commit();
 

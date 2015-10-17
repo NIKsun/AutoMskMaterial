@@ -236,7 +236,7 @@ public class SearchFragment extends Fragment {
                 MainActivity.expand(ll);
                 break;
             case R.id.search_ll_price:
-
+/*
                 v.setClickable(false);
 
                 data = new String[176];
@@ -277,6 +277,10 @@ public class SearchFragment extends Fragment {
                 data2 = (String[])data.clone();
                 data2[0]="До";
                 fillSpinner(sp2, data2, 0);
+*/
+                initSpinners("Price", v);
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_price_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_price_to);
 
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
@@ -301,7 +305,7 @@ public class SearchFragment extends Fragment {
                         }
                     }
                 });
-
+/*
                 ll = (LinearLayout)view.findViewById(R.id.search_ll_price_hidden);
                 b = (Button) view.findViewById(R.id.search_ll_price_clear);
                 b.setVisibility(View.VISIBLE);
@@ -310,10 +314,10 @@ public class SearchFragment extends Fragment {
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 MainActivity.expand(ll);
-
+*/
                 break;
             case R.id.search_ll_year:
-
+/*
                 data = new String[36];
                 for(int i = 0; i < data.length; i++)
                     data[i] = "" + String.valueOf(i + 1980);
@@ -329,8 +333,11 @@ public class SearchFragment extends Fragment {
 
                 //CardView cv = (CardView) view.findViewById(R.id.search_ll_year_cv);
                 v.setClickable(false);
+*/
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_year_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_year_to);
 
-
+                initSpinners("Year",v);
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
@@ -355,7 +362,7 @@ public class SearchFragment extends Fragment {
                     }
                 });
 
-
+/*
                 ll = (LinearLayout)view.findViewById(R.id.search_ll_year_hidden);
                 b = (Button) view.findViewById(R.id.search_ll_year_clear);
                 //b.setVisibility(View.INVISIBLE);
@@ -366,9 +373,10 @@ public class SearchFragment extends Fragment {
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 MainActivity.expand(ll);
+*/
                 break;
             case R.id.search_ll_mileage:
-
+/*
                 v.setClickable(false);
 
 
@@ -388,7 +396,11 @@ public class SearchFragment extends Fragment {
                 data2 = (String[])data_view.clone();
                 data2[0]="До";
                 fillSpinner(sp2, data2, 0);
+*/
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_mileage_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_mileage_to);
 
+                initSpinners("Milleage",v);
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(Spinner spinner, View view, int i, long l) {
@@ -412,7 +424,7 @@ public class SearchFragment extends Fragment {
                         }
                     }
                 });
-
+/*
                 ll = (LinearLayout)view.findViewById(R.id.search_ll_mileage_hidden);
                 b = (Button) view.findViewById(R.id.search_ll_mileage_clear);
                 b.setVisibility(View.VISIBLE);
@@ -421,9 +433,10 @@ public class SearchFragment extends Fragment {
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 MainActivity.expand(ll);
+*/
                 break;
             case R.id.search_ll_engine_volume:
-
+/*
                 v.setClickable(false);
                 data = new String[]{"0.0","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","2.0","2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.9","3.0","3.1","3.2","3.3","3.4","3.5","4.0","4.5","5.0","5.5","6.0","6.0+"};
 
@@ -435,6 +448,10 @@ public class SearchFragment extends Fragment {
                 data2 = (String[])data.clone();
                 data2[0]="До";
                 fillSpinner(sp2, data2, 0);
+*/
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_engine_volume_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_engine_volume_to);
+                initSpinners("Volume",v);
 
                 sp1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
                     @Override
@@ -459,7 +476,7 @@ public class SearchFragment extends Fragment {
                         }
                     }
                 });
-
+/*
                 ll = (LinearLayout)view.findViewById(R.id.search_ll_engine_volume_hidden);
                 b = (Button) view.findViewById(R.id.search_ll_engine_volume_clear);
                 b.setVisibility(View.VISIBLE);
@@ -468,7 +485,7 @@ public class SearchFragment extends Fragment {
                 //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                 ll.setVisibility(View.VISIBLE);
                 MainActivity.expand(ll);
-                break;
+*/                break;
             case R.id.search_ll_trans:
                 v.setClickable(false);
 
@@ -787,5 +804,157 @@ public class SearchFragment extends Fragment {
         adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
         sp.setAdapter(adapter);
         sp.setSelection(pos);
+    }
+
+    public void initSpinners(String name, View v){
+        LinearLayout ll;
+        Button b;
+        ImageView iv;
+
+        final Spinner sp1;
+        final Spinner sp2;
+
+        final String[] data;
+        final String[] data2;
+        switch (name){
+            case "Year" :
+                data = new String[36];
+                for(int i = 0; i < data.length; i++)
+                    data[i] = "" + String.valueOf(i + 1980);
+
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_year_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_year_to);
+
+                data[0]="От";
+                fillSpinner(sp1, data, 0);
+                data2 = (String[])data.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
+
+                //CardView cv = (CardView) view.findViewById(R.id.search_ll_year_cv);
+                v.setClickable(false);
+
+                /////////
+
+                ll = (LinearLayout)view.findViewById(R.id.search_ll_year_hidden);
+                b = (Button) view.findViewById(R.id.search_ll_year_clear);
+                //b.setVisibility(View.INVISIBLE);
+                b.setVisibility(View.VISIBLE);
+                iv = (ImageView) view.findViewById(R.id.arrow_year);
+                iv.setVisibility(View.INVISIBLE);
+
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                MainActivity.expand(ll);
+                break;
+            case "Price":
+
+                v.setClickable(false);
+
+                data = new String[176];
+
+                for(int i=0; i<data.length; ++i){
+                    if(i<51){
+                        data[i]= String.valueOf(i*10000);
+                    }
+                    else
+                    if(i<76){
+                        data[i]= String.valueOf(Integer.parseInt(data[i-1].replace(" ",""))+20000);
+                    }
+                    else
+                    if(i<96) {
+                        data[i] = String.valueOf(Integer.parseInt(data[i - 1].replace(" ","")) + 50000);
+                    }
+                    else
+                        data[i] = String.valueOf(Integer.parseInt(data[i - 1].replace(" ","")) + 100000);
+
+                    int len = data[i].length(), counter;
+                    String result = "";
+                    if(len%3!=0)
+                        result = data[i].substring(0,len%3)+" ";
+                    counter = len%3;
+                    while (counter < len)
+                    {
+                        result += data[i].substring(counter,counter+3)+" ";
+                        counter+=3;
+                    }
+                    data[i] = result.substring(0,result.length()-1);
+                }
+
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_price_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_price_to);
+
+                data[0]="От";
+                fillSpinner(sp1, data, 0);
+                data2 = (String[])data.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
+                /////////////
+
+
+                ll = (LinearLayout)view.findViewById(R.id.search_ll_price_hidden);
+                b = (Button) view.findViewById(R.id.search_ll_price_clear);
+                b.setVisibility(View.VISIBLE);
+                iv = (ImageView) view.findViewById(R.id.arrow_price);
+                iv.setVisibility(View.INVISIBLE);
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                MainActivity.expand(ll);
+                break;
+            case "Milleage" :
+                v.setClickable(false);
+
+                data = new String[]{"0","5","10","15","20","25","30","35","40","45","50","55", "60", "65", "70","75","80","85","90","95","100","110","120","130","140","150","160","170","180","190","200","210","220","230","240","250","260","270","280","290","300","310","320","330","340","350","360","370","380","390","400","410","420","430","440","450","460","470","480","490","500","600"};
+                String[] data_view = new String[data.length];
+                for(int n = 1; n < data.length-1 ; ++n ){
+                    data_view[n]=data[n]+" 000";
+                }
+                data_view[0]="0";
+                data_view[data.length-1]="500 000+";
+
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_mileage_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_mileage_to);
+
+                data_view[0]="От";
+                fillSpinner(sp1, data_view, 0);
+                data2 = (String[])data_view.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
+
+                ////////
+
+                ll = (LinearLayout)view.findViewById(R.id.search_ll_mileage_hidden);
+                b = (Button) view.findViewById(R.id.search_ll_mileage_clear);
+                b.setVisibility(View.VISIBLE);
+                iv = (ImageView) view.findViewById(R.id.arrow_mileage);
+                iv.setVisibility(View.INVISIBLE);
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                MainActivity.expand(ll);
+                break;
+            case "Volume" :
+                v.setClickable(false);
+                data = new String[]{"0.0","0.6","0.7","0.8","0.9","1.0","1.1","1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","2.0","2.1","2.2","2.3","2.4","2.5","2.6","2.7","2.8","2.9","3.0","3.1","3.2","3.3","3.4","3.5","4.0","4.5","5.0","5.5","6.0","6.0+"};
+
+                sp1 = (Spinner) view.findViewById(R.id.spinner_label_engine_volume_from);
+                sp2 = (Spinner) view.findViewById(R.id.spinner_label_engine_volume_to);
+
+                data[0]="От";
+                fillSpinner(sp1, data, 0);
+                data2 = (String[])data.clone();
+                data2[0]="До";
+                fillSpinner(sp2, data2, 0);
+
+                ll = (LinearLayout)view.findViewById(R.id.search_ll_engine_volume_hidden);
+                b = (Button) view.findViewById(R.id.search_ll_engine_volume_clear);
+                b.setVisibility(View.VISIBLE);
+                iv = (ImageView) view.findViewById(R.id.arrow_volume);
+                iv.setVisibility(View.INVISIBLE);
+                //ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+                ll.setVisibility(View.VISIBLE);
+                MainActivity.expand(ll);
+
+                break;
+        }
     }
 }

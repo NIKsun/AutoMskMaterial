@@ -93,7 +93,7 @@ class Filter {
         switch (name){
             case "КПП":
                 //message += "КПП: ";
-                param = new String[]{"механика", "автомат", "робот", "вариатор"};
+                param = new String[]{ "автомат", "механика", "робот", "вариатор"};
                 select = value.split("");
                 for(int i = 1; i<select.length;++i)
                     message+=param[Integer.parseInt(select[i])-1] + ", ";
@@ -922,7 +922,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                         mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                         .actionText("Ок")
                                 .duration(4000)
-                        .show();
+                                .show();
                         parentFragment.hideFAB(4000);
                     }
 
@@ -969,10 +969,10 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 .actionClickListener(new SnackBar.OnActionClickListener() {
                     @Override
                     public void onActionClick(SnackBar snackBar, int i) {
-                        switchValues.add(tempPosition,tempSwitchValue);
+                        switchValues.add(tempPosition, tempSwitchValue);
                         monitors.add(tempPosition, tempMonitor);
                         notifyItemInserted(tempPosition);
-                        for (int iter = tempPosition; iter <monitors.size(); iter++)
+                        for (int iter = tempPosition; iter < monitors.size(); iter++)
                             notifyItemChanged(iter);
                         rv.scrollToPosition(tempPosition);
                         tempMonitor = null;
