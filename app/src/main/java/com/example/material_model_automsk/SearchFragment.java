@@ -511,7 +511,7 @@ public class SearchFragment extends Fragment {
         LinearLayout ll;
         Button b;
         com.rey.material.widget.CheckBox ch;
-        android.support.v7.widget.AppCompatTextView t;
+        TextView t;
         SharedPreferences sPref;
         SharedPreferences.Editor ed;
         Spinner sp;
@@ -696,7 +696,7 @@ public class SearchFragment extends Fragment {
                 iv.setVisibility(View.VISIBLE);
 
 
-                t = (android.support.v7.widget.AppCompatTextView) view.findViewById(R.id.search_ll_mark_text);
+                t = (TextView) view.findViewById(R.id.search_ll_mark_text);
                 t.setText("Любая");
 
                 sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
@@ -713,7 +713,7 @@ public class SearchFragment extends Fragment {
                 iv = (ImageView) view.findViewById(R.id.arrow_model);
                 iv.setVisibility(View.VISIBLE);
 
-                t = (android.support.v7.widget.AppCompatTextView)view.findViewById(R.id.search_ll_model_text);
+                t = (TextView)view.findViewById(R.id.search_ll_model_text);
                 t.setText("Любая");
 
                 sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
