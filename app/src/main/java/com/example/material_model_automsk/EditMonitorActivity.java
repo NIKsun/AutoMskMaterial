@@ -1,5 +1,6 @@
 package com.example.material_model_automsk;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,11 +25,15 @@ import com.rey.material.widget.Switch;
 public class EditMonitorActivity extends FragmentActivity {
     SearchFragment searchFragment;
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("lis","createEdit");
+        SharedPreferences pref2 = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        pref2.edit().putInt("isEditFilter",1).commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_monitor);
 
         FrameLayout header = (FrameLayout)findViewById(R.id.title);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
         String themeName = pref.getString("theme", "1");
         if (themeName.equals("1"))
             header.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -37,6 +42,7 @@ public class EditMonitorActivity extends FragmentActivity {
 
         Log.d("filterID", String.valueOf(getIntent().getIntExtra("filterID", -1)));
         searchFragment = (SearchFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
+        pref.edit().putInt("isEditFilter",1).commit();
         Integer filterID = getIntent().getIntExtra("filterID",-1);
         if(filterID!=-1){
             final DbHelper dbHelper = new DbHelper(this);
@@ -217,6 +223,8 @@ public class EditMonitorActivity extends FragmentActivity {
                 iv.setVisibility(View.VISIBLE);
             }
 */
+            pref2.edit().putString("SelectedMark", mark).commit();
+            pref2.edit().putString("SelectedModel", model).commit();
             //year
             if(!yearTo.equals("") || !yearFrom.equals("")) {
                 data = new String[36];
@@ -310,6 +318,20 @@ public class EditMonitorActivity extends FragmentActivity {
         }
 
     }
+    public void onResume(){
+        Log.d("lis","resumeEdit");
+        super.onResume();
+
+    }
+    public void onDestroy(){
+        super.onDestroy();
+        SharedPreferences pref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        pref.edit().putInt("isEditFilter",0).commit();
+        pref.edit().putString("SelectedMark", "Любая").commit();
+        pref.edit().putString("SelectedModel", "Любая").commit();
+        Log.d("lis", "destroyEdit");
+    }
+
     public void onClickHandlerHidden(View v){
         searchFragment.onClickHandlerHidden(v);
     }

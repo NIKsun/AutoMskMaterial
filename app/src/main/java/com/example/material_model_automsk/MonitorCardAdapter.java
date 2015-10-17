@@ -936,6 +936,10 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         if(isActive)
             reduceActiveMonitorCounter();
         SQLiteDatabase db = new DbHelper(parentFragment.getActivity()).getWritableDatabase();
+        Cursor cursor = db.query("monitors", null, "id=?", new String[]{id}, null, null, null);
+        cursor.moveToFirst();
+        Integer filter_id = cursor.getInt(cursor.getColumnIndex("filter_id"));
+        db.delete("filters", "id = ?", new String[]{String.valueOf(filter_id)});
         db.delete("monitors", "id = ?", new String[]{id});
         db.close();
     }

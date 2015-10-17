@@ -50,11 +50,16 @@ public class SearchFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d("lis","createFR");
         super.onCreate(savedInstanceState);
         SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("SelectedMark","Любая").commit();
-        ed.putString("SelectedModel","Любая").commit();
+        Integer isEditFilter = sPref.getInt("isEditFilter",0);
+        Log.d("lis", isEditFilter.toString());
+        if(isEditFilter!=1) {
+            ed.putString("SelectedMark", "Любая").commit();
+            ed.putString("SelectedModel", "Любая").commit();
+        }
     }
 
     public void onDestroy(){
@@ -65,45 +70,41 @@ public class SearchFragment extends Fragment {
 
     @Override
     public void onResume(){
+        Log.d("lis", "resumeFR");
         super.onResume();
-        SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        SharedPreferences sPref = getContext().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        //Integer isEditFilter = sPref.getInt("isEditFilter",0);
+            String mark = sPref.getString("SelectedMark", "Любая");
+            String model = sPref.getString("SelectedModel", "Любая");
 
-        String mark = sPref.getString("SelectedMark", "Любая");
-        String model = sPref.getString("SelectedModel", "Любая");
+            ImageView iv;
 
-        ImageView iv;
+            TextView t = (TextView) getActivity().findViewById(R.id.search_ll_mark_text);
+            t.setText(mark);
 
-        TextView t = (TextView) getActivity().findViewById(R.id.search_ll_mark_text);
-        t.setText(mark);
+            TextView t2 = (TextView) getActivity().findViewById(R.id.search_ll_model_text);
+            t2.setText(model);
 
-        TextView t2 = (TextView) getActivity().findViewById(R.id.search_ll_model_text);
-        t2.setText(model);
-
-        CardView ll = (CardView) getActivity().findViewById(R.id.search_ll_model_cardview);
-        if(!mark.equals("Любая"))
-        {
-            Button b = (Button) getActivity().findViewById(R.id.search_ll_mark_clear);
-            b.setVisibility(View.VISIBLE);
-            iv = (ImageView) getActivity().findViewById(R.id.arrow_mark);
-            iv.setVisibility(View.INVISIBLE);
-            ll.setVisibility(View.VISIBLE);
-        }
-        else
-            ll.setVisibility(View.GONE);
-        if(!model.equals("Любая"))
-        {
-            Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
-            b2.setVisibility(View.VISIBLE);
-            iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
-            iv.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            Button b3 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
-            b3.setVisibility(View.INVISIBLE);
-            iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
-            iv.setVisibility(View.VISIBLE);
-        }
+            CardView ll = (CardView) getActivity().findViewById(R.id.search_ll_model_cardview);
+            if (!mark.equals("Любая")) {
+                Button b = (Button) getActivity().findViewById(R.id.search_ll_mark_clear);
+                b.setVisibility(View.VISIBLE);
+                iv = (ImageView) getActivity().findViewById(R.id.arrow_mark);
+                iv.setVisibility(View.INVISIBLE);
+                ll.setVisibility(View.VISIBLE);
+            } else
+                ll.setVisibility(View.GONE);
+            if (!model.equals("Любая")) {
+                Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
+                b2.setVisibility(View.VISIBLE);
+                iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
+                iv.setVisibility(View.INVISIBLE);
+            } else {
+                Button b3 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
+                b3.setVisibility(View.INVISIBLE);
+                iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
+                iv.setVisibility(View.VISIBLE);
+            }
 
     }
 
