@@ -76,9 +76,9 @@ public class ListOfCarsActivity extends ActionBarActivity
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_LOC);
         tabLayout.setupWithViewPager(viewPager);
 
+        final android.widget.Button addMonitorButton = (android.widget.Button)findViewById(R.id.toolbar_add_monitor_button);
         if(monitorID == -1)
         {
-            final android.widget.Button addMonitorButton = (android.widget.Button)findViewById(R.id.toolbar_add_monitor_button);
             addMonitorButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -99,7 +99,8 @@ public class ListOfCarsActivity extends ActionBarActivity
                     addMonitorButton.startAnimation(anim);
                 }
             });
-        }
+        } else
+            addMonitorButton.setVisibility(View.INVISIBLE);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
