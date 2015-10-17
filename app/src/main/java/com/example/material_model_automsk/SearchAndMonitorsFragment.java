@@ -89,7 +89,7 @@ public class SearchAndMonitorsFragment extends Fragment {
                 } else
                 {
                     if(mf != null)
-                        mf.hideFAB();
+                        mf.hideFAB(-1);
                     if(sf != null)
                         sf.showFAB();
 

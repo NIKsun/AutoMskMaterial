@@ -1,6 +1,8 @@
 package com.example.material_model_automsk;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -35,6 +40,8 @@ public class ListOfCarsActivity extends ActionBarActivity
     ViewPager viewPager;
     TabLayout tabLayout;
     private Boolean isFirstLaunch = true;
+    Integer monitorID, filterID;
+    Boolean monitorWasAdded = false;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +66,40 @@ public class ListOfCarsActivity extends ActionBarActivity
         }
 
 
+        filterID = getIntent().getIntExtra("filterID",-1);
+        monitorID = getIntent().getIntExtra("monitorID",-1);
+
         viewPager = (ViewPager) findViewById(R.id.viewpager_LOC);
         viewPager.setAdapter(new LOC_FragmentPagerAdapter(getSupportFragmentManager(),
-                ListOfCarsActivity.this, getIntent().getIntExtra("monitorID",-1)));
+                ListOfCarsActivity.this, monitorID));
         // Give the TabLayout the ViewPager
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_LOC);
         tabLayout.setupWithViewPager(viewPager);
+
+        if(monitorID == -1)
+        {
+            final android.widget.Button addMonitorButton = (android.widget.Button)findViewById(R.id.toolbar_add_monitor_button);
+            addMonitorButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Monitor monitor = new Monitor();
+                    SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                    monitor.hrefAuto = sPref.getString("hrefAutoRu","###");
+                    monitor.hrefAvito = sPref.getString("hrefAvitoRu","###");
+                    monitor.hrefDrom = sPref.getString("hrefDromRu","###");
+                    Filter filter = new Filter();
+                    filter.id = filterID;
+                    monitor.filter = filter;
+                    monitor.insertToDb(v.getContext());
+                    monitorWasAdded = true;
+
+                    Toast.makeText(ListOfCarsActivity.this, "Монитор с текущими параметрами создан", Toast.LENGTH_SHORT).show();
+                    Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.anim_translate_right);
+                    addMonitorButton.setVisibility(View.INVISIBLE);
+                    addMonitorButton.startAnimation(anim);
+                }
+            });
+        }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_drawer);
@@ -87,10 +122,21 @@ public class ListOfCarsActivity extends ActionBarActivity
     }
 
     @Override
-    public void onBackPressed() {
+     public void onBackPressed() {
         if (mNavigationDrawerFragment.isDrawerOpen())
             mNavigationDrawerFragment.closeDrawer();
         else
             super.onBackPressed();
+    }
+
+    @Override
+    public void onDestroy() {
+        if(monitorID == -1 && !monitorWasAdded){
+            SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
+            db.delete("filters", "id = ?", new String[]{String.valueOf(filterID)});
+            db.close();
+        }
+
+        super.onDestroy();
     }
 }

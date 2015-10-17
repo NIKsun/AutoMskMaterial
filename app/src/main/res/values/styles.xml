@@ -68,8 +68,8 @@
     </style>
 
     <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile">
-        <item name="sb_text">Нет удалось подключиться к серверу.\nПроверьте соеденение с интернетом.</item>
-        <item name="sb_actionText">\nОк</item>
+        <item name="sb_text">Нет соеденения с интернетом</item>
+        <item name="sb_actionText">Ок</item>
         <item name="sb_duration">4000</item>
     </style>
     <style name="Material.Widget.SnackBar.Tablet.MultiLine" parent="Material.Widget.SnackBar.Tablet">

@@ -14,19 +14,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/LightTitleText"
-        android:textSize="40dp"
+        android:textSize="35dp"
         android:text="Связаться со службой поддержки"
         android:gravity="center"
         android:paddingLeft="40dp"
-        android:paddingRight="40dp" />
+        android:paddingRight="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
 
     <com.rey.material.widget.TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/LightTitleText"
         android:gravity="center"
-    android:textSize="25sp"
-    android:text="Наши консультанты ответят на ваши вопросы и помогут решить возникшие трудности." />
+        android:textSize="20sp"
+        android:text="Наши консультанты ответят на ваши вопросы и помогут решить возникшие трудности."
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <com.rey.material.widget.FloatingActionButton
         android:id="@+id/send_feedback"
@@ -34,19 +40,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:visibility="invisible"
+        style="@style/LightFlatButtonRippleStyle"
+        android:layout_marginTop="40dp" />
 
-        style="@style/LightFlatButtonRippleStyle"/>
-
-    <!--com.rey.material.widget.FloatingActionButton
-
-        android:background="@drawable/ic_mode_edit_black_24dp"
-
-        android:id="@+id/fssssab_favorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right|center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="invisible"
-        style="@style/LightFABLine" /-->
 </LinearLayout>

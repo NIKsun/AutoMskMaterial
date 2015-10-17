@@ -321,7 +321,7 @@ public class MainActivity extends ActionBarActivity
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         switch (position){
             case 0:
-                mToolbar.setTitle("Авто Москва");
+                mToolbar.setTitle("Авто Русь");
                 mainFragment.setPage(0);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);

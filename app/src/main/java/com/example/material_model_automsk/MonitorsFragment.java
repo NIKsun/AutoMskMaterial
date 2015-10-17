@@ -72,15 +72,7 @@ public class MonitorsFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 15 || dy < -15) {
-                    if (!isHidden) {
-                        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
-                        fab.startAnimation(anim);
-                        fab.setVisibility(View.INVISIBLE);
-                        isHidden = true;
-                    }
-                    alarmWaiter.cancel(true);
-                    alarmWaiter = new AlarmWaiter();
-                    alarmWaiter.execute(400);
+                    hideFAB(400);
                 }
                 super.onScrolled(recyclerView, dx, dy);
             }
@@ -90,6 +82,23 @@ public class MonitorsFragment extends Fragment {
         return savedView;
     }
 
+    public void hideFAB(int duration)
+    {
+        if(duration == -1)
+        {
+            fab.setVisibility(View.INVISIBLE);
+            return;
+        }
+        if (!isHidden) {
+            Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_buttom);
+            fab.startAnimation(anim);
+            fab.setVisibility(View.INVISIBLE);
+            isHidden = true;
+        }
+        alarmWaiter.cancel(true);
+        alarmWaiter = new AlarmWaiter();
+        alarmWaiter.execute(duration);
+    }
 
     class AlarmWaiter extends AsyncTask<Integer, Void, Void> {
         @Override
@@ -126,7 +135,7 @@ public class MonitorsFragment extends Fragment {
         if(monitors.size() != 1) {
             TextView message =(TextView) savedView.findViewById(R.id.message_about_empty);
             message.setVisibility(View.GONE);
-            MonitorCardAdapter adapter = new MonitorCardAdapter(monitors, getActivity(), rv, activeMonitorCounter);
+            MonitorCardAdapter adapter = new MonitorCardAdapter(monitors, this, rv, activeMonitorCounter);
             rv.setAdapter(adapter);
         }
         else {
@@ -139,11 +148,6 @@ public class MonitorsFragment extends Fragment {
             fab.setVisibility(View.VISIBLE);
         }
 
-    }
-    public void hideFAB()
-    {
-        if(fab != null)
-            fab.setVisibility(View.INVISIBLE);
     }
 
     private void initializeData(){

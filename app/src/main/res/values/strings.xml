@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">АвтоРусь</string>
+    <string name="app_name">Авто Русь</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Settings</string>

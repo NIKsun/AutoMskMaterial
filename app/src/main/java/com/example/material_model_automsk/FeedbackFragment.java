@@ -62,7 +62,7 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "room530a@gmail.com", null));
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке АвтоМосква.");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке АвтоРусь");
                 startActivity(Intent.createChooser(intent, "Выберите почтового клиента:"));
             }
         });

@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -27,6 +30,7 @@ import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.FloatingActionButton;
+import com.rey.material.widget.SnackBar;
 import com.rey.material.widget.Spinner;
 import com.rey.material.widget.Switch;
 
@@ -117,18 +121,38 @@ public class SearchFragment extends Fragment {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Filter filter = new Filter();
-                    filter.fillFilter(view);
-                    filter.getHref(getContext());
-                    SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor ed = sPref.edit();
-                    ed.putString("hrefAutoRu", filter.hrefAuto);
-                    ed.putString("hrefAvitoRu", filter.hrefAvito);
-                    ed.putString("hrefDromRu", filter.hrefDrom);
-                    ed.commit();
-                    Intent intent = new Intent(v.getContext(), ListOfCarsActivity.class);
-                    intent.putExtra("monitorID", -1);
-                    v.getContext().startActivity(intent);
+                    ConnectivityManager cm =
+                            (ConnectivityManager) v.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+                    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+
+                        Filter filter = new Filter();
+                        filter.fillFilter(view);
+                        filter.getHref(getContext());
+                        filter.insertToDb(getContext());
+                        SharedPreferences sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor ed = sPref.edit();
+                        ed.putString("hrefAutoRu", filter.hrefAuto);
+                        ed.putString("hrefAvitoRu", filter.hrefAvito);
+                        ed.putString("hrefDromRu", filter.hrefDrom);
+                        ed.commit();
+                        Intent intent = new Intent(v.getContext(), ListOfCarsActivity.class);
+                        intent.putExtra("monitorID", -1);
+                        intent.putExtra("filterID", filter.id);
+                        v.getContext().startActivity(intent);
+                    } else {
+                        SnackBar mSnackBar = ((MainActivity)getActivity()).getSnackBar();
+                        if (v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            mSnackBar.applyStyle(R.style.SnackBarSingleLine);
+                            mSnackBar.show();
+                        } else {
+                            mSnackBar.applyStyle(R.style.Material_Widget_SnackBar_Tablet_MultiLine);
+                            mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
+                                    .actionText("Ок")
+                                    .duration(4000)
+                                    .show();
+                        }
+                    }
                 }
             });
 
@@ -483,7 +507,6 @@ public class SearchFragment extends Fragment {
         }
         return;
     }
-
     public void onClickClearSelection(View v){
         LinearLayout ll;
         Button b;
@@ -758,6 +781,7 @@ public class SearchFragment extends Fragment {
         }
         db.close();
     }
+
     public void fillSpinner(Spinner sp,String[] data, int pos){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.row_spn, data);
         adapter.setDropDownViewResource(R.layout.row_spn_dropdown);

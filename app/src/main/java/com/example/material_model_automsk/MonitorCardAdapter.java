@@ -2,6 +2,7 @@ package com.example.material_model_automsk;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
@@ -669,6 +670,8 @@ class Monitor {
 
 
     Monitor() {
+        isActive = false;
+        countOfNewCars = 0;
     }
     Monitor(Filter filter,Context context) {
         isActive = false;
@@ -724,7 +727,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     }
 
     List<Monitor> monitors;
-    Activity parentActivity;
+    MonitorsFragment parentFragment;
     RecyclerView rv;
 
     private Monitor tempMonitor;
@@ -733,9 +736,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     private int activeMonitorCounter;
     List<Boolean> switchValues;
 
-    MonitorCardAdapter(List<Monitor> monitors, Activity parentActivity, RecyclerView myself, int startActiveMonitorCounter){
+    MonitorCardAdapter(List<Monitor> monitors, MonitorsFragment parentFragment, RecyclerView myself, int startActiveMonitorCounter){
         this.monitors = monitors;
-        this.parentActivity = parentActivity;
+        this.parentFragment = parentFragment;
         this.rv = myself;
         this.activeMonitorCounter = startActiveMonitorCounter;
         switchValues = new ArrayList<>();
@@ -801,7 +804,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
                 monitors.get(i).isActive = b;
                 switchValues.set(i, b);
-                SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
+                SQLiteDatabase db = new DbHelper(parentFragment.getActivity()).getWritableDatabase();
                 ContentValues cv = new ContentValues();
                 cv.put("is_active", b);
                 db.update("monitors", cv, "id = ?", new String[]{String.valueOf(monitors.get(i).id)});
@@ -814,7 +817,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         monitorViewHolder.ll.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Vibrator vibrator = (Vibrator) parentActivity.getSystemService(parentActivity.VIBRATOR_SERVICE);
+                final Activity parentActivity = parentFragment.getActivity();
+                final Vibrator vibrator = (Vibrator) parentActivity.getSystemService(parentActivity.VIBRATOR_SERVICE);
                 vibrator.vibrate(50);
 
                 PopupMenu popup = new PopupMenu(monitorViewHolder.iv.getContext(), monitorViewHolder.iv);
@@ -851,6 +855,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        Activity parentActivity = parentFragment.getActivity();
                         switch ((String)item.getTitle())
                         {
                             case "Изменить":
@@ -906,19 +911,21 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 else
                 {
                     SnackBar mSnackBar = ((MainActivity)v.getContext()).getSnackBar();
-
                     if(v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                         mSnackBar.applyStyle(R.style.SnackBarSingleLine);
                         mSnackBar.show();
+                        parentFragment.hideFAB(4000);
                     }
                     else
                     {
                         mSnackBar.applyStyle(R.style.Material_Widget_SnackBar_Tablet_MultiLine);
                         mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                         .actionText("Ок")
-                        .duration(4000)
+                                .duration(4000)
                         .show();
+                        parentFragment.hideFAB(4000);
                     }
+
                 }
             }
         });
@@ -928,7 +935,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     {
         if(isActive)
             reduceActiveMonitorCounter();
-        SQLiteDatabase db = new DbHelper(parentActivity).getWritableDatabase();
+        SQLiteDatabase db = new DbHelper(parentFragment.getActivity()).getWritableDatabase();
         db.delete("monitors", "id = ?", new String[]{id});
         db.close();
     }
@@ -954,7 +961,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         for (int i = position;i<monitors.size();i++)
             notifyItemChanged(i);
 
-        SnackBar sb = ((MainActivity)parentActivity).getSnackBar();
+        SnackBar sb = ((MainActivity)parentFragment.getActivity()).getSnackBar();
         sb.applyStyle(R.style.SnackBarSingleLine);
         sb.text("Монитор удален")
                 .actionText("Восстановить")
@@ -972,6 +979,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     }
                 });
         sb.show();
+        parentFragment.hideFAB(2500);
     }
 
     @Override
@@ -982,6 +990,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     private void reduceActiveMonitorCounter()
     {
         activeMonitorCounter--;
+        Activity parentActivity = parentFragment.getActivity();
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(parentActivity);
         sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
 
@@ -1002,6 +1011,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     }
     private void increaseActiveMonitorCounter()
     {
+        Activity parentActivity = parentFragment.getActivity();
         activeMonitorCounter++;
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(parentActivity);
         sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
