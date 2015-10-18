@@ -14,40 +14,43 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="5dp"
             android:orientation = "horizontal">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
 
-                <LinearLayout
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation = "vertical">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/isNew"
+                    android:text="Новая!"
+                    android:visibility="gone"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#e00004" />
+
+                <ImageView
+                    android:id="@+id/imageViewCarPhoto"
                     android:layout_gravity="center"
-                    android:orientation = "vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/isNew"
-                        android:text="NEW!"
-                        android:visibility="gone"
-                        android:textSize="12sp"
-                        android:layout_marginLeft="3dp"
-                        android:textColor="#e00004" />
+                    android:layout_width="170dp"
+                    android:padding="5dp"
+                    android:src="@drawable/car_loading_pic"
+                    android:layout_height="125dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dateTime"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#949797" />
 
-                    <ImageView
-                        android:id="@+id/imageViewCarPhoto"
-                        android:layout_gravity="center"
-                        android:layout_width="170dp"
-                        android:padding="5dp"
-                        android:src="@drawable/car_loading_pic"
-                        android:layout_height="125dp" />
-
-                </LinearLayout>
-
-            </FrameLayout>
+            </LinearLayout>
 
 
             <TextView

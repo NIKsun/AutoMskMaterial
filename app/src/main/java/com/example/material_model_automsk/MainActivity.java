@@ -93,7 +93,7 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(pref.getBoolean("notificationIsActive",true)) {
+        if(pref.getBoolean("notificationIsActive",false)) {
             Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
             Boolean alrarmIsActive = false;
             if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)

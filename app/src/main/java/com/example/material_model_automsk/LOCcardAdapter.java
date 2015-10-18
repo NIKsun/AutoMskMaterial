@@ -33,6 +33,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -44,6 +45,7 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
         CardView cv;
         TextView textViewMessage;
         TextView textViewIsNew;
+        TextView textViewDateTime;
         ImageView  iv;
 
         LOCviewHolder(View itemView) {
@@ -51,6 +53,7 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             cv = (CardView)itemView.findViewById(R.id.cv_car);
             textViewMessage = (TextView)itemView.findViewById(R.id.text);
             textViewIsNew = (TextView)itemView.findViewById(R.id.isNew);
+            textViewDateTime = (TextView)itemView.findViewById(R.id.dateTime);
             iv = (ImageView)itemView.findViewById(R.id.imageViewCarPhoto);
         }
     }
@@ -170,7 +173,7 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CarWebPage.class);
                 intent.putExtra("url", finalHref);
-                if(!isFromFavorites) {
+                if (!isFromFavorites) {
                     intent.putExtra("message", cars.getMessage(i));
                     intent.putExtra("image", cars.getImg(i));
                     intent.putExtra("dateTime", "12.21.42");
@@ -187,6 +190,16 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
                 return false;
             }
         });
+
+        if(!isFromFavorites)
+        {
+            SimpleDateFormat format;
+            if(cars.getCarDate(i).getHours() == 0 && cars.getCarDate(i).getMinutes() == 0 && cars.getCarDate(i).getSeconds() == 0)
+                format = new SimpleDateFormat("dd.MM.yyyy");
+            else
+                format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            monitorViewHolder.textViewDateTime.setText(format.format(cars.getCarDate(i)));
+        }
 
     }
 
