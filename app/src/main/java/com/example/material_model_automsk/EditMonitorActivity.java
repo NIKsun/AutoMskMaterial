@@ -394,13 +394,13 @@ public class EditMonitorActivity extends FragmentActivity {
             db.update("filters", cv, "id=?", new String[]{filterID.toString()});
 
             cv = new ContentValues();
-            cv.put("filter_id", filterID);
-            cv.put("count_of_new_cars", monitor.countOfNewCars);
-            cv.put("is_active", monitor.isActive ? 1 : 0);
-
+            cv.put("count_of_new_cars", 0);
             cv.put("href_auto", monitor.hrefAuto);
             cv.put("href_avito", monitor.hrefAvito);
             cv.put("href_drom", monitor.hrefDrom);
+            cv.put("date_auto", "###");
+            cv.put("date_avito", "###");
+            cv.put("id_drom", "###");
 
             //db.insert("monitors", null, cv);
             db.update("monitors", cv, "filter_id=?", new String[]{filterID.toString()});
