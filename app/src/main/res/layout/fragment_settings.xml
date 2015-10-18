@@ -80,7 +80,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:text="Зеленая тема"
+                                    android:text="Blue Gray"
                                     android:textSize="20sp" />
                             </RadioGroup>
                     </LinearLayout>

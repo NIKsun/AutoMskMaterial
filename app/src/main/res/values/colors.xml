@@ -20,7 +20,7 @@
 
     <!-- Исправить цвета -->
     <color name="myPrimaryDarkColor">#1565C0</color>
-    <color name="myPrimaryDarkColor2">#8BC94A</color>
+    <color name="myPrimaryDarkColor2">#37474F</color>
 
     <color name="myAccentColor">#EC407A</color>
     <color name="myAccentColor2">#EC407A</color>
