@@ -14,118 +14,74 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:layout_height="0dp"
+            android:weightSum="2"
+            android:layout_weight="1">
+
             <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/buyFirstItem"
                 card_view:cardUseCompatPadding="true"
-                card_view:cardElevation="4dp">
+                card_view:cardElevation="4dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:orientation = "horizontal">
+                    android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation = "vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/isNew1"
-                                android:text="NEW!"
-                                android:visibility="invisible"
-                                android:textSize="12sp"
-                                android:layout_marginLeft="3dp"
-                                android:textColor="#e00004" />
-
-                            <ImageView
-                                android:id="@+id/imageViewCarPhoto1"
-                                android:layout_gravity="center"
-                                android:layout_width="170dp"
-                                android:padding="5dp"
-                                android:src="@drawable/car_loading_pic"
-                                android:layout_height="125dp" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/no_ads"
+                        android:layout_weight="25" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/text1"
-                        android:textSize="13sp"/>
+                        android:text="Снять ограничения с количества избранных автомобилей"
+                        android:layout_weight="1"/>
 
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/buySecondItem"
                 card_view:cardUseCompatPadding="true"
-                card_view:cardElevation="4dp">
+                card_view:cardElevation="4dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:orientation = "horizontal">
+                    android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation = "vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/isNew2"
-                                android:text="NEW!"
-                                android:visibility="invisible"
-                                android:textSize="12sp"
-                                android:layout_marginLeft="3dp"
-                                android:textColor="#e00004" />
-
-                            <ImageView
-                                android:id="@+id/imageViewCarPhoto2"
-                                android:layout_gravity="center"
-                                android:layout_width="170dp"
-                                android:padding="5dp"
-                                android:src="@drawable/car_loading_pic"
-                                android:layout_height="125dp" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/stars"
+                        android:layout_weight="25" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/text2"
-                        android:textSize="13sp"/>
+                        android:text="Снять ограничения с количества избранных автомобилей"
+                        android:layout_weight="1"/>
 
                 </LinearLayout>
+
+
             </android.support.v7.widget.CardView>
 
 
@@ -134,114 +90,64 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:weightSum="1">
+            android:weightSum="2"
+            android:layout_weight="1">
             <android.support.v7.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/buyThirdItem"
                 card_view:cardUseCompatPadding="true"
-                card_view:cardElevation="4dp">
+                card_view:cardElevation="4dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:orientation = "horizontal">
+                    android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation = "vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/isNew3"
-                                android:text="NEW!"
-                                android:visibility="invisible"
-                                android:textSize="12sp"
-                                android:layout_marginLeft="3dp"
-                                android:textColor="#e00004" />
-
-                            <ImageView
-                                android:id="@+id/imageViewCarPhoto3"
-                                android:layout_gravity="center"
-                                android:layout_width="170dp"
-                                android:padding="5dp"
-                                android:src="@drawable/car_loading_pic"
-                                android:layout_height="125dp" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/stars"
+                        android:layout_weight="25" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/text3"
-                        android:textSize="13sp"/>
+                        android:text="Снять ограничения с количества избранных автомобилей"
+                        android:layout_weight="1"/>
 
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/buyFourthItem"
                 card_view:cardUseCompatPadding="true"
-                card_view:cardElevation="4dp">
-
+                card_view:cardElevation="4dp"
+                android:layout_weight="1">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:orientation = "horizontal">
+                    android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation = "vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/isNew"
-                                android:text="NEW!"
-                                android:visibility="invisible"
-                                android:textSize="12sp"
-                                android:layout_marginLeft="3dp"
-                                android:textColor="#e00004" />
-
-                            <ImageView
-                                android:id="@+id/imageViewCarPhoto"
-                                android:layout_gravity="center"
-                                android:layout_width="170dp"
-                                android:padding="5dp"
-                                android:src="@drawable/car_loading_pic"
-                                android:layout_height="125dp" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/stars"
+                        android:layout_weight="25" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/text"
-                        android:textSize="13sp"/>
+                        android:text="Снять ограничения с количества избранных автомобилей"
+                        android:layout_weight="1"/>
 
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
 
@@ -250,12 +156,11 @@
         <com.rey.material.widget.Button
             android:text="Удалить покупки"
             android:id="@+id/deletePurchase"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/cross_1"
             style="@style/LightFlatButtonRippleStyle"
-            android:visibility="invisible"/>
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

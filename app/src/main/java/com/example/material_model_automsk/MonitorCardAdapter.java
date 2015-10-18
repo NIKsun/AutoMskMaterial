@@ -931,22 +931,20 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         });
     }
 
-    private void deleteItemFromDB(String id, Boolean isActive)
+    private void deleteItemFromDB(Monitor monitor, Boolean isActive)
     {
         if(isActive)
             reduceActiveMonitorCounter();
         SQLiteDatabase db = new DbHelper(parentFragment.getActivity()).getWritableDatabase();
-        Cursor cursor = db.query("monitors", null, "id=?", new String[]{id}, null, null, null);
-        cursor.moveToFirst();
-        Integer filter_id = cursor.getInt(cursor.getColumnIndex("filter_id"));
+        Integer filter_id = monitor.filter.id;
         db.delete("filters", "id = ?", new String[]{String.valueOf(filter_id)});
-        db.delete("monitors", "id = ?", new String[]{id});
+        db.delete("monitors", "id = ?", new String[]{String.valueOf(monitor.id)});
         db.close();
     }
 
     public void finableRemove(){
         if(tempMonitor != null)
-            deleteItemFromDB(String.valueOf(tempMonitor.id), tempMonitor.isActive);
+            deleteItemFromDB(tempMonitor, tempMonitor.isActive);
         tempMonitor = null;
     }
 
@@ -955,7 +953,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         switchValues.remove(position);
 
         if(tempMonitor != null)
-            deleteItemFromDB(String.valueOf(tempMonitor.id), tempMonitor.isActive);
+            deleteItemFromDB(tempMonitor, tempMonitor.isActive);
 
         tempMonitor=monitors.get(position);
         tempPosition=position;

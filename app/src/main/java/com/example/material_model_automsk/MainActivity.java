@@ -143,8 +143,6 @@ public class MainActivity extends ActionBarActivity
 
         Log.i("11111111", "bindService - return " + String.valueOf(blnBind));
         //
-
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
         View decorView = getWindow().getDecorView();
 
