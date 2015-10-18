@@ -21,31 +21,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by 1 on 04.10.2015.
- *//*
-public class MarkFilter extends Activity{
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_marks);
-        Log.d("fdfs","fdsfdsf");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-    }
-}*/
 public class MarkFilter extends Activity {
 
     LayoutInflater inflater;
@@ -97,12 +72,21 @@ public class MarkFilter extends Activity {
             adapter = new CustomAdapter(MarkFilter.this, R.layout.list_of_marks, searchResults);
 
         }
-        else {
+        else if(getIntent().hasExtra("Models")){
             tvHeader.setText("Выберите модель авто:");
             originalValues  = new ArrayList<String>();
-            getIntent().getStringArrayExtra("Models");
             for(int i = 0; i < getIntent().getStringArrayExtra("Models").length; i++) {
                 originalValues.add(getIntent().getStringArrayExtra("Models")[i]);
+            }
+            searchResults=new ArrayList<String>(originalValues);
+            adapter = new CustomAdapter(MarkFilter.this, R.layout.list_of_marks, searchResults);
+
+        }
+        else{
+            tvHeader.setText("Укажите регион:");
+            originalValues  = new ArrayList<String>();
+            for(int i = 0; i < getIntent().getStringArrayExtra("Regions").length; i++) {
+                originalValues.add(getIntent().getStringArrayExtra("Regions")[i]);
             }
             searchResults=new ArrayList<String>(originalValues);
             adapter = new CustomAdapter(MarkFilter.this, R.layout.list_of_marks, searchResults);
@@ -165,11 +149,14 @@ public class MarkFilter extends Activity {
                     ed.putString("SelectedModel", "Любая");
                     TextView t = (TextView) findViewById(R.id.search_ll_mark_text);
                     Log.d("Tag", String.valueOf(tv.getText()));
-                } else {
+                } else if(getIntent().hasExtra("Models")){
                     ed.putString("SelectedModel", String.valueOf(tv.getText()));
                     if(tv.getText().equals("A4"))
                         Toast.makeText(MarkFilter.this, "Хороший выбор!", Toast.LENGTH_SHORT).show();
 
+                }
+                else{
+                    ed.putString("SelectedRegion", String.valueOf(tv.getText()));
                 }
                 ed.commit();
 

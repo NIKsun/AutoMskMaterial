@@ -8,13 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
@@ -356,7 +354,7 @@ public class EditMonitorActivity extends FragmentActivity {
         searchFragment.onClickClearSelection(v);
     }
     public void onClickMarkorModel(View v){
-        searchFragment.onClickMarkorModel(v);
+        searchFragment.onClickMarkorModelorRegion(v);
     }
     public void onCheckClicker(View v){
         Filter filter = new Filter();

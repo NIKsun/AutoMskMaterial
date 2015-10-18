@@ -77,14 +77,18 @@ public class SearchFragment extends Fragment {
         //Integer isEditFilter = sPref.getInt("isEditFilter",0);
             String mark = sPref.getString("SelectedMark", "Любая");
             String model = sPref.getString("SelectedModel", "Любая");
+            String region = sPref.getString("SelectedRegion", "Вся Россия");
 
             ImageView iv;
 
             TextView t = (TextView) getActivity().findViewById(R.id.search_ll_mark_text);
             t.setText(mark);
 
-            TextView t2 = (TextView) getActivity().findViewById(R.id.search_ll_model_text);
-            t2.setText(model);
+            t = (TextView) getActivity().findViewById(R.id.search_ll_model_text);
+            t.setText(model);
+
+            t = (TextView) getActivity().findViewById(R.id.search_ll_region_text);
+            t.setText(region);
 
             CardView ll = (CardView) getActivity().findViewById(R.id.search_ll_model_cardview);
             if (!mark.equals("Любая")) {
@@ -95,6 +99,7 @@ public class SearchFragment extends Fragment {
                 ll.setVisibility(View.VISIBLE);
             } else
                 ll.setVisibility(View.GONE);
+
             if (!model.equals("Любая")) {
                 Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
                 b2.setVisibility(View.VISIBLE);
@@ -105,6 +110,13 @@ public class SearchFragment extends Fragment {
                 b3.setVisibility(View.INVISIBLE);
                 iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
                 iv.setVisibility(View.VISIBLE);
+            }
+
+            if (!region.equals("Вся Россия")) {
+                Button b3 = (Button) getActivity().findViewById(R.id.search_ll_region_clear);
+                b3.setVisibility(View.VISIBLE);
+                iv = (ImageView) getActivity().findViewById(R.id.arrow_region);
+                iv.setVisibility(View.INVISIBLE);
             }
 
     }
@@ -739,20 +751,55 @@ public class SearchFragment extends Fragment {
                 ed = sPref.edit();
                 ed.putString("SelectedModel","Любая").commit();
                 break;
+            case R.id.search_ll_region_clear:
+                b = (Button) view.findViewById(R.id.search_ll_region_clear);
+                b.setVisibility(View.INVISIBLE);
+                iv = (ImageView) view.findViewById(R.id.arrow_region);
+                iv.setVisibility(View.VISIBLE);
+
+                t = (TextView)view.findViewById(R.id.search_ll_region_text);
+                t.setText("Вся Россия");
+
+                sPref = getActivity().getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                ed = sPref.edit();
+                ed.putString("SelectedRegion","Вся Россия").commit();
+                break;
         }
         return;
     }
-    public void onClickMarkorModel(View v){
+    public void onClickMarkorModelorRegion(View v){
         Intent intent;
+        Cursor cursor;
+        String strToParse;
+        String[] marks_arr;
         final DbHelper dbHelper = new DbHelper(getActivity());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         switch (v.getId()){
+            case R.id.search_ll_region_cardview :
+                //Button b = (Button) view.findViewById(R.id.search_ll_mark_clear);
+                //b.setVisibility(View.VISIBLE); //в новое активити перенести это
+
+                cursor = db.query("regionsTable", null, null, null, null, null, null);
+                strToParse = "Вся Россия@@@";
+
+                if (cursor.moveToFirst()) {
+                    int MarkColIndex = cursor.getColumnIndex("regionuser");
+                    do {
+
+                        strToParse += cursor.getString(MarkColIndex) + "@@@";
+                    } while (cursor.moveToNext());
+                }
+                marks_arr = strToParse.split("@@@");
+                intent = new Intent(getActivity(), MarkFilter.class);
+                intent.putExtra("Regions",marks_arr);
+                startActivity(intent);
+                break;
             case R.id.search_ll_mark_cardview :
                 //Button b = (Button) view.findViewById(R.id.search_ll_mark_clear);
                 //b.setVisibility(View.VISIBLE); //в новое активити перенести это
 
-                Cursor cursor = db.query("marksTable", null, null, null, null, null, null);
-                String strToParse = "Любая@@@";
+                cursor = db.query("marksTable", null, null, null, null, null, null);
+                strToParse = "Любая@@@";
 
                 if (cursor.moveToFirst()) {
                     int MarkColIndex = cursor.getColumnIndex("markauser");
@@ -761,7 +808,7 @@ public class SearchFragment extends Fragment {
                         strToParse += cursor.getString(MarkColIndex) + "@@@";
                     } while (cursor.moveToNext());
                 }
-                String[] marks_arr = strToParse.split("@@@");
+                marks_arr = strToParse.split("@@@");
                 intent = new Intent(getActivity(), MarkFilter.class);
                 intent.putExtra("Marks",marks_arr);
                 startActivity(intent);

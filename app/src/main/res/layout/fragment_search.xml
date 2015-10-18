@@ -24,12 +24,92 @@
                 android:layout_height="wrap_content"
                 card_view:cardUseCompatPadding="true"
                 card_view:cardElevation="4dp"
+                android:onClick="onClickMarkorModel"
+                android:id="@+id/search_ll_region_cardview"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Регион"
+                            android:textSize="25sp"
+                            android:layout_gravity="start"
+                            android:fontFamily="sans-serif"
+                            android:textStyle="italic"
+                            style="@style/LightTitleText"/>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right">
+                            <ImageView
+                                android:id="@+id/arrow_region"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/cross_6"/>
+                            <com.rey.material.widget.Button
+                                android:id="@+id/search_ll_region_clear"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/cross_1"
+                                style="@style/LightFlatButtonRippleStyle"
+                                android:visibility="invisible"
+                                android:onClick="onClickClearSelection"/>
+                        </FrameLayout>
+                    </FrameLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/search_ll_region_hidden"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/colorPrimaryQuarter"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="7dp"/>
+                        <TextView
+                            android:id="@+id/search_ll_region_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Вся Россия"
+                            android:textSize="15sp"
+                            android:layout_gravity="left"
+                            style="@style/LightTitleText"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="4dp"
                 android:id="@+id/search_ll_mark_cardview"
                 android:onClick="onClickMarkorModel"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

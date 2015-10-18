@@ -36,18 +36,9 @@ import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.crashlytics.android.Crashlytics;
-import com.example.material_model_automsk.inappbilling.util.IabHelper;
-import com.example.material_model_automsk.inappbilling.util.IabResult;
-import com.example.material_model_automsk.inappbilling.util.Inventory;
-import com.example.material_model_automsk.inappbilling.util.Purchase;
-import com.rey.material.app.Dialog;
-import com.rey.material.app.DialogFragment;
-import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
-import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.SnackBar;
-import com.rey.material.widget.Spinner;
 
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -518,7 +509,7 @@ public class MainActivity extends ActionBarActivity
         mainFragment.getSearchFragment().onClickClearSelection(v);
     }
     public void onClickMarkorModel(View v){
-        mainFragment.getSearchFragment().onClickMarkorModel(v);
+        mainFragment.getSearchFragment().onClickMarkorModelorRegion(v);
     }
 
 
