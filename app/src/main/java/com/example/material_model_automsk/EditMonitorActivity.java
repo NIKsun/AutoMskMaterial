@@ -393,12 +393,8 @@ public class EditMonitorActivity extends FragmentActivity {
             cv.put("driveType", filter.typeOfWheelDrive);
             db.update("filters", cv, "id=?", new String[]{filterID.toString()});
 
-            Cursor cur = db.query("filters", new String[]{"id"}, null, null, null, null, null, null);
-            cur.moveToLast();
-            filter.id = cur.getInt(cur.getColumnIndex("id"));
-
             cv = new ContentValues();
-            cv.put("filter_id", filter.id);
+            cv.put("filter_id", filterID);
             cv.put("count_of_new_cars", monitor.countOfNewCars);
             cv.put("is_active", monitor.isActive ? 1 : 0);
 
@@ -406,8 +402,8 @@ public class EditMonitorActivity extends FragmentActivity {
             cv.put("href_avito", monitor.hrefAvito);
             cv.put("href_drom", monitor.hrefDrom);
 
-            db.insert("monitors", null, cv);
-
+            //db.insert("monitors", null, cv);
+            db.update("monitors", cv, "filter_id=?", new String[]{filterID.toString()});
             db.close();
 
         }

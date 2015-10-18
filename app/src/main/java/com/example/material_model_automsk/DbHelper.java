@@ -13,7 +13,7 @@ import android.util.Log;
 class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context) {
-        super(context, "main_db11", null, 1);
+        super(context, "main_db12", null, 1);
     }
 
     @Override
