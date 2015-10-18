@@ -31,7 +31,9 @@
                 android:id="@+id/buyFirstItem"
                 card_view:cardUseCompatPadding="true"
                 card_view:cardElevation="4dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,7 +62,9 @@
                 android:id="@+id/buySecondItem"
                 card_view:cardUseCompatPadding="true"
                 card_view:cardElevation="4dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginBottom="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,7 +104,9 @@
                 android:id="@+id/buyThirdItem"
                 card_view:cardUseCompatPadding="true"
                 card_view:cardElevation="4dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -110,7 +116,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/stars"
+                        android:src="@drawable/computer"
                         android:layout_weight="25" />
 
                     <TextView
@@ -128,7 +134,9 @@
                 android:id="@+id/buyFourthItem"
                 card_view:cardUseCompatPadding="true"
                 card_view:cardElevation="4dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="2dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -137,7 +145,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/stars"
+                        android:src="@drawable/all"
                         android:layout_weight="25" />
 
                     <TextView

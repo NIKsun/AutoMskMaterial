@@ -432,7 +432,16 @@ class Filter {
         //region map create
         map.put(1970,"782");
         map.put(1980,"873");
+        map.put(1981,"873");
+        map.put(1982,"873");
+        map.put(1983,"878");
+        map.put(1984,"878");
+
         map.put(1985,"878");
+        map.put(1986,"878");
+        map.put(1987,"878");
+        map.put(1988,"883");
+        map.put(1989,"883");
         map.put(1990,"883");
         map.put(1991,"884");
         map.put(1992,"885");

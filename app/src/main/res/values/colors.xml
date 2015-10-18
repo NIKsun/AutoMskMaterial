@@ -10,10 +10,10 @@
 
 
     <color name="colorPrimary">#1E88E5</color>
-    <color name="colorPrimary2">#8BC34A</color>
+    <color name="colorPrimary2">#455A64</color>
     <color name="colorPrimaryHalf">#9003A9F4</color>
     <color name="myPrimaryColor">#1E88E5</color>
-    <color name="myPrimaryColor2">#8BC34A</color>
+    <color name="myPrimaryColor2">#546E7A</color>
 
     <color name="colorPrimaryQuarter">#9FA8DA</color>
     <color name="colorControlNormal">#FF78909C</color>

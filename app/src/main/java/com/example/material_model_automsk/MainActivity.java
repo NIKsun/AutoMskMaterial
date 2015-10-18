@@ -431,7 +431,7 @@ public class MainActivity extends ActionBarActivity
                 }
                 break;
             case 1:
-                mToolbar.setTitle("Авто Москва");
+                mToolbar.setTitle("Авто Русь");
                 mainFragment.setPage(1);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);
