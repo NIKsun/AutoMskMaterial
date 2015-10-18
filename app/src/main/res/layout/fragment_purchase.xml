@@ -10,22 +10,253 @@
         android:background="@drawable/shadow"
         android:layout_gravity="top" />
 
-    <com.rey.material.widget.TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/LightTitleText"
-        android:textSize="40dp"
-        android:text="Купить"
-        android:gravity="center"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
 
-    <com.rey.material.widget.FloatingActionButton
-        android:id="@+id/purchase_something"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:visibility="invisible"
-        style="@style/LightFlatButtonRippleStyle"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buyFirstItem"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation = "horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation = "vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/isNew1"
+                                android:text="NEW!"
+                                android:visibility="invisible"
+                                android:textSize="12sp"
+                                android:layout_marginLeft="3dp"
+                                android:textColor="#e00004" />
+
+                            <ImageView
+                                android:id="@+id/imageViewCarPhoto1"
+                                android:layout_gravity="center"
+                                android:layout_width="170dp"
+                                android:padding="5dp"
+                                android:src="@drawable/car_loading_pic"
+                                android:layout_height="125dp" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text1"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buySecondItem"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation = "horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation = "vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/isNew2"
+                                android:text="NEW!"
+                                android:visibility="invisible"
+                                android:textSize="12sp"
+                                android:layout_marginLeft="3dp"
+                                android:textColor="#e00004" />
+
+                            <ImageView
+                                android:id="@+id/imageViewCarPhoto2"
+                                android:layout_gravity="center"
+                                android:layout_width="170dp"
+                                android:padding="5dp"
+                                android:src="@drawable/car_loading_pic"
+                                android:layout_height="125dp" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text2"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="1">
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buyThirdItem"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation = "horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation = "vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/isNew3"
+                                android:text="NEW!"
+                                android:visibility="invisible"
+                                android:textSize="12sp"
+                                android:layout_marginLeft="3dp"
+                                android:textColor="#e00004" />
+
+                            <ImageView
+                                android:id="@+id/imageViewCarPhoto3"
+                                android:layout_gravity="center"
+                                android:layout_width="170dp"
+                                android:padding="5dp"
+                                android:src="@drawable/car_loading_pic"
+                                android:layout_height="125dp" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text3"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buyFourthItem"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation = "horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation = "vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/isNew"
+                                android:text="NEW!"
+                                android:visibility="invisible"
+                                android:textSize="12sp"
+                                android:layout_marginLeft="3dp"
+                                android:textColor="#e00004" />
+
+                            <ImageView
+                                android:id="@+id/imageViewCarPhoto"
+                                android:layout_gravity="center"
+                                android:layout_width="170dp"
+                                android:padding="5dp"
+                                android:src="@drawable/car_loading_pic"
+                                android:layout_height="125dp" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <com.rey.material.widget.Button
+            android:text="Удалить покупки"
+            android:id="@+id/deletePurchase"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/cross_1"
+            style="@style/LightFlatButtonRippleStyle"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
 
 </LinearLayout>

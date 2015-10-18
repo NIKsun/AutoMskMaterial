@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -63,6 +64,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -83,6 +85,7 @@ public class MainActivity extends ActionBarActivity
     static android.app.Dialog dialogPicker ;
     private AlarmManager am;
 
+    public static boolean blnBind;
 
     /*ForEasyDelete
     private static final String TAG =
@@ -132,9 +135,13 @@ public class MainActivity extends ActionBarActivity
 */
 
         //Service inapp
-        final boolean blnBind = bindService(new Intent(
-                        "com.android.vending.billing.InAppBillingService.BIND"),
+        Intent intent = new Intent(
+                "com.android.vending.billing.InAppBillingService.BIND");
+        intent.setPackage("com.android.vending");
+        blnBind = bindService(intent,
                 mServiceConn, Context.BIND_AUTO_CREATE);
+
+
         Log.i("11111111", "bindService - return " + String.valueOf(blnBind));
         //
 
@@ -232,6 +239,48 @@ public class MainActivity extends ActionBarActivity
             }
         });
 
+
+        Thread checkPurchase = new Thread(new Runnable() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            public void run() {
+                String tag = "checkPurchaseTest";
+                if (!blnBind) return;
+                if (mService == null) return;
+
+                Bundle ownedItems;
+                try {
+                    ownedItems = mService.getPurchases(3, getPackageName(), "inapp", null);
+
+                    Toast.makeText(getApplicationContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
+                    Log.i(tag, "getPurchases() - success return Bundle");
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+
+                    Toast.makeText(getApplicationContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
+                    Log.w(tag, "getPurchases() - fail!");
+                    return;
+                }
+
+                int response = ownedItems.getInt("RESPONSE_CODE");
+                Toast.makeText(getApplicationContext(), "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response), Toast.LENGTH_SHORT).show();
+                Log.i(tag, "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response));
+
+                if (response != 0) return;
+
+                ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItems.getStringArrayList("INAPP_DATA_SIGNATURE");
+                String continuationToken = ownedItems.getString("INAPP_CONTINUATION_TOKEN");
+
+                Log.i(tag, "getPurchases() - \"INAPP_PURCHASE_ITEM_LIST\" return " + ownedSkus.toString());
+                Log.i(tag, "getPurchases() - \"INAPP_PURCHASE_DATA_LIST\" return " + purchaseDataList.toString());
+                Log.i(tag, "getPurchases() - \"INAPP_DATA_SIGNATURE\" return " + (signatureList != null ? signatureList.toString() : "null"));
+                Log.i(tag, "getPurchases() - \"INAPP_CONTINUATION_TOKEN\" return " + (continuationToken != null ? continuationToken : "null"));
+
+            }
+        });
+
+        checkPurchase.run();
 
         SharedPreferences sPrefVersion;
         sPrefVersion = getPreferences(MODE_PRIVATE);
@@ -1124,7 +1173,6 @@ public class MainActivity extends ActionBarActivity
             }
         };
 
-        // 1dp/ms
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
@@ -1190,9 +1238,11 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (PurchaseFragment.mHelper != null) PurchaseFragment.mHelper.dispose();
+        if (mService != null)
+            unbindService(mServiceConn);
         PurchaseFragment.mHelper = null;
+        super.onDestroy();
     }
 
 

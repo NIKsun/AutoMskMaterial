@@ -816,6 +816,10 @@ public class IabHelper {
     }
 
     void flagStartAsync(String operation) {
+        //
+        //if (mAsyncInProgress) {
+        //    flagEndAsync();
+        //}
         if (mAsyncInProgress) throw new IllegalStateException("Can't start async operation (" +
                 operation + ") because another async operation(" + mAsyncOperation + ") is in progress.");
         mAsyncOperation = operation;
@@ -823,7 +827,7 @@ public class IabHelper {
         logDebug("Starting async operation: " + operation);
     }
 
-    void flagEndAsync() {
+    public void flagEndAsync() {
         logDebug("Ending async operation: " + mAsyncOperation);
         mAsyncOperation = "";
         mAsyncInProgress = false;
