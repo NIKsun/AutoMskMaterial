@@ -3,17 +3,21 @@ package com.example.material_model_automsk;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
@@ -21,6 +25,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
 import android.widget.Toast;
@@ -58,6 +63,8 @@ public class CarWebPage extends Activity{
             toast = Toast.makeText(this, "Авто добавлено в избранное", Toast.LENGTH_SHORT);
             if (!cursor.isLast() && !cursor.moveToNext()) {
                 final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorites);
+
+                ThemeManager.init(this, 2, 0, null);
                 Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_translate_top);
                 fab.startAnimation(anim);
                 fab.setVisibility(View.VISIBLE);

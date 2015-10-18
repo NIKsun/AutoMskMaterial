@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rey.material.app.ThemeManager;
 
 import java.util.ArrayList;
 
@@ -35,17 +39,29 @@ public class MarkFilter extends Activity {
         TextView tvHeader = (TextView)findViewById(R.id.text_view_title);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-
         String themeName = pref.getString("theme", "1");
+
         if (themeName.equals("1")) {
+            setTheme(R.style.AppTheme);
             tvHeader.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
+            }
         }
-        else {
+        else if (themeName.equals("2")) {
+            setTheme(R.style.AppTheme2);
             tvHeader.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
-
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor2));
+            }
         }
-
+        ThemeManager.init(this, 2, 0, null);
         //String[] models_arra = getIntent().getStringArrayExtra("Models");
 
         ListView listMark = (ListView) findViewById(R.id.listViewMark);

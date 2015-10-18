@@ -129,6 +129,13 @@ public class SearchFragment extends Fragment {
         if(!butoonBlock) {
             FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_search);
             Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_simple_grow);
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String themeName = pref.getString("theme", "1");
+            if (themeName.equals("1")) {
+                fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            }
+            else
+                fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
             fab.startAnimation(anim);
             fab.setVisibility(View.VISIBLE);
             fab.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp), false);
@@ -210,6 +217,13 @@ public class SearchFragment extends Fragment {
 
     public void showFAB(){
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_search);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1")) {
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
         if(fab != null) {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_simple_grow);
             fab.startAnimation(animation);

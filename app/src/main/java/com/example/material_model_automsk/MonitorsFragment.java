@@ -55,6 +55,13 @@ public class MonitorsFragment extends Fragment {
         update();
 
         fab = (FloatingActionButton)savedView.findViewById(R.id.fab_line);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1")) {
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

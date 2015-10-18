@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -390,6 +392,13 @@ public class LOCfragment extends Fragment {
                 else {
                     FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.fab_sync);
                     fab.setIcon(savedView.getResources().getDrawable(R.drawable.ic_loop_white_48dp), true);
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    String themeName = pref.getString("theme", "1");
+                    if (themeName.equals("1")) {
+                        fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    }
+                    else
+                        fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
                     ll = (LinearLayout) savedView.findViewById(R.id.layout_connection_error);
                     ll.setVisibility(View.VISIBLE);
                     fab.setOnClickListener(new View.OnClickListener() {
