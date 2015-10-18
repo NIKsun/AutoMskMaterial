@@ -4,8 +4,11 @@ import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +16,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -29,10 +34,20 @@ import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
 import com.crashlytics.android.Crashlytics;
+import com.example.material_model_automsk.inappbilling.util.IabHelper;
+import com.example.material_model_automsk.inappbilling.util.IabResult;
+import com.example.material_model_automsk.inappbilling.util.Inventory;
+import com.example.material_model_automsk.inappbilling.util.Purchase;
+import com.rey.material.app.Dialog;
+import com.rey.material.app.DialogFragment;
+import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.SnackBar;
+import com.rey.material.widget.Spinner;
 
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -40,6 +55,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -58,6 +74,17 @@ public class MainActivity extends ActionBarActivity
     final String SAVED_TEXT_WITH_VERSION = "checkVersion";
     final String DO_NOT_REMIND = "DontRemind";
     private AlarmManager am;
+
+    public static boolean blnBind;
+
+    /*ForEasyDelete
+    private static final String TAG =
+            "Pasha i Nikita";//
+    IabHelper mHelper;
+
+    static final String ITEM_SKU = "android.test.purchased";
+*/
+
 
 
     @Override
@@ -85,6 +112,39 @@ public class MainActivity extends ActionBarActivity
             }
         }
 
+            /*ForEasyDelete
+
+        //Danger! Auchtung! Никита, Паша!!!
+        String base64EncodedPublicKey =
+                "<your license key here>";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на
+        // github с реальным ключом. Иначе он будет в открытом виде в инете висеть!!!
+
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Log.d(TAG, "In-app Billing setup failed: " +
+                            result);
+                } else {
+                    Log.d(TAG, "In-app Billing is set up OK");
+                }
+            }
+        });
+*/
+
+        //Service inapp
+        Intent intent = new Intent(
+                "com.android.vending.billing.InAppBillingService.BIND");
+        intent.setPackage("com.android.vending");
+        blnBind = bindService(intent,
+                mServiceConn, Context.BIND_AUTO_CREATE);
+
+
+        Log.i("11111111", "bindService - return " + String.valueOf(blnBind));
+        //
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String themeName = pref.getString("theme", "1");
         View decorView = getWindow().getDecorView();
 
@@ -107,6 +167,9 @@ public class MainActivity extends ActionBarActivity
             }
         }
         ThemeManager.init(this, 2, 0, null);
+
+
+
 
         if(isFirstLaunch) {
             FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
@@ -175,6 +238,48 @@ public class MainActivity extends ActionBarActivity
             }
         });
 
+
+        Thread checkPurchase = new Thread(new Runnable() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            public void run() {
+                String tag = "checkPurchaseTest";
+                if (!blnBind) return;
+                if (mService == null) return;
+
+                Bundle ownedItems;
+                try {
+                    ownedItems = mService.getPurchases(3, getPackageName(), "inapp", null);
+
+                    Toast.makeText(getApplicationContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
+                    Log.i(tag, "getPurchases() - success return Bundle");
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+
+                    Toast.makeText(getApplicationContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
+                    Log.w(tag, "getPurchases() - fail!");
+                    return;
+                }
+
+                int response = ownedItems.getInt("RESPONSE_CODE");
+                Toast.makeText(getApplicationContext(), "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response), Toast.LENGTH_SHORT).show();
+                Log.i(tag, "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response));
+
+                if (response != 0) return;
+
+                ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItems.getStringArrayList("INAPP_DATA_SIGNATURE");
+                String continuationToken = ownedItems.getString("INAPP_CONTINUATION_TOKEN");
+
+                Log.i(tag, "getPurchases() - \"INAPP_PURCHASE_ITEM_LIST\" return " + ownedSkus.toString());
+                Log.i(tag, "getPurchases() - \"INAPP_PURCHASE_DATA_LIST\" return " + purchaseDataList.toString());
+                Log.i(tag, "getPurchases() - \"INAPP_DATA_SIGNATURE\" return " + (signatureList != null ? signatureList.toString() : "null"));
+                Log.i(tag, "getPurchases() - \"INAPP_CONTINUATION_TOKEN\" return " + (continuationToken != null ? continuationToken : "null"));
+
+            }
+        });
+
+        checkPurchase.run();
 
         SharedPreferences sPrefVersion;
         sPrefVersion = getPreferences(MODE_PRIVATE);
@@ -266,7 +371,6 @@ public class MainActivity extends ActionBarActivity
                 ad.show();
             }
         }
-
     }
 
     @Override
@@ -361,6 +465,20 @@ public class MainActivity extends ActionBarActivity
                 fTrans.add(R.id.container, secondFragment);
                 break;
             case 5:
+                mToolbar.setTitle("Покупки");
+                fTrans.hide(mainFragment);
+                if(secondFragment != null)
+                    fTrans.remove(secondFragment);
+                secondFragment = new PurchaseFragment();
+                fTrans.add(R.id.container, secondFragment);
+                break;
+
+            /*ForEasyDelete
+              mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001,
+                        mPurchaseFinishedListener, "mypurchasetoken2");
+                break;
+*/
+            case 6:
                 mToolbar.setTitle("Справка");
                 fTrans.hide(mainFragment);
                 if(secondFragment != null)
@@ -488,9 +606,103 @@ public class MainActivity extends ActionBarActivity
             }
         };
 
-        // 1dp/ms
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
+
+ /*ForEasyDelete
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                public void onConsumeFinished(Purchase purchase,
+                                              IabResult result) {
+
+                    if (result.isSuccess()) {
+                        //clickButton.setEnabled(true);
+                    } else {
+                        // handle error
+                    }
+                }
+            };
+    public void consumeItem() {
+        mHelper.queryInventoryAsync(mReceivedInventoryListener);
+    }
+
+    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
+            = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result,
+                                             Inventory inventory) {
+
+            if (result.isFailure()) {
+                // Handle failure
+            } else {
+                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
+                        mConsumeFinishedListener);
+            }
+        }
+    };
+
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result,
+                                          Purchase purchase)
+        {
+            if (result.isFailure()) {
+                // Handle error
+                return;
+            }
+            else if (purchase.getSku().equals(ITEM_SKU)) {
+                consumeItem();
+                Log.d( "3333333333", "8888888888888888888888888888");
+
+
+                // Если наш ITEM_SKU совпадает с соответсвующем для рекламы ITEM_SKU
+                // В sharedPreference сохраняем, что реклама отключена. Нужно, чтобы при обновления приложения покупка оставалась.
+                //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                //SharedPreferences.Editor editor = settings.edit();
+                //editor.putBoolean("TAG_DISABLED_ADS", true);
+                //editor.commit();
+
+            }
+
+        }
+    };
+*/
+
+    @Override
+    public void onDestroy() {
+        if (PurchaseFragment.mHelper != null) PurchaseFragment.mHelper.dispose();
+        if (mService != null)
+            unbindService(mServiceConn);
+        PurchaseFragment.mHelper = null;
+        super.onDestroy();
+    }
+
+
+    //Создать новое activity, иначе не работает
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data)
+    {
+        if (!PurchaseFragment.mHelper.handleActivityResult(requestCode,
+                resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+// Добавлено для сервиса.
+
+    public static IInAppBillingService mService;
+    private ServiceConnection mServiceConn = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = IInAppBillingService.Stub.asInterface(service);
+        }
+    };
+
 
 }
