@@ -1,5 +1,6 @@
 package com.example.material_model_automsk;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -24,6 +25,8 @@ import com.rey.material.widget.Switch;
  */
 public class EditMonitorActivity extends FragmentActivity {
     SearchFragment searchFragment;
+    Integer filterID;
+
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("lis","createEdit");
         SharedPreferences pref2 = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
@@ -43,7 +46,7 @@ public class EditMonitorActivity extends FragmentActivity {
         Log.d("filterID", String.valueOf(getIntent().getIntExtra("filterID", -1)));
         searchFragment = (SearchFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
         pref.edit().putInt("isEditFilter",1).commit();
-        Integer filterID = getIntent().getIntExtra("filterID",-1);
+        filterID = getIntent().getIntExtra("filterID",-1);
         if(filterID!=-1){
             final DbHelper dbHelper = new DbHelper(this);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -319,18 +322,31 @@ public class EditMonitorActivity extends FragmentActivity {
 
     }
     public void onResume(){
-        Log.d("lis","resumeEdit");
+        Log.d("lis", "resumeEdit");
         super.onResume();
 
     }
     public void onDestroy(){
         super.onDestroy();
-        SharedPreferences pref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+     /*   SharedPreferences pref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
         pref.edit().putInt("isEditFilter",0).commit();
         pref.edit().putString("SelectedMark", "Любая").commit();
-        pref.edit().putString("SelectedModel", "Любая").commit();
+        pref.edit().putString("SelectedModel", "Любая").commit();*/
+        SharedPreferences pref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        pref.edit().putInt("isEditFilter",0).commit();
+        //searchFragment.
         Log.d("lis", "destroyEdit");
     }
+/*
+    public void onPause(){
+        super.onPause();
+        SharedPreferences pref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        //pref.edit().putInt("isEditFilter",0).commit();
+        pref.edit().putString("SelectedMark", "Любая").commit();
+        pref.edit().putString("SelectedModel", "Любая").commit();
+        Log.d("lis", "pauseEdit");
+    }
+*/
 
     public void onClickHandlerHidden(View v){
         searchFragment.onClickHandlerHidden(v);
@@ -343,6 +359,58 @@ public class EditMonitorActivity extends FragmentActivity {
         searchFragment.onClickMarkorModel(v);
     }
     public void onCheckClicker(View v){
+        Filter filter = new Filter();
+        filter.fillFilter(searchFragment.view);
+        filter.getHref(this);
+        Monitor monitor = new Monitor(filter, this);
+        if(filterID==-1) {
+            filter.insertToDb(this);
+
+            monitor.insertToDb(this);
+        }
+        else
+        {
+            final DbHelper dbHelper = new DbHelper(this);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            cv.put("marka", filter.mark);
+            cv.put("model", filter.model);
+            cv.put("yearFrom", filter.yearFrom);
+            cv.put("yearTo", filter.yearTo);
+
+            cv.put("priceFrom", filter.priceFrom);
+            cv.put("priceTo", filter.priceTo);
+            cv.put("milleageFrom", filter.milleageFrom);
+            cv.put("milleageTo", filter.milleageTo);
+
+            cv.put("volumeFrom", filter.volumeFrom);
+            cv.put("volumeTo", filter.volumeTo);
+            cv.put("transmission", filter.transmission);
+            cv.put("bodyType", filter.typeOfCarcase);
+
+            cv.put("engineType", filter.typeOfEngine);
+            cv.put("withPhoto", filter.withPhoto ? 1 : 0);
+            cv.put("driveType", filter.typeOfWheelDrive);
+            db.update("filters", cv, "id=?", new String[]{filterID.toString()});
+
+            Cursor cur = db.query("filters", new String[]{"id"}, null, null, null, null, null, null);
+            cur.moveToLast();
+            filter.id = cur.getInt(cur.getColumnIndex("id"));
+
+            cv = new ContentValues();
+            cv.put("filter_id", filter.id);
+            cv.put("count_of_new_cars", monitor.countOfNewCars);
+            cv.put("is_active", monitor.isActive ? 1 : 0);
+
+            cv.put("href_auto", monitor.hrefAuto);
+            cv.put("href_avito", monitor.hrefAvito);
+            cv.put("href_drom", monitor.hrefDrom);
+
+            db.insert("monitors", null, cv);
+
+            db.close();
+
+        }
         // тут надо изменить текущий фильтр точнее добавить новый на его место
         finish();
     }
