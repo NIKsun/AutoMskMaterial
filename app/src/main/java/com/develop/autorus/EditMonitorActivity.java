@@ -406,6 +406,8 @@ public class EditMonitorActivity extends FragmentActivity {
 
         }
         // тут надо изменить текущий фильтр точнее добавить новый на его место
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref.edit().putInt("NumberOfCallingFragment",0).commit();
         finish();
     }
 }

@@ -68,6 +68,11 @@ public class MonitorsFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+
+        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
+        fab.startAnimation(anim);
+        fab.setVisibility(View.VISIBLE);
+        
         rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

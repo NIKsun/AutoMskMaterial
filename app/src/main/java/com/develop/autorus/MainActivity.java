@@ -420,9 +420,9 @@ public class MainActivity extends ActionBarActivity
                 mainFragment.setPage(0);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);
-                    mainFragment.updateMonitorsFragment();
                     fTrans.show(mainFragment);
                 }
+                mainFragment.updateMonitorsFragment();
                 break;
             case 1:
                 mToolbar.setTitle("Авто Русь");
