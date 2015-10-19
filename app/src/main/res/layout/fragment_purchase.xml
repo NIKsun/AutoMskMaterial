@@ -161,15 +161,6 @@
 
         </LinearLayout>
 
-        <com.rey.material.widget.Button
-            android:text="Удалить покупки"
-            android:id="@+id/deletePurchase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            style="@style/LightFlatButtonRippleStyle"
-            android:layout_gravity="center_horizontal" />
-
     </LinearLayout>
 
 </LinearLayout>
