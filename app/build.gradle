@@ -22,7 +22,7 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "com.example.material_model_automsk"
+        applicationId "com.develop.autorus"
         minSdkVersion 9
         targetSdkVersion 21
         versionCode 1

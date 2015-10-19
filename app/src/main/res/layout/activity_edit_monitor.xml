@@ -34,7 +34,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.material_model_automsk.SearchFragment"
+        android:name="com.develop.autorus.SearchFragment"
         android:id="@+id/fragment"
         android:layout_below="@+id/title"
         tools:layout="@layout/fragment_search" />
