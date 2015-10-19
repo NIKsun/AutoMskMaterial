@@ -61,4 +61,10 @@
             app:layout="@layout/fragment_navigation_drawer"
             tools:layout="@layout/fragment_navigation_drawer" />
     </android.support.v4.widget.DrawerLayout>
+    <com.rey.material.widget.SnackBar
+        android:id="@+id/loc_sn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_gravity="bottom"/>
 </RelativeLayout>

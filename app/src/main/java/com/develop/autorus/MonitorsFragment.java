@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.rey.material.widget.FloatingActionButton;
+import com.rey.material.widget.SnackBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,31 @@ public class MonitorsFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), EditMonitorActivity.class);
-                intent.putExtra("filterID", -1);
-                getContext().startActivity(intent);
+                removeLastItemFromDb();
+                SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+                Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
+                SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                if(sPref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
+                    Intent intent = new Intent(v.getContext(), EditMonitorActivity.class);
+                    intent.putExtra("filterID", -1);
+                    getContext().startActivity(intent);
+                }
+                else
+                {
+                    SnackBar sb = ((MainActivity) getActivity()).getSnackBar();
+                    sb.applyStyle(R.style.Material_Widget_SnackBar_Mobile_MultiLine);
+                    sb.text("Купите опцию для возможности добавлять более 7 мониторов")
+                            .lines(3)
+                            .actionText("\nКупить")
+                            .duration(4000)
+                            .actionClickListener(new SnackBar.OnActionClickListener() {
+                                @Override
+                                public void onActionClick(SnackBar snackBar, int i) {
+                                    ((MainActivity)getActivity()).onNavigationDrawerItemSelected(5);
+                                }
+                            });
+                    sb.show();
+                }
             }
         });
 

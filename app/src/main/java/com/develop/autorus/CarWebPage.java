@@ -3,12 +3,14 @@ package com.develop.autorus;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CarWebPage extends Activity{
     private WebView mWebView;
-    private Toast toast;
+    private Toast toastAdd;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,6 @@ public class CarWebPage extends Activity{
         String url = getIntent().getStringExtra("url");
 
         if(!getIntent().getBooleanExtra("isFromFavorites",true)) {
-
             final DbHelper dbHelper = new DbHelper(this);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             Cursor cursor = db.query("favorites", new String[]{"href"}, null, null, null, null, null);
@@ -46,36 +47,41 @@ public class CarWebPage extends Activity{
                         break;
                 } while (cursor.moveToNext());
             }
-            db.close();
 
-            toast = Toast.makeText(this, "Авто добавлено в избранное", Toast.LENGTH_SHORT);
-            if (!cursor.isLast() && !cursor.moveToNext()) {
-                final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorites);
+            toastAdd = Toast.makeText(this, "Авто добавлено в избранное", Toast.LENGTH_SHORT);
+            SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(CarWebPage.this);
+            if(sPref.getBoolean("TAG_FAVORITES", false) || cursor.getCount() <= 11) {
+                if (!cursor.isLast() && !cursor.moveToNext()) {
+                    final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorites);
 
-                ThemeManager.init(this, 2, 0, null);
-                Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_translate_top);
-                fab.startAnimation(anim);
-                fab.setVisibility(View.VISIBLE);
-                fab.setIcon(getResources().getDrawable(R.drawable.ic_star_border_white_48dp), true);
-                fab.setBackgroundColor(getResources().getColor(R.color.orange));
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        ContentValues cv = new ContentValues();
-                        cv.put("message", getIntent().getStringExtra("message"));
-                        cv.put("href", getIntent().getStringExtra("url"));
-                        cv.put("image", getIntent().getStringExtra("image"));
-                        cv.put("dateTime", getIntent().getStringExtra("dateTime"));
-                        db.insert("favorites", null, cv);
-                        toast.show();
-                        db.close();
-                        Animation anim = AnimationUtils.loadAnimation(CarWebPage.this, R.anim.anim_translate_buttom);
-                        fab.startAnimation(anim);
-                        fab.setVisibility(View.INVISIBLE);
-                    }
-                });
+                    ThemeManager.init(this, 2, 0, null);
+                    Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_translate_top);
+                    fab.startAnimation(anim);
+                    fab.setVisibility(View.VISIBLE);
+                    fab.setIcon(getResources().getDrawable(R.drawable.ic_star_border_white_48dp), true);
+                    fab.setBackgroundColor(getResources().getColor(R.color.orange));
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+                            Cursor cursor = db.query("favorites", new String[]{"href"}, null, null, null, null, null);
+                            ContentValues cv = new ContentValues();
+                            cv.put("message", getIntent().getStringExtra("message"));
+                            cv.put("href", getIntent().getStringExtra("url"));
+                            cv.put("image", getIntent().getStringExtra("image"));
+                            cv.put("dateTime", getIntent().getStringExtra("dateTime"));
+                            db.insert("favorites", null, cv);
+                            toastAdd.show();
+                            db.close();
+
+                            Animation anim = AnimationUtils.loadAnimation(CarWebPage.this, R.anim.anim_translate_buttom);
+                            fab.startAnimation(anim);
+                            fab.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                }
             }
+            db.close();
         }
         mWebView = (WebView) findViewById(R.id.webview);
         mWebView.getSettings().setJavaScriptEnabled(true);
