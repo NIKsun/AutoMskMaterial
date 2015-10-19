@@ -70,7 +70,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:text="Синяя тема"
+                                    android:text="Светлая тема"
                                     android:clickable="false"
                                     android:checked="false"
                                     android:textSize="20sp" />
@@ -80,7 +80,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:text="Blue Gray"
+                                    android:text="Темная тема"
                                     android:textSize="20sp" />
                             </RadioGroup>
                     </LinearLayout>

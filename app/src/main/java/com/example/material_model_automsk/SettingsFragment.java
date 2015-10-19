@@ -214,7 +214,7 @@ public class SettingsFragment extends Fragment
         setRadio_button_checked(themeNumber);
         ad.setTitle("Изменение темы");
         ad.setMessage("Для измененения темы необходимо перезапустить приложение.");
-        ad.setPositiveButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+        ad.setPositiveButton("Перезапустить приложение", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
                 //finish();
                 SharedPreferences pref = PreferenceManager
@@ -239,7 +239,9 @@ public class SettingsFragment extends Fragment
                 }
                 radio_button_checked=themeNumber;
                 ed.commit();
-                System.exit(0);
+                Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
             }
         });
         ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
