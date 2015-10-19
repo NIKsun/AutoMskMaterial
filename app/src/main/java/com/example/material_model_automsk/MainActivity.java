@@ -230,7 +230,8 @@ public class MainActivity extends ActionBarActivity
 
         Thread checkPurchase = new Thread(new Runnable() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-            public void run() {
+            public void run()
+            {
                 String tag = "checkPurchaseTest";
                 if (!blnBind) return;
                 if (mService == null) return;
@@ -239,18 +240,18 @@ public class MainActivity extends ActionBarActivity
                 try {
                     ownedItems = mService.getPurchases(3, getPackageName(), "inapp", null);
 
-                    Toast.makeText(getApplicationContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
                     Log.i(tag, "getPurchases() - success return Bundle");
                 } catch (RemoteException e) {
                     e.printStackTrace();
 
-                    Toast.makeText(getApplicationContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
                     Log.w(tag, "getPurchases() - fail!");
                     return;
                 }
 
                 int response = ownedItems.getInt("RESPONSE_CODE");
-                Toast.makeText(getApplicationContext(), "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response), Toast.LENGTH_SHORT).show();
                 Log.i(tag, "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response));
 
                 if (response != 0) return;
@@ -265,6 +266,44 @@ public class MainActivity extends ActionBarActivity
                 Log.i(tag, "getPurchases() - \"INAPP_DATA_SIGNATURE\" return " + (signatureList != null ? signatureList.toString() : "null"));
                 Log.i(tag, "getPurchases() - \"INAPP_CONTINUATION_TOKEN\" return " + (continuationToken != null ? continuationToken : "null"));
 
+
+                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                    String purchaseData = purchaseDataList.get(i);
+                    String signature = signatureList.get(i);
+                    String sku = ownedSkus.get(i);
+
+                    if(sku == PurchaseFragment.ITEM_SKU1)
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_DISABLED_ADS", true);
+                        editor.commit();
+                    }
+                    if(sku == PurchaseFragment.ITEM_SKU2)
+                    {
+                        // Ставим нужное количество мониторов.
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_MONITOR", true);
+                        editor.commit();
+                    }
+
+                    if(sku == PurchaseFragment.ITEM_SKU3)
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_FAVORITES", true);
+                        editor.commit();
+                    }
+
+                    if(sku == PurchaseFragment.ITEM_SKU4)
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_BUY_ALL", true);
+                        editor.commit();
+                    }
+                }
             }
         });
 

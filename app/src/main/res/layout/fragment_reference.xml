@@ -19,4 +19,13 @@ android:orientation="vertical">
     android:text=""
     android:paddingLeft="8dp" />
 
+    <com.rey.material.widget.FloatingActionButton
+        android:id="@+id/add_rating"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        style="@style/LightFlatButtonRippleStyle"
+        android:layout_marginTop="40dp" />
+
 </LinearLayout>

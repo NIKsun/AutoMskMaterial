@@ -46,10 +46,10 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
     public static IabHelper mHelper;
 
     // Изменить на реальные.
-    static final String ITEM_SKU1 = "android.test.purchased";
-    static final String ITEM_SKU2 = "android.test.purchased";
-    static final String ITEM_SKU3 = "android.test.purchased";
-    static final String ITEM_SKU4 = "android.test.purchased";
+    static final String ITEM_SKU1 = "delete_adds";//"android.test.purchased";
+    static final String ITEM_SKU2 = "not_limit_monitors";//"android.test.purchased";
+    static final String ITEM_SKU3 = "no_limit_favorites";//"android.test.purchased";
+    static final String ITEM_SKU4 = "god_mode";//"android.test.purchased";
 
 
     @Override
@@ -184,7 +184,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 }
         );
 
-        com.rey.material.widget.Button button = (com.rey.material.widget.Button) savedView.findViewById(R.id.deletePurchase);
+        /*com.rey.material.widget.Button button = (com.rey.material.widget.Button) savedView.findViewById(R.id.deletePurchase);
         button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -197,7 +197,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                     }
                 }
         );
-
+*/
 
         //fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);
 
@@ -279,7 +279,6 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                     return;
                 } else {
                     if (purchase.getSku().equals(ITEM_SKU1)) {// где ITEM_SKU = на отключение рекламы.
-                        //consumeItem();
                         Log.d("3333333333", "11111111111111111111w");
 
                         // Если наш ITEM_SKU совпадает с соответсвующем для рекламы ITEM_SKU

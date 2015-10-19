@@ -10,9 +10,12 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.rey.material.app.ThemeManager;
+import com.rey.material.widget.FloatingActionButton;
 
 /**
  * Created by Alex on 06.10.2015.
@@ -46,6 +49,37 @@ public class ReferenceFragment extends android.support.v4.app.Fragment {
         }
         catch (PackageManager.NameNotFoundException e) {}
         version.setText(version.getText() +"\nEmail: room530a@gmail.com" );
+
+        final FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.add_rating);
+        final Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_simple_grow);
+        fab.startAnimation(anim);
+        fab.setVisibility(View.VISIBLE);
+        fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String themeName = pref.getString("theme", "1");
+        if (themeName.equals("1")) {
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        else
+            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Изменить на другой адрес.
+                String packageName = "com.develop.searchmycarandroid";
+                try {
+
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("market://details?id=" + packageName));
+                    //id=" +getPackageName(), можно так, только тогда сейчас ничего работать не будет.
+                    startActivity(intent);
+                }
+                catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
+                }
+            }
+        });
 
         return savedView;
     }
