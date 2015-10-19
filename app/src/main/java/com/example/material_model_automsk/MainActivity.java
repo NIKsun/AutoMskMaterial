@@ -12,6 +12,8 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -84,7 +86,7 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(pref.getBoolean("notificationIsActive",false)) {
+        if(pref.getBoolean("notificationIsActive",true)) {
             Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
             Boolean alrarmIsActive = false;
             if (PendingIntent.getService(getApplicationContext(), 0, checkIntent, PendingIntent.FLAG_NO_CREATE) != null)
@@ -132,10 +134,8 @@ public class MainActivity extends ActionBarActivity
                 mServiceConn, Context.BIND_AUTO_CREATE);
 
 
-        Log.i("11111111", "bindService - return " + String.valueOf(blnBind));
-        //
+
         String themeName = pref.getString("theme", "1");
-        View decorView = getWindow().getDecorView();
 
         if (themeName.equals("1")) {
             setTheme(R.style.AppTheme);
@@ -158,11 +158,15 @@ public class MainActivity extends ActionBarActivity
         ThemeManager.init(this, 2, 0, null);
 
 
-
-
         if(isFirstLaunch) {
             FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-            mainFragment = SearchAndMonitorsFragment.newInstance(1);
+            SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
+            Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
+            if(cursorMonitors != null && cursorMonitors.getCount()>0)
+                mainFragment = SearchAndMonitorsFragment.newInstance(0);
+            else
+                mainFragment = SearchAndMonitorsFragment.newInstance(1);
+            db.close();
             fTrans.add(R.id.container, mainFragment, "MAIN").commit();
         }
         backToast = Toast.makeText(this,"Нажмите еще раз для выхода",Toast.LENGTH_SHORT);
@@ -390,8 +394,6 @@ public class MainActivity extends ActionBarActivity
             pref.edit().remove("NumberOfCallingFragment").commit();
         }
 
-        if(mNavigationDrawerFragment.getCurrentItemSelected() == 0)
-            mainFragment.updateMonitorsFragment();
     }
 
     @Override
@@ -418,6 +420,7 @@ public class MainActivity extends ActionBarActivity
                 mainFragment.setPage(0);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);
+                    mainFragment.updateMonitorsFragment();
                     fTrans.show(mainFragment);
                 }
                 break;

@@ -39,7 +39,7 @@ public class MonitorsFragment extends Fragment {
     FloatingActionButton fab;
     LinearLayoutManager llm;
     View savedView;
-    boolean isHidden;
+    boolean isHidden, isDestroyed = false;
     private int activeMonitorCounter;
     AlarmWaiter alarmWaiter;
 
@@ -127,10 +127,12 @@ public class MonitorsFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void isNotFound) {
-            Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
-            fab.startAnimation(anim);
-            fab.setVisibility(View.VISIBLE);
-            isHidden = false;
+            if(!isDestroyed) {
+                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_translate_top);
+                fab.startAnimation(anim);
+                fab.setVisibility(View.VISIBLE);
+                isHidden = false;
+            }
         }
     }
 
@@ -263,6 +265,7 @@ public class MonitorsFragment extends Fragment {
     @Override
     public void onDestroy() {
         removeLastItemFromDb();
+        isDestroyed = true;
         super.onDestroy();
     }
 }

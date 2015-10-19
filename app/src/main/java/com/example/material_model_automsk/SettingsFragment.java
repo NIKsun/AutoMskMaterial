@@ -76,7 +76,7 @@ public class SettingsFragment extends Fragment
 
         final com.rey.material.widget.Switch changeNotification = (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_notification_switch);
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        changeNotification.setChecked(sPref.getBoolean("notificationIsActive", false));
+        changeNotification.setChecked(sPref.getBoolean("notificationIsActive", true));
         final LinearLayout notificationLayout = (LinearLayout) savedView.findViewById(R.id.notification_hidden);
         if (changeNotification.isChecked())
             notificationLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

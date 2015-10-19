@@ -227,23 +227,26 @@ public class MonitoringWork extends Service {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("isFromNotification",true);
+        intent.putExtra("isFromNotification", true);
+
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 this);
         Notification notification = builder.setContentIntent(pIntent)
-                .setSmallIcon(R.drawable.status_bar).setTicker("Свежие авто!")
-                .setAutoCancel(true).setContentTitle("Авто Москва")
-                .setContentText((CONC_counter > 0 ? "Более " : "") +countOfNewCars +" cвежих авто! Кликай скорей!").build();
+                .setSmallIcon(R.drawable.status_bar).setTicker("Новые авто!")
+                .setAutoCancel(true).setContentTitle("Авто Русь")
+                .setContentText((CONC_counter > 0 ? "Более " : "") + countOfNewCars + (CONC_counter%10 == 1 ? " новый авто!" : " новых авто!")).build();
 
 
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);
         notification.defaults = 0;
+
         if(sPref.getBoolean("soundIsActive",true))
             notification.defaults |= Notification.DEFAULT_SOUND;
         if(sPref.getBoolean("vibrationIsActive",true))
             notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
 
         nm.notify(NOTIFY_ID, notification);
     }

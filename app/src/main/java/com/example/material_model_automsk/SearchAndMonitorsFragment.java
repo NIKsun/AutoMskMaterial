@@ -29,6 +29,7 @@ public class SearchAndMonitorsFragment extends Fragment {
     ViewPager viewPager;
     TabLayout tabLayout;
     private MainActivity myContext;
+    View savedView;
 
     public static SearchAndMonitorsFragment newInstance(int page) {
         SearchAndMonitorsFragment f = new SearchAndMonitorsFragment();
@@ -63,11 +64,14 @@ public class SearchAndMonitorsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_search_and_monitors, container, false);
-        viewPager = (ViewPager) v.findViewById(R.id.viewpager);
+        if(savedView != null)
+            return savedView;
+
+        savedView =  inflater.inflate(R.layout.fragment_search_and_monitors, container, false);
+        viewPager = (ViewPager) savedView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MonitorFragmentPagerAdapter(myContext.getSupportFragmentManager(), myContext));
 
-        tabLayout = (TabLayout) v.findViewById(R.id.sliding_tabs);
+        tabLayout = (TabLayout) savedView.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -109,13 +113,11 @@ public class SearchAndMonitorsFragment extends Fragment {
             }
         });
 
-
-
         if(viewPager.getCurrentItem()==0)
             myContext.getAddMonitorButton().setVisibility(View.INVISIBLE);
 
         viewPager.setCurrentItem(getArguments().getInt("pageNumber", 0));
-        return v;
+        return savedView;
 
     }
 

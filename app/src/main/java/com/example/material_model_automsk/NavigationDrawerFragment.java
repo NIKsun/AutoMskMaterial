@@ -88,11 +88,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = null;
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        else
-            view = inflater.inflate(R.layout.fragment_navigation_drawer_land, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
 
