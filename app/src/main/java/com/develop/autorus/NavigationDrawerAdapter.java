@@ -1,6 +1,7 @@
 package com.develop.autorus;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
     private View mSelectedView;
     private int mSelectedPosition;
+    Context mContext;
 
-    public NavigationDrawerAdapter(List<NavigationItem> data) {
+    public NavigationDrawerAdapter(List<NavigationItem> data, Context context) {
         mData = data;
+        mContext = context;
     }
 
     public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
@@ -31,7 +34,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.drawer_row, viewGroup, false);
         final ViewHolder viewHolder = new ViewHolder(v);
         viewHolder.itemView.setClickable(true);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +64,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     @Override
     public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, int i) {
         if(isItemBackgroundTransparent)
-            viewHolder.itemView.setBackgroundColor(viewHolder.textView.getContext().getResources().getColor(R.color.myTransparent));
+            viewHolder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.myTransparent));
         viewHolder.textView.setText(mData.get(i).getText());
         viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getDrawable(), null, null, null);
         if (mSelectedPosition == i) {
