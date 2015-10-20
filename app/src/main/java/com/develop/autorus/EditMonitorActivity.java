@@ -71,7 +71,15 @@ public class EditMonitorActivity extends FragmentActivity {
             String engineType = cursorMark.getString(cursorMark.getColumnIndex("engineType"));
             String driveType = cursorMark.getString(cursorMark.getColumnIndex("driveType"));
 
+            String region = cursorMark.getString(cursorMark.getColumnIndex("region"));
+
             Integer withPhoto = cursorMark.getInt(cursorMark.getColumnIndex("withPhoto"));
+
+            pref2.edit().putString("SelectedMark", mark).commit();
+            pref2.edit().putString("SelectedModel", model).commit();
+            pref2.edit().putString("SelectedRegion", region).commit();
+
+
 
             String[] data;
             View v;
@@ -224,8 +232,6 @@ public class EditMonitorActivity extends FragmentActivity {
                 iv.setVisibility(View.VISIBLE);
             }
 */
-            pref2.edit().putString("SelectedMark", mark).commit();
-            pref2.edit().putString("SelectedModel", model).commit();
             //year
             if(!yearTo.equals("") || !yearFrom.equals("")) {
                 data = new String[36];
@@ -371,6 +377,7 @@ public class EditMonitorActivity extends FragmentActivity {
             final DbHelper dbHelper = new DbHelper(this);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues cv = new ContentValues();
+            cv.put("region", filter.region);
             cv.put("marka", filter.mark);
             cv.put("model", filter.model);
             cv.put("yearFrom", filter.yearFrom);
@@ -405,9 +412,6 @@ public class EditMonitorActivity extends FragmentActivity {
             db.close();
 
         }
-        // тут надо изменить текущий фильтр точнее добавить новый на его место
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        pref.edit().putInt("NumberOfCallingFragment",0).commit();
         finish();
     }
 }
