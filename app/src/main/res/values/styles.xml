@@ -68,7 +68,7 @@
     </style>
 
     <style name="SnackBarSingleLine" parent="Material.Widget.SnackBar.Mobile">
-        <item name="sb_text">Нет соеденения с интернетом</item>
+        <item name="sb_text">Нет соединения с интернетом</item>
         <item name="sb_actionText">Ок</item>
         <item name="sb_duration">4000</item>
     </style>
@@ -216,5 +216,16 @@
         <item name="rd_delayClick">afterRelease</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:textColor">@color/abc_primary_text_material_light</item>
+    </style>
+
+    <style name="DarkRadioButtonDrawable" parent="Material.Drawable.RadioButton">
+        <item name="rbd_strokeColor">@drawable/color_switch_dark</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+
+    <style name="LightRadioButtonDrawable" parent="Material.Drawable.RadioButton">
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Body1</item>
+        <item name="android:textColor">#FF000000</item>
     </style>
 </resources>

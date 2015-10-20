@@ -917,14 +917,18 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 else
                 {
                     SnackBar mSnackBar = ((MainActivity)v.getContext()).getSnackBar();
+                    mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
+
                     if(v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                         mSnackBar.applyStyle(R.style.SnackBarSingleLine);
+                        mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
                         mSnackBar.show();
                         parentFragment.hideFAB(4000);
                     }
                     else
                     {
                         mSnackBar.applyStyle(R.style.Material_Widget_SnackBar_Tablet_MultiLine);
+                        mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
                         mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                         .actionText("Ок")
                                 .duration(4000)

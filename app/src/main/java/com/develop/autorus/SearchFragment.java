@@ -161,9 +161,11 @@ public class SearchFragment extends Fragment {
                         SnackBar mSnackBar = ((MainActivity)getActivity()).getSnackBar();
                         if (v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             mSnackBar.applyStyle(R.style.SnackBarSingleLine);
+                            mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
                             mSnackBar.show();
                         } else {
                             mSnackBar.applyStyle(R.style.Material_Widget_SnackBar_Tablet_MultiLine);
+                            mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
                             mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                                     .actionText("Ок")
                                     .duration(4000)

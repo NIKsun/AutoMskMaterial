@@ -97,6 +97,8 @@ public class FavoritesFragment extends Fragment {
                 adapter.remove(tempPosition);
                 SnackBar sb = ((MainActivity)getActivity()).getSnackBar();
                 sb.applyStyle(R.style.SnackBarSingleLine);
+                sb.actionTextColor(getContext().getResources().getColor(R.color.myPrimaryColor));
+
                 sb.text("Удален из избранного")
                         .actionText("Восстановить")
                         .duration(2500)
@@ -255,6 +257,8 @@ public class FavoritesFragment extends Fragment {
                 adapter.remove(adapter.getPosition());
                 SnackBar sb = ((MainActivity)getActivity()).getSnackBar();
                 sb.applyStyle(R.style.SnackBarSingleLine);
+                sb.actionTextColor(getContext().getResources().getColor(R.color.myPrimaryColor));
+
                 sb.text("Удален из избранного")
                         .actionText("Восстановить")
                         .duration(2500)

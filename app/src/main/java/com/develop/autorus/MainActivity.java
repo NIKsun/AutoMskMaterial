@@ -175,6 +175,11 @@ public class MainActivity extends ActionBarActivity
         setSupportActionBar(mToolbar);
         mSnackBar = (SnackBar)findViewById(R.id.main_sn);
 
+
+
+        //TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        //tv.setTextColor(Color.WHITE);
+
         addMonitorButton = (Button)findViewById(R.id.toolbar_add_monitor_button);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)

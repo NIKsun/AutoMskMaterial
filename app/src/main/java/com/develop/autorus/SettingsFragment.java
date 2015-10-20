@@ -58,6 +58,7 @@ public class SettingsFragment extends Fragment
         setRadio_button_checked(radio_button_checked);
         rb1 = (RadioButton)savedView.findViewById(R.id.radio_button_1);
         rb2 = (RadioButton)savedView.findViewById(R.id.radio_button_2);
+
         rb1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
