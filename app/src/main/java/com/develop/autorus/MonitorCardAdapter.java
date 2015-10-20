@@ -68,7 +68,6 @@ class Filter {
     private String getRangeString(String name, String value, String from, String to)
     {
         String message = "";
-        message += region+ "\n";
         if(!from.equals("") && from.equals(to))
             return name+":\t только " + from + " " + value + "\n";
         if(!from.equals("")) {
@@ -132,6 +131,7 @@ class Filter {
     String getMessage()
     {
         String message = "";
+        message += region+ "\n";
         message += getRangeString("Цена", "руб.", priceFrom, priceTo);
         message += getRangeString("Год", "г.", yearFrom, yearTo);
         message += getRangeString("Пробег", "км.", milleageFrom, milleageTo);
@@ -624,6 +624,7 @@ class Filter {
         this.setVolume(from, to);
 
         this.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
+
         this.region = ((TextView) view.findViewById(R.id.search_ll_region_text)).getText().toString();
         if(!this.mark.equals("Любая"))
             this.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
