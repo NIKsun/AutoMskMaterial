@@ -782,7 +782,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             monitorViewHolder.monitorMarkAndModel.setText("Любая марка");
         else{
             if(monitors.get(i).filter.model.equals("Любая"))
-                monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + "Любая модель");
+                monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark);
             else
                 monitorViewHolder.monitorMarkAndModel.setText(monitors.get(i).filter.mark + " " + monitors.get(i).filter.model);
         }

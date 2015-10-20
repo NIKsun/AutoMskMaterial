@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabMode="fixed"
-                android:background="?attr/colorPrimary"/>
+                android:background="@color/colorPrimary"/>
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager_LOC"
                 android:layout_below="@+id/sliding_tabs_LOC"
@@ -61,4 +61,10 @@
             app:layout="@layout/fragment_navigation_drawer"
             tools:layout="@layout/fragment_navigation_drawer" />
     </android.support.v4.widget.DrawerLayout>
+    <com.rey.material.widget.SnackBar
+        android:id="@+id/loc_sn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="invisible"
+        android:layout_gravity="bottom"/>
 </RelativeLayout>

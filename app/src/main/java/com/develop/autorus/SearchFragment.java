@@ -183,15 +183,36 @@ public class SearchFragment extends Fragment {
                         @Override
                         public void onPositiveActionClicked(DialogFragment fragment) {
                             super.onPositiveActionClicked(fragment);
-                            Filter filter = new Filter();
-                            filter.fillFilter(view);
+                            SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+                            Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
+                            SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            if(sPref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
+                                Filter filter = new Filter();
+                                filter.fillFilter(view);
 
-                            filter.getHref(getContext());
+                                filter.getHref(getContext());
 
-                            filter.insertToDb(getContext());
+                                filter.insertToDb(getContext());
 
-                            Monitor monitor = new Monitor(filter, getContext());
-                            monitor.insertToDb(getContext());
+                                Monitor monitor = new Monitor(filter, getContext());
+                                monitor.insertToDb(getContext());
+                            }
+                            else
+                            {
+                                SnackBar sb = ((MainActivity) getActivity()).getSnackBar();
+                                sb.applyStyle(R.style.Material_Widget_SnackBar_Mobile_MultiLine);
+                                sb.text("Купите опцию для возможности добавлять более 7 мониторов")
+                                        .lines(3)
+                                        .actionText("\nКупить")
+                                        .duration(4000)
+                                        .actionClickListener(new SnackBar.OnActionClickListener() {
+                                            @Override
+                                            public void onActionClick(SnackBar snackBar, int i) {
+                                                ((MainActivity) getActivity()).onNavigationDrawerItemSelected(5);
+                                            }
+                                        });
+                                sb.show();
+                            }
                         }
 
                         @Override

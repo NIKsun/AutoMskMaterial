@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
+import com.rey.material.widget.SnackBar;
 
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -443,8 +444,7 @@ public class LOCfragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         if(!this.isMenuVisible())
             return super.onContextItemSelected(item);
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.item_web:
                 Intent intent = new Intent(getContext(), CarWebPage.class);
                 intent.putExtra("url", cars.getHref(adapter.getPosition()));
@@ -455,7 +455,7 @@ public class LOCfragment extends Fragment {
                 getContext().startActivity(intent);
                 break;
             case R.id.item_copy:
-                if (Build.VERSION.SDK_INT>=11) {
+                if (Build.VERSION.SDK_INT >= 11) {
                     ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(getContext().CLIPBOARD_SERVICE);
                     clipboard.setText(cars.getHref(adapter.getPosition()));
                     Toast.makeText(getContext(), "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
@@ -466,21 +466,42 @@ public class LOCfragment extends Fragment {
                 int position = adapter.getPosition();
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 Cursor cursor = db.query("favorites", new String[]{"href"}, null, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    int index = cursor.getColumnIndex("href");
-                    do {
-                        if(cars.getHref(position).equals(cursor.getString(index)))
-                            break;
-                    } while (cursor.moveToNext());
+                SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+                if (sPref.getBoolean("TAG_FAVORITES", false) || cursor.getCount() <= 11) {
+                    if (cursor.moveToFirst()) {
+                        int index = cursor.getColumnIndex("href");
+                        do {
+                            if (cars.getHref(position).equals(cursor.getString(index)))
+                                break;
+                        } while (cursor.moveToNext());
+                    }
+                    if (!cursor.isLast() && !cursor.moveToNext()) {
+                        ContentValues cv = new ContentValues();
+                        cv.put("message", cars.getMessage(position));
+                        cv.put("href", cars.getHref(position));
+                        cv.put("image", cars.getImg(position));
+                        cv.put("dateTime", "12.02.14 14:21");
+                        db.insert("favorites", null, cv);
+                        Toast.makeText(getContext(), "Авто добавлено в избранное", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                if(!cursor.isLast() && !cursor.moveToNext()) {
-                    ContentValues cv = new ContentValues();
-                    cv.put("message", cars.getMessage(position));
-                    cv.put("href", cars.getHref(position));
-                    cv.put("image", cars.getImg(position));
-                    cv.put("dateTime", "12.02.14 14:21");
-                    db.insert("favorites", null, cv);
-                    Toast.makeText(getContext(),"Авто добавлено в избранное", Toast.LENGTH_SHORT).show();
+                else {
+                    SnackBar sb = ((ListOfCarsActivity) getActivity()).getSnackBar();
+                    sb.applyStyle(R.style.Material_Widget_SnackBar_Mobile_MultiLine);
+                    sb.text("Купите опцию для возможности добавлять более 12 авто")
+                            .lines(3)
+                            .actionText("\nКупить")
+                            .duration(4000)
+                            .actionClickListener(new SnackBar.OnActionClickListener() {
+                                @Override
+                                public void onActionClick(SnackBar snackBar, int i) {
+                                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                    pref.edit().putInt("NumberOfCallingFragment", 5).commit();
+                                    getActivity().finish();
+                                }
+                            });
+                    sb.show();
                 }
                 db.close();
                 break;

@@ -66,8 +66,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
         }
 
         //Danger! Auchtung! Никита, Паша!!!
-        String base64EncodedPublicKey =
-                "<your license key here123>";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на
+        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAskc/nL1SvaOSFbHVSRQrekyfW0Qqnk1I0ld+elQyTczDMbSO57DBynG7tYcQeKFN2/oQC+rt1LvIeHrEVELl3cnTrfUQLHqaqX73C8ZuI2ygcJ/joLHtW4qjHvOOfMuDOYNwmH6APcr11cRPfuMwZPOSrpKjq193F4xpCmhsGQA7ZoAXlJNeotnglDa2uzvAOMv+6Lry/8jZRxCvmJ7crH4cGP3FqSfirq/Qy61DkhEoWy4DiUIlDRxom6IqF9cKvDn4EeVJBQAAbWCflYlfKv1sIlmr+kfLyb17Adbm6+8FFS6t0Ko9MhDo0B1kvBy19FNOtFlLPp5lLmHx0Vs5YwIDAQAB";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на
         // github с реальным ключом. Иначе он будет в открытом виде в инете висеть!!!
 
         mHelper = new IabHelper(getActivity(), base64EncodedPublicKey);

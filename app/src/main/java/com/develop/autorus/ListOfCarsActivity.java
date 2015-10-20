@@ -2,6 +2,7 @@ package com.develop.autorus;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+
+import com.rey.material.widget.SnackBar;
 
 /**
  * Created by Никита on 27.09.2015.
@@ -31,6 +34,7 @@ public class ListOfCarsActivity extends ActionBarActivity
     private Boolean isFirstLaunch = true;
     Integer monitorID, filterID;
     Boolean monitorWasAdded = false;
+    SnackBar snackBar;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class ListOfCarsActivity extends ActionBarActivity
         setContentView(R.layout.activity_list_of_cars);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
+        snackBar = (SnackBar)findViewById(R.id.loc_sn);
 
         final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar_actionbar);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -71,18 +76,40 @@ public class ListOfCarsActivity extends ActionBarActivity
             addMonitorButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Monitor monitor = new Monitor();
-                    SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
-                    monitor.hrefAuto = sPref.getString("hrefAutoRu","###");
-                    monitor.hrefAvito = sPref.getString("hrefAvitoRu","###");
-                    monitor.hrefDrom = sPref.getString("hrefDromRu","###");
-                    Filter filter = new Filter();
-                    filter.id = filterID;
-                    monitor.filter = filter;
-                    monitor.insertToDb(v.getContext());
-                    monitorWasAdded = true;
+                    SQLiteDatabase db = new DbHelper(ListOfCarsActivity.this).getWritableDatabase();
+                    Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ListOfCarsActivity.this);
+                    if(pref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
+                        Monitor monitor = new Monitor();
+                        SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+                        monitor.hrefAuto = sPref.getString("hrefAutoRu", "###");
+                        monitor.hrefAvito = sPref.getString("hrefAvitoRu", "###");
+                        monitor.hrefDrom = sPref.getString("hrefDromRu", "###");
+                        Filter filter = new Filter();
+                        filter.id = filterID;
+                        monitor.filter = filter;
+                        monitor.insertToDb(v.getContext());
+                        monitorWasAdded = true;
 
-                    Toast.makeText(ListOfCarsActivity.this, "Монитор с текущими параметрами создан", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListOfCarsActivity.this, "Монитор с текущими параметрами создан", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        snackBar.applyStyle(R.style.Material_Widget_SnackBar_Mobile_MultiLine);
+                        snackBar.text("Купите опцию для возможности добавлять более 7 мониторов")
+                                .lines(3)
+                                .actionText("\nКупить")
+                                .duration(4000)
+                                .actionClickListener(new SnackBar.OnActionClickListener() {
+                                    @Override
+                                    public void onActionClick(SnackBar snackBar, int i) {
+                                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ListOfCarsActivity.this);
+                                        pref.edit().putInt("NumberOfCallingFragment", 5).commit();
+                                        finish();
+                                    }
+                                });
+                        snackBar.show();
+                    }
                     Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.anim_translate_right);
                     addMonitorButton.setVisibility(View.INVISIBLE);
                     addMonitorButton.startAnimation(anim);
@@ -128,5 +155,10 @@ public class ListOfCarsActivity extends ActionBarActivity
         }
 
         super.onDestroy();
+    }
+
+    public SnackBar getSnackBar()
+    {
+        return snackBar;
     }
 }
