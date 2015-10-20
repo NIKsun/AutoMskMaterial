@@ -162,7 +162,7 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
                 intent.putExtra("isFromFavorites", isFromFavorites);
 
                 v.getContext().startActivity(intent);
-                if (mInterstitialAd.isLoaded())
+                if (mInterstitialAd != null && mInterstitialAd.isLoaded())
                     mInterstitialAd.show();
             }
         });

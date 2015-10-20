@@ -18,6 +18,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
@@ -30,11 +32,17 @@ import java.util.concurrent.TimeUnit;
 public class CarWebPage extends Activity{
     private WebView mWebView;
     private Toast toastAdd;
+    Tracker mTracker;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_web_page);
         String url = getIntent().getStringExtra("url");
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Web Page");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         if(!getIntent().getBooleanExtra("isFromFavorites",true)) {
             final DbHelper dbHelper = new DbHelper(this);
@@ -50,10 +58,9 @@ public class CarWebPage extends Activity{
 
             toastAdd = Toast.makeText(this, "Авто добавлено в избранное", Toast.LENGTH_SHORT);
             SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(CarWebPage.this);
-            if(sPref.getBoolean("TAG_FAVORITES", false) || cursor.getCount() <= 11) {
+            if(sPref.getBoolean("TAG_BUY_ALL", false) || sPref.getBoolean("TAG_FAVORITES", false) || cursor.getCount() <= 11) {
                 if (!cursor.isLast() && !cursor.moveToNext()) {
                     final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_favorites);
-
                     ThemeManager.init(this, 2, 0, null);
                     Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_translate_top);
                     fab.startAnimation(anim);
@@ -64,7 +71,6 @@ public class CarWebPage extends Activity{
                         @Override
                         public void onClick(View v) {
                             SQLiteDatabase db = dbHelper.getWritableDatabase();
-                            Cursor cursor = db.query("favorites", new String[]{"href"}, null, null, null, null, null);
                             ContentValues cv = new ContentValues();
                             cv.put("message", getIntent().getStringExtra("message"));
                             cv.put("href", getIntent().getStringExtra("url"));
@@ -77,6 +83,7 @@ public class CarWebPage extends Activity{
                             Animation anim = AnimationUtils.loadAnimation(CarWebPage.this, R.anim.anim_translate_buttom);
                             fab.startAnimation(anim);
                             fab.setVisibility(View.INVISIBLE);
+                            mTracker.send(new HitBuilders.EventBuilder().setCategory("Favorites").setAction("click to star").setValue(1).build());
                         }
                     });
                 }
@@ -167,9 +174,6 @@ public class CarWebPage extends Activity{
                     view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
 
                     long loadingTime = System.currentTimeMillis() - mLoadingStartTime;
-                    if (mLoadingError)  {
-                        Toast.makeText(CarWebPage.this, "Ошибка загрузки страницы, время загрузки: " + loadingTime, Toast.LENGTH_SHORT).show();
-                    }
 
                     mOnErrorUrl = null;
                     mUrl = null;
@@ -204,7 +208,6 @@ public class CarWebPage extends Activity{
                 public void run() {
                     mUrl = null;
                     mLoadingFinished = true;
-                    long loadingTime = System.currentTimeMillis() - mLoadingStartTime;
                     if (mReference != null) {
                         WebView webView = mReference.get();
                         if (webView != null) {
@@ -220,6 +223,13 @@ public class CarWebPage extends Activity{
         }
 
         mWebView.loadUrl(url);
+        if(url.contains("drom.ru"))
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Drom.ru").setValue(1).build());
+        else if(url.contains("avito.ru"))
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Avito.ru").setValue(1).build());
+        else
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Auto.ru").setValue(1).build());
+
     }
 
 

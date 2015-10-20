@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.FloatingActionButton;
 
@@ -54,6 +55,8 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Feedback").setAction("open").setValue(1).build());
+
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "room530dev@gmail.com", null));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке АвтоРусь");
                 startActivity(Intent.createChooser(intent, "Выберите почтового клиента:"));

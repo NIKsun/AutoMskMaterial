@@ -14,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
 import com.rey.material.widget.Switch;
@@ -24,13 +26,26 @@ import com.rey.material.widget.Switch;
 public class EditMonitorActivity extends FragmentActivity {
     SearchFragment searchFragment;
     Integer filterID;
+    Tracker mTracker;
 
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("lis","createEdit");
+        Log.d("lis", "createEdit");
         SharedPreferences pref2 = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
         pref2.edit().putInt("isEditFilter",1).commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_monitor);
+
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Editor");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        if(getIntent().getIntExtra("filterID",-1) != -1)
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Editor").setAction("change monitor").setValue(1).build());
+        else
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Editor").setAction("new monitor").setValue(1).build());
+
 
         FrameLayout header = (FrameLayout)findViewById(R.id.title);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -412,6 +427,8 @@ public class EditMonitorActivity extends FragmentActivity {
             db.close();
 
         }
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref.edit().putInt("NumberOfCallingFragment",0).commit();
         finish();
     }
 }

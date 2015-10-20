@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.rey.material.widget.ProgressView;
 import com.rey.material.widget.SnackBar;
 
@@ -150,7 +151,14 @@ public class FavoritesFragment extends Fragment {
 
         @Override
         protected Void doInBackground(final Void... params) {
-            SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
+            SQLiteDatabase db;
+            try {
+                db = new DbHelper(getActivity()).getWritableDatabase();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
             Cursor cursor = db.query("favorites", null, null, null, null, null, null);
             int indexHref = cursor.getColumnIndex("href");
             int indexImage = cursor.getColumnIndex("image");
@@ -180,8 +188,13 @@ public class FavoritesFragment extends Fragment {
         @Override
         protected void onPostExecute(Void isNotFound) {
             super.onPostExecute(isNotFound);
+            if(favorites == null)
+                return;
             pvCircular.stop();
             final Handler handler = new Handler();
+            ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().
+                    setCategory("Favorites count").setAction(String.valueOf(favorites.size())).setValue(1).build());
+
             if(favorites.size() != 0) {
                 Runnable runnable = new Runnable() {
                     public void run() {

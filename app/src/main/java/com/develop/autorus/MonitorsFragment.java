@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.SnackBar;
 
@@ -68,7 +69,7 @@ public class MonitorsFragment extends Fragment {
                 SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
                 Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
                 SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                if(sPref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
+                if(sPref.getBoolean("TAG_BUY_ALL", false) || sPref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
                     Intent intent = new Intent(v.getContext(), EditMonitorActivity.class);
                     intent.putExtra("filterID", -1);
                     getContext().startActivity(intent);
@@ -272,6 +273,8 @@ public class MonitorsFragment extends Fragment {
             } while (cursorMonitors.moveToNext());
         }
         db.close();
+        ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Monitors count").setAction(String.valueOf(monitors.size())).setValue(1).build());
+
         monitors.add(new Monitor());
     }
 

@@ -91,7 +91,7 @@ public class MainActivity extends ActionBarActivity
 
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Start activity");
+        mTracker.setScreenName("Main activity");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         if(pref.getBoolean("notificationIsActive",true)) {
@@ -106,7 +106,6 @@ public class MainActivity extends ActionBarActivity
                 PendingIntent pIntent = PendingIntent.getService(getApplicationContext(), 0, serviceIntent, 0);
 
                 int period = pref.getInt("numberOfActiveMonitors", 0) * 180000;
-                Toast.makeText(this, "Текущий период: " + period, Toast.LENGTH_SHORT).show();
 
                 if(period != 0)
                     am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
@@ -747,6 +746,8 @@ public class MainActivity extends ActionBarActivity
             mService = IInAppBillingService.Stub.asInterface(service);
         }
     };
+
+    public Tracker getTracker(){return mTracker;}
 
 
 }

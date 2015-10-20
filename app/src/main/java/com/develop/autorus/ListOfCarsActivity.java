@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.rey.material.widget.SnackBar;
 
 /**
@@ -38,24 +40,32 @@ public class ListOfCarsActivity extends ActionBarActivity
     Boolean monitorWasAdded = false;
     SnackBar snackBar;
     InterstitialAd mInterstitialAd = new InterstitialAd(this);
+    Tracker mTracker;
 
     @Override
     protected void onResume() {
         super.onResume();
         SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
-        int adMobCounter = sPref.getInt("AdMobCounter",1);
-        if(adMobCounter == 3) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mInterstitialAd.loadAd(adRequest);
-            sPref.edit().putInt("AdMobCounter",1).commit();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ListOfCarsActivity.this);
+        if(!(pref.getBoolean("TAG_BUY_ALL", false) || pref.getBoolean("TAG_DISABLED_ADS", false))) {
+            int adMobCounter = sPref.getInt("AdMobCounter", 1);
+            if (adMobCounter == 3) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mInterstitialAd.loadAd(adRequest);
+                sPref.edit().putInt("AdMobCounter", 1).commit();
+            } else
+                sPref.edit().putInt("AdMobCounter", adMobCounter + 1).commit();
         }
-        else
-            sPref.edit().putInt("AdMobCounter",adMobCounter+1).commit();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("List of cars");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         setContentView(R.layout.activity_list_of_cars);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
@@ -97,7 +107,7 @@ public class ListOfCarsActivity extends ActionBarActivity
                     SQLiteDatabase db = new DbHelper(ListOfCarsActivity.this).getWritableDatabase();
                     Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ListOfCarsActivity.this);
-                    if(pref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
+                    if(pref.getBoolean("TAG_BUY_ALL", false) || pref.getBoolean("TAG_MONITOR", false) || cursorMonitors.getCount() <= 6) {
                         Monitor monitor = new Monitor();
                         SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
                         monitor.hrefAuto = sPref.getString("hrefAutoRu", "###");
@@ -109,6 +119,7 @@ public class ListOfCarsActivity extends ActionBarActivity
                         monitor.insertToDb(v.getContext());
                         monitorWasAdded = true;
 
+                        mTracker.send(new HitBuilders.EventBuilder().setCategory("Create monitor").setAction("from list of cars").setValue(1).build());
                         Toast.makeText(ListOfCarsActivity.this, "Монитор с текущими параметрами создан", Toast.LENGTH_SHORT).show();
                     }
                     else
@@ -185,4 +196,5 @@ public class ListOfCarsActivity extends ActionBarActivity
     {
         return mInterstitialAd;
     }
+    public Tracker getTracker(){return mTracker;}
 }

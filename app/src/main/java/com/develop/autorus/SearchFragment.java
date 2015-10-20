@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
@@ -206,6 +207,8 @@ public class SearchFragment extends Fragment {
 
                                 Monitor monitor = new Monitor(filter, getContext());
                                 monitor.insertToDb(getContext());
+                                ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Create monitor").setAction("from search").setValue(1).build());
+
                             }
                             else
                             {

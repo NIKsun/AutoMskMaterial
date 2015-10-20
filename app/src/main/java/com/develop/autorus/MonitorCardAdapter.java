@@ -1053,8 +1053,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         else {
             am.cancel(pIntent);
         }
-
-        Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
     }
     private void increaseActiveMonitorCounter()
     {
@@ -1071,7 +1069,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
             int period = activeMonitorCounter * 180000;
             am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
-            Toast.makeText(parentActivity, "Новый период: " + activeMonitorCounter * 3 + "минут", Toast.LENGTH_SHORT).show();
         }
     }
 }

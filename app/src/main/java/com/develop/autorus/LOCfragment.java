@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.ProgressView;
 import com.rey.material.widget.SnackBar;
@@ -458,7 +459,8 @@ public class LOCfragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= 11) {
                     ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(getContext().CLIPBOARD_SERVICE);
                     clipboard.setText(cars.getHref(adapter.getPosition()));
-                    Toast.makeText(getContext(), "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();((ListOfCarsActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Favorites").setAction("add from context menu").setValue(1).build());
+                    ((ListOfCarsActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Clipboard").setAction("write to clipboard").setValue(1).build());
                 } else
                     Toast.makeText(getContext(), "На вашем устройстве функция не доступна", Toast.LENGTH_SHORT).show();
                 break;
@@ -468,7 +470,7 @@ public class LOCfragment extends Fragment {
                 Cursor cursor = db.query("favorites", new String[]{"href"}, null, null, null, null, null);
                 SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-                if (sPref.getBoolean("TAG_FAVORITES", false) || cursor.getCount() <= 11) {
+                if (sPref.getBoolean("TAG_BUY_ALL", false) || sPref.getBoolean("TAG_FAVORITES", false) || cursor.getCount() <= 11) {
                     if (cursor.moveToFirst()) {
                         int index = cursor.getColumnIndex("href");
                         do {
@@ -484,6 +486,7 @@ public class LOCfragment extends Fragment {
                         cv.put("dateTime", "12.02.14 14:21");
                         db.insert("favorites", null, cv);
                         Toast.makeText(getContext(), "Авто добавлено в избранное", Toast.LENGTH_SHORT).show();
+                        ((ListOfCarsActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Favorites").setAction("add from context menu").setValue(1).build());
                     }
                 }
                 else {

@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.RadioButton;
 
@@ -91,7 +92,6 @@ public class SettingsFragment extends Fragment
 
                 if (changeNotification.isChecked()) {
                     int period = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("numberOfActiveMonitors", 0) * 180000;
-                    Toast.makeText(getActivity(), "Текущий период: " + period, Toast.LENGTH_SHORT).show();
                     am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
@@ -238,6 +238,8 @@ public class SettingsFragment extends Fragment
                 }
                 radio_button_checked=themeNumber;
                 ed.commit();
+                ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Change theme").setAction(String.valueOf(themeNumber)).setValue(1).build());
+
                 Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName() );
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
