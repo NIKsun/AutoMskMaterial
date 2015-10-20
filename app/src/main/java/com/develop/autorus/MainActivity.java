@@ -420,10 +420,14 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if(mNavigationDrawerFragment.getCurrentItemSelected()==0)
+            mainFragment.updateMonitorsFragment();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
-        if(getIntent().hasExtra("isFromNotification") && getIntent().getBooleanExtra("isFromNotification",false))
+        if(getIntent().hasExtra("isFromNotification") && getIntent().getBooleanExtra("isFromNotification",false)) {
+            Log.d("monitor","isFromNotification");
             numberOfCallingFragment = 0;
+        }
         if(numberOfCallingFragment != -1) {
             if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
                     (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))
@@ -435,7 +439,6 @@ public class MainActivity extends ActionBarActivity
                 {
                     onNavigationDrawerItemSelected(numberOfCallingFragment);
                     setNavigationDrawerItem(numberOfCallingFragment);
-
                 }
             }
             else {
@@ -449,6 +452,10 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        Log.d("monitor","position "+position);
+        Log.d("monitor", String.valueOf(itemSelectFromTabLayout));
+        Log.d("monitor", String.valueOf(isFirstLaunch));
+
         if(itemSelectFromTabLayout)
         {
             itemSelectFromTabLayout = false;

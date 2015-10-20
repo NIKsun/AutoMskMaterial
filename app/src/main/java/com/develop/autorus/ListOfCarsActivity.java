@@ -184,6 +184,8 @@ public class ListOfCarsActivity extends ActionBarActivity
             db.delete("filters", "id = ?", new String[]{String.valueOf(filterID)});
             db.close();
         }
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        pref.edit().remove("NumberOfCallingFragment").commit();
 
         super.onDestroy();
     }

@@ -92,7 +92,8 @@ public class SettingsFragment extends Fragment
 
                 if (changeNotification.isChecked()) {
                     int period = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("numberOfActiveMonitors", 0) * 180000;
-                    am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
+                    if(period != 0)
+                        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
                     SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.putBoolean("notificationIsActive", true);

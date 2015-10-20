@@ -148,6 +148,7 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             else
                 monitorViewHolder.textViewIsNew.setVisibility(View.GONE);
         }
+
         final String finalHref = href;
         monitorViewHolder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +158,12 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
                 if (!isFromFavorites) {
                     intent.putExtra("message", cars.getMessage(i));
                     intent.putExtra("image", cars.getImg(i));
-                    intent.putExtra("dateTime", "12.21.42");
+                    SimpleDateFormat format;
+                    if (cars.getCarDate(i).getHours() == 0 && cars.getCarDate(i).getMinutes() == 0 && cars.getCarDate(i).getSeconds() == 0)
+                        format = new SimpleDateFormat("dd.MM.yyyy");
+                    else
+                        format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                    intent.putExtra("dateTime", format.format(cars.getCarDate(i)));
                 }
                 intent.putExtra("isFromFavorites", isFromFavorites);
 
@@ -175,15 +181,16 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
             }
         });
 
-        if(!isFromFavorites)
-        {
+        if(!isFromFavorites) {
             SimpleDateFormat format;
-            if(cars.getCarDate(i).getHours() == 0 && cars.getCarDate(i).getMinutes() == 0 && cars.getCarDate(i).getSeconds() == 0)
+            if (cars.getCarDate(i).getHours() == 0 && cars.getCarDate(i).getMinutes() == 0 && cars.getCarDate(i).getSeconds() == 0)
                 format = new SimpleDateFormat("dd.MM.yyyy");
             else
                 format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             monitorViewHolder.textViewDateTime.setText(format.format(cars.getCarDate(i)));
         }
+        else
+            monitorViewHolder.textViewDateTime.setText(favorites.get(i).date);
 
     }
 

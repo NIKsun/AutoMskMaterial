@@ -47,6 +47,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Никита on 24.09.2015.
@@ -483,7 +484,12 @@ public class LOCfragment extends Fragment {
                         cv.put("message", cars.getMessage(position));
                         cv.put("href", cars.getHref(position));
                         cv.put("image", cars.getImg(position));
-                        cv.put("dateTime", "12.02.14 14:21");
+                         SimpleDateFormat format;
+                        if(cars.getCarDate(position).getHours() == 0 && cars.getCarDate(position).getMinutes() == 0 && cars.getCarDate(position).getSeconds() == 0)
+                            format = new SimpleDateFormat("dd.MM.yyyy");
+                        else
+                            format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                        cv.put("dateTime", format.format(cars.getCarDate(position)));
                         db.insert("favorites", null, cv);
                         Toast.makeText(getContext(), "Авто добавлено в избранное", Toast.LENGTH_SHORT).show();
                         ((ListOfCarsActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Favorites").setAction("add from context menu").setValue(1).build());
