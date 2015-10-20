@@ -162,6 +162,11 @@ public class SearchFragment extends Fragment {
                         if (v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             mSnackBar.applyStyle(R.style.SnackBarSingleLine);
                             mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
+                            mSnackBar.actionClickListener(new SnackBar.OnActionClickListener() {
+                                @Override
+                                public void onActionClick(SnackBar snackBar, int i) {
+                                }
+                            });
                             mSnackBar.show();
                         } else {
                             mSnackBar.applyStyle(R.style.Material_Widget_SnackBar_Tablet_MultiLine);
@@ -169,7 +174,12 @@ public class SearchFragment extends Fragment {
                             mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                                     .actionText("Ок")
                                     .duration(4000)
-                                    .show();
+                                    .actionClickListener(new SnackBar.OnActionClickListener() {
+                                        @Override
+                                        public void onActionClick(SnackBar snackBar, int i) {
+                                        }
+                                    });
+                            mSnackBar.show();
                         }
                     }
                 }
@@ -211,6 +221,7 @@ public class SearchFragment extends Fragment {
                                                 ((MainActivity) getActivity()).onNavigationDrawerItemSelected(5);
                                             }
                                         });
+                                sb.actionTextColor(getResources().getColor(R.color.myPrimaryColor));
                                 sb.show();
                             }
                         }

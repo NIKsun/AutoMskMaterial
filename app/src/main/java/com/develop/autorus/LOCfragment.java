@@ -501,6 +501,7 @@ public class LOCfragment extends Fragment {
                                     getActivity().finish();
                                 }
                             });
+                    sb.actionTextColor(getResources().getColor(R.color.myPrimaryColor));
                     sb.show();
                 }
                 db.close();
