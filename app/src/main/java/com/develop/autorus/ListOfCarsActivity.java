@@ -16,6 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.rey.material.widget.SnackBar;
 
 /**
@@ -35,7 +37,22 @@ public class ListOfCarsActivity extends ActionBarActivity
     Integer monitorID, filterID;
     Boolean monitorWasAdded = false;
     SnackBar snackBar;
-    
+    InterstitialAd mInterstitialAd = new InterstitialAd(this);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sPref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
+        int adMobCounter = sPref.getInt("AdMobCounter",1);
+        if(adMobCounter == 3) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(adRequest);
+            sPref.edit().putInt("AdMobCounter",1).commit();
+        }
+        else
+            sPref.edit().putInt("AdMobCounter",adMobCounter+1).commit();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +61,7 @@ public class ListOfCarsActivity extends ActionBarActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         snackBar = (SnackBar)findViewById(R.id.loc_sn);
+        mInterstitialAd.setAdUnitId(getString(R.string.banner_id));
 
         final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar_actionbar);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -161,5 +179,9 @@ public class ListOfCarsActivity extends ActionBarActivity
     public SnackBar getSnackBar()
     {
         return snackBar;
+    }
+    public InterstitialAd getAds()
+    {
+        return mInterstitialAd;
     }
 }

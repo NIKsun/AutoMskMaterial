@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -42,14 +44,15 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
     List<CarCard> favorites;
     String dateOrID;
     Integer numberOfSite, counterIdDrom;
+    InterstitialAd mInterstitialAd;
 
-    LOCcardAdapter(Cars cars,Bitmap[] images, String dateOrID, Integer numberOfSite){
+    LOCcardAdapter(Cars cars,Bitmap[] images, String dateOrID, Integer numberOfSite, InterstitialAd mAd){
         this.dateOrID = dateOrID;
         this.numberOfSite = numberOfSite;
         this.cars = cars;
         this.images = images;
         isFromFavorites = false;
-
+        mInterstitialAd = mAd;
 
         if(numberOfSite == 2) {
             counterIdDrom = 0;
@@ -157,7 +160,10 @@ public class LOCcardAdapter extends RecyclerView.Adapter<LOCcardAdapter.LOCviewH
                     intent.putExtra("dateTime", "12.21.42");
                 }
                 intent.putExtra("isFromFavorites", isFromFavorites);
+
                 v.getContext().startActivity(intent);
+                if (mInterstitialAd.isLoaded())
+                    mInterstitialAd.show();
             }
         });
         monitorViewHolder.cv.setLongClickable(true);

@@ -368,7 +368,7 @@ public class LOCfragment extends Fragment {
                 RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_cars);
                 rv.setEnabled(true);
                 rv.setVisibility(View.VISIBLE);
-                adapter = new LOCcardAdapter(cars, images, dateOrID, numberOfSite);
+                adapter = new LOCcardAdapter(cars, images, dateOrID, numberOfSite, ((ListOfCarsActivity)getActivity()).getAds());
                 rv.setAdapter(adapter);
             }
             else
