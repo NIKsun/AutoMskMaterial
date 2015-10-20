@@ -38,6 +38,8 @@ import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
@@ -67,6 +69,7 @@ public class MainActivity extends ActionBarActivity
     final String SAVED_TEXT_WITH_VERSION = "checkVersion";
     final String DO_NOT_REMIND = "DontRemind";
     private AlarmManager am;
+    Tracker mTracker;
 
     public static boolean blnBind;
 
@@ -85,6 +88,11 @@ public class MainActivity extends ActionBarActivity
         Fabric.with(this, new Crashlytics());
         super.onCreate(savedInstanceState);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Start activity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         if(pref.getBoolean("notificationIsActive",true)) {
             Intent checkIntent = new Intent(getApplicationContext(), MonitoringWork.class);
