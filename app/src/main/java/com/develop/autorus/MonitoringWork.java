@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -57,141 +58,136 @@ public class MonitoringWork extends Service {
                                 CONC_counter++;
                                 continue;
                             }
-                            final int[] monitorCounter = {0};
-                            final String requestAuto = cursorMonitors.getString(iHrefAuto);
-                            final String requestAvito = cursorMonitors.getString(iHrefAvito);
-                            final String requestDrom = cursorMonitors.getString(iHrefDrom);
+                            int monitorCounter = 0;
+                            String requestAuto = cursorMonitors.getString(iHrefAuto);
+                            String requestAvito = cursorMonitors.getString(iHrefAvito);
+                            String requestDrom = cursorMonitors.getString(iHrefDrom);
 
-                            final String lastCarDateAuto = cursorMonitors.getString(iLastCarDateAuto) != null ? cursorMonitors.getString(iLastCarDateAuto) : "###";
-                            final String lastCarDateAvito = cursorMonitors.getString(iLastCarDateAvito) != null ? cursorMonitors.getString(iLastCarDateAvito) : "###";
-                            final String lastCarIdDrom = cursorMonitors.getString(iLastCarIdDrom) != null ? cursorMonitors.getString(iLastCarIdDrom) : "###";
+                            String lastCarDateAuto = cursorMonitors.getString(iLastCarDateAuto) != null ? cursorMonitors.getString(iLastCarDateAuto) : "###";
+                            String lastCarDateAvito = cursorMonitors.getString(iLastCarDateAvito) != null ? cursorMonitors.getString(iLastCarDateAvito) : "###";
+                            String lastCarIdDrom = cursorMonitors.getString(iLastCarIdDrom) != null ? cursorMonitors.getString(iLastCarIdDrom) : "###";
 
 
-                            Thread t = new Thread(new Runnable() {
-                                public void run() {
-                                    int tryCounter = 0;
-                                    boolean isSuccess = false, isConnectedAuto = true, isConnectedAvito = true, isConnectedDrom = true;
-                                    Document doc = null;
-                                    Elements mainElems;
-                                    while (!isSuccess && tryCounter < 3) {
-                                        if (!requestAuto.equals("###") && (!isConnectedAuto || tryCounter == 0)) {
-                                            isConnectedAuto = true;
-                                            try {
-                                                doc = Jsoup.connect(requestAuto).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
-                                            } catch (IOException e) {
-                                                isConnectedAuto = false;
+                            int tryCounter = 0;
+                            boolean isSuccess = false, isConnectedAuto = true, isConnectedAvito = true, isConnectedDrom = true;
+                            Document doc = null;
+                            Elements mainElems;
+                            while (!isSuccess && tryCounter < 3) {
+                                Log.d("monitor", String.valueOf(tryCounter));
+                                if (!requestAuto.equals("###") && (!isConnectedAuto || tryCounter == 0)) {
+                                    isConnectedAuto = true;
+                                    try {
+                                        doc = Jsoup.connect(requestAuto).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                                    } catch (IOException e) {
+                                        isConnectedAuto = false;
+                                    }
+                                    if (isConnectedAuto) {
+                                        mainElems = doc.select("body > div.branding_fix > div.content.content_style > article > div.clearfix > div.b-page-wrapper > div.b-page-content").first().children();
+
+                                        Elements listOfCars = null;
+                                        for (int i = 0; i < mainElems.size(); i++) {
+                                            String className = mainElems.get(i).className();
+                                            if ((className.indexOf("widget widget_theme_white sales-list") == 0) && (className.length() == 36)) {
+                                                listOfCars = mainElems.get(i).select("div.sales-list-item");
+                                                break;
                                             }
-                                            if (isConnectedAuto) {
-                                                mainElems = doc.select("body > div.branding_fix > div.content.content_style > article > div.clearfix > div.b-page-wrapper > div.b-page-content").first().children();
-
-                                                Elements listOfCars = null;
-                                                for (int i = 0; i < mainElems.size(); i++) {
-                                                    String className = mainElems.get(i).className();
-                                                    if ((className.indexOf("widget widget_theme_white sales-list") == 0) && (className.length() == 36)) {
-                                                        listOfCars = mainElems.get(i).select("div.sales-list-item");
-                                                        break;
+                                        }
+                                        if (listOfCars != null) {
+                                            Date buf;
+                                            if (lastCarDateAuto.equals("###")) {
+                                                for (int i = 0; i < listOfCars.size(); i++) {
+                                                    buf = Cars.getDateAuto(listOfCars.get(i).select("table > tbody > tr").first());
+                                                    if (buf != null) {
+                                                        counter[0][0]++;
+                                                        monitorCounter++;
                                                     }
                                                 }
-                                                if (listOfCars != null) {
-                                                    Date buf;
-                                                    if (lastCarDateAuto.equals("###")) {
-                                                        for (int i = 0; i < listOfCars.size(); i++) {
-                                                            buf = Cars.getDateAuto(listOfCars.get(i).select("table > tbody > tr").first());
-                                                            if (buf != null) {
-                                                                counter[0][0]++;
-                                                                monitorCounter[0]++;
-                                                            }
-                                                        }
-                                                    } else {
-                                                        for (int i = 0; i < listOfCars.size(); i++) {
-                                                            buf = Cars.getDateAuto(listOfCars.get(i).select("table > tbody > tr").first());
-                                                            if (buf != null && Long.parseLong(lastCarDateAuto) / 1000 < buf.getTime() / 1000) {
-                                                                counter[0][0]++;
-                                                                monitorCounter[0]++;
-                                                            }
-                                                        }
+                                            } else {
+                                                for (int i = 0; i < listOfCars.size(); i++) {
+                                                    buf = Cars.getDateAuto(listOfCars.get(i).select("table > tbody > tr").first());
+                                                    if (buf != null && Long.parseLong(lastCarDateAuto) / 1000 < buf.getTime() / 1000) {
+                                                        counter[0][0]++;
+                                                        monitorCounter++;
                                                     }
                                                 }
                                             }
                                         }
-                                        if (!requestAvito.equals("###") && (!isConnectedAvito || tryCounter == 0)) {
-                                            isConnectedAvito = true;
-                                            try {
-                                                doc = Jsoup.connect(requestAvito).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
-                                            } catch (Exception e) {
-                                                isConnectedAvito = false;
-                                            }
-                                            if (isConnectedAvito) {
-                                                mainElems = doc.select("#catalog > div.layout-internal.col-12.js-autosuggest__search-list-container > div.l-content.clearfix > div.clearfix > div.catalog.catalog_table > div.catalog-list.clearfix").first().children();
-
-                                                if (lastCarDateAvito.equals("###")) {
-                                                    for (int i = 0; i < mainElems.size(); i++)
-                                                        for (int j = 0; j < mainElems.get(i).children().size(); j++) {
-                                                            counter[0][0]++;
-                                                            monitorCounter[0]++;
-                                                        }
-                                                } else {
-                                                    for (int i = 0; i < mainElems.size(); i++)
-                                                        for (int j = 0; j < mainElems.get(i).children().size(); j++) {
-                                                            if (Long.parseLong(lastCarDateAvito) / 1000 < Cars.getDateAvito(mainElems.get(i).children().get(j)).getTime() / 1000) {
-                                                                counter[0][0]++;
-                                                                monitorCounter[0]++;
-                                                            }
-                                                        }
-                                                }
-                                            }
-                                        }
-                                        if (!requestDrom.equals("###") && (!isConnectedDrom || tryCounter == 0)) {
-                                            Integer counterDromCars = 0, pageCounter = 1;
-                                            isConnectedDrom = true;
-                                            mainLoop:
-                                            while (counterDromCars < 20) {
-                                                try {
-                                                    doc = Jsoup.connect(requestDrom.replace("page@@@page", "page" + pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
-                                                } catch (Exception e) {
-                                                    isConnectedDrom = false;
-                                                    break;
-                                                }
-                                                if (isConnectedDrom) {
-                                                    mainElems = doc.select("body > div.main0 > div.main1 > div.main2 > table:nth-child(2) > tbody > tr > td:nth-child(1) > div.content > div:nth-child(2)");
-                                                    if (!mainElems.isEmpty())
-                                                        mainElems = mainElems.select("table.newCatList.visitedT");
-                                                    else
-                                                        break;
-
-                                                    if (!mainElems.isEmpty()) {
-                                                        mainElems = mainElems.select("tbody").first().children();
-                                                        for (int i = 0; i < mainElems.size(); i++)
-                                                            if (mainElems.get(i).className().equals("row")) {
-                                                                String id = Cars.getCarIdDrom(mainElems.get(i));
-                                                                if (!id.equals("pinned")) {
-                                                                    counterDromCars++;
-                                                                    if (!id.equals(lastCarIdDrom)) {
-                                                                        counter[0][0]++;
-                                                                        monitorCounter[0]++;
-                                                                    } else
-                                                                        break mainLoop;
-                                                                }
-                                                            }
-                                                    } else
-                                                        break;
-                                                }
-                                                pageCounter++;
-                                                if (pageCounter > 8)
-                                                    break;
-                                            }
-                                        }
-                                        if (isConnectedAuto && isConnectedAvito && isConnectedDrom)
-                                            break;
-                                        tryCounter++;
                                     }
                                 }
-                            });
-                            t.start();
-                            while (t.isAlive()) ;
+                                if (!requestAvito.equals("###") && (!isConnectedAvito || tryCounter == 0)) {
+                                    isConnectedAvito = true;
+                                    try {
+                                        doc = Jsoup.connect(requestAvito).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                                    } catch (Exception e) {
+                                        isConnectedAvito = false;
+                                    }
+                                    if (isConnectedAvito) {
+                                        mainElems = doc.select("#catalog > div.layout-internal.col-12.js-autosuggest__search-list-container > div.l-content.clearfix > div.clearfix > div.catalog.catalog_table > div.catalog-list.clearfix").first().children();
+
+                                        if (lastCarDateAvito.equals("###")) {
+                                            for (int i = 0; i < mainElems.size(); i++)
+                                                for (int j = 0; j < mainElems.get(i).children().size(); j++) {
+                                                    counter[0][0]++;
+                                                    monitorCounter++;
+                                                }
+                                        } else {
+                                            for (int i = 0; i < mainElems.size(); i++)
+                                                for (int j = 0; j < mainElems.get(i).children().size(); j++) {
+                                                    if (Long.parseLong(lastCarDateAvito) / 1000 < Cars.getDateAvito(mainElems.get(i).children().get(j)).getTime() / 1000) {
+                                                        counter[0][0]++;
+                                                        monitorCounter++;
+                                                    }
+                                                }
+                                        }
+                                    }
+                                }
+                                if (!requestDrom.equals("###") && (!isConnectedDrom || tryCounter == 0)) {
+                                    Integer counterDromCars = 0, pageCounter = 1;
+                                    isConnectedDrom = true;
+                                    mainLoop:
+                                    while (counterDromCars < 20) {
+                                        try {
+                                            doc = Jsoup.connect(requestDrom.replace("page@@@page", "page" + pageCounter)).userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                                        } catch (Exception e) {
+                                            isConnectedDrom = false;
+                                            break;
+                                        }
+                                        if (isConnectedDrom) {
+                                            mainElems = doc.select("body > div.main0 > div.main1 > div.main2 > table:nth-child(2) > tbody > tr > td:nth-child(1) > div.content > div:nth-child(2)");
+                                            if (!mainElems.isEmpty())
+                                                mainElems = mainElems.select("table.newCatList.visitedT");
+                                            else
+                                                break;
+
+                                            if (!mainElems.isEmpty()) {
+                                                mainElems = mainElems.select("tbody").first().children();
+                                                for (int i = 0; i < mainElems.size(); i++)
+                                                    if (mainElems.get(i).className().equals("row")) {
+                                                        String id = Cars.getCarIdDrom(mainElems.get(i));
+                                                        if (!id.equals("pinned")) {
+                                                            counterDromCars++;
+                                                            if (!id.equals(lastCarIdDrom)) {
+                                                                counter[0][0]++;
+                                                                monitorCounter++;
+                                                            } else
+                                                                break mainLoop;
+                                                        }
+                                                    }
+                                            } else
+                                                break;
+                                        }
+                                        pageCounter++;
+                                        if (pageCounter > 8)
+                                            break;
+                                    }
+                                }
+                                if (isConnectedAuto && isConnectedAvito && isConnectedDrom)
+                                    break;
+                                tryCounter++;
+                            }
 
                             ContentValues container = new ContentValues();
-                            container.put("count_of_new_cars", monitorCounter[0]);
+                            container.put("count_of_new_cars", monitorCounter);
                             db.update("monitors", container, "id = ?", new String[]{String.valueOf(cursorMonitors.getInt(iMonitorID))});
                         }
                     } while (cursorMonitors.moveToNext());
@@ -204,7 +200,9 @@ public class MonitoringWork extends Service {
 
             }
         });
-        thread.start();
+        SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);
+        if(sPref.getBoolean("notificationIsActive",true))
+            thread.start();
 
         return START_NOT_STICKY;
     }

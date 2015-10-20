@@ -1066,7 +1066,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             AlarmManager am = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
             Intent serviceIntent = new Intent(parentActivity.getApplicationContext(), MonitoringWork.class);
             PendingIntent pIntent = PendingIntent.getService(parentActivity.getApplicationContext(), 0, serviceIntent, 0);
-            am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5000, 240000, pIntent);
             int period = activeMonitorCounter * 180000;
             am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
         }

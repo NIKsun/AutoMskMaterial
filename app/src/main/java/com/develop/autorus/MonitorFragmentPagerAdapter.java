@@ -22,7 +22,8 @@ public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
     public void updateMonitorsFragment() {
-        monitorsFragment.update();
+        if(monitorsFragment != null)
+            monitorsFragment.update();
     }
 
     @Override
