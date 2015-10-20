@@ -108,6 +108,7 @@ public class ListOfCarsActivity extends ActionBarActivity
                                         finish();
                                     }
                                 });
+                        snackBar.actionTextColor(getResources().getColor(R.color.myPrimaryColor));
                         snackBar.show();
                     }
                     Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.anim_translate_right);

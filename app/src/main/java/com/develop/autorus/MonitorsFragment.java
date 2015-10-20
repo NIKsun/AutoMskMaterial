@@ -84,9 +84,10 @@ public class MonitorsFragment extends Fragment {
                             .actionClickListener(new SnackBar.OnActionClickListener() {
                                 @Override
                                 public void onActionClick(SnackBar snackBar, int i) {
-                                    ((MainActivity)getActivity()).onNavigationDrawerItemSelected(5);
+                                    ((MainActivity) getActivity()).onNavigationDrawerItemSelected(5);
                                 }
                             });
+                    sb.actionTextColor(getResources().getColor(R.color.myPrimaryColor));
                     sb.show();
                 }
             }

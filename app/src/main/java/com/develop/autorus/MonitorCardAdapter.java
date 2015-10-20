@@ -922,6 +922,11 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     if(v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                         mSnackBar.applyStyle(R.style.SnackBarSingleLine);
                         mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
+                        mSnackBar.actionClickListener(new SnackBar.OnActionClickListener() {
+                            @Override
+                            public void onActionClick(SnackBar snackBar, int i) {
+                            }
+                        });
                         mSnackBar.show();
                         parentFragment.hideFAB(4000);
                     }
@@ -932,7 +937,13 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                         mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                         .actionText("Ок")
                                 .duration(4000)
-                                .show();
+                                .actionClickListener(new SnackBar.OnActionClickListener() {
+                                    @Override
+                                    public void onActionClick(SnackBar snackBar, int i) {
+                                    }
+                                });
+
+                        mSnackBar.show();
                         parentFragment.hideFAB(4000);
                     }
 
@@ -975,6 +986,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
         SnackBar sb = ((MainActivity)parentFragment.getActivity()).getSnackBar();
         sb.applyStyle(R.style.SnackBarSingleLine);
+        sb.actionTextColor(parentFragment.getResources().getColor(R.color.myPrimaryColor));
         sb.text("Монитор удален")
                 .actionText("Восстановить")
                 .duration(2500)
