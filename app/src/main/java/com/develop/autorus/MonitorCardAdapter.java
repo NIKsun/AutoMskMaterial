@@ -44,6 +44,7 @@ import java.util.Map;
  */
 class Filter {
     Integer id;
+    String region;
     String mark;
     String model;
     String priceFrom;
@@ -130,6 +131,7 @@ class Filter {
     String getMessage()
     {
         String message = "";
+        message += region+ "\n";
         message += getRangeString("Цена", "руб.", priceFrom, priceTo);
         message += getRangeString("Год", "г.", yearFrom, yearTo);
         message += getRangeString("Пробег", "км.", milleageFrom, milleageTo);
@@ -169,6 +171,7 @@ class Filter {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
+        cv.put("region", this.region);
         cv.put("marka", this.mark);
         cv.put("model", this.model);
         cv.put("yearFrom", this.yearFrom);
@@ -409,10 +412,28 @@ class Filter {
         String[] probeg_arr_avto = new String[]{"0","5000","10000","15000","20000","25000","30000","35000","40000","45000","50000","55000", "60000", "65000", "70000","75000","80000","85000","90000","95000","100000","110000","120000","130000","140000","150000","160000","170000","180000","190000","200000","210000","220000","230000","240000","250000","260000","270000","280000","290000","300000","310000","320000","330000","340000","350000","360000","370000","380000","390000","400000","410000","420000","430000","440000","450000","460000","470000","480000","490000","500000","100000000"};
         String[] probeg_arr_avito = new String[]{"15483", "15486", "15487", "15490", "15492", "15494", "15496", "15498", "15500", "15502", "15505", "15506", "15509", "15510", "15512", "15513", "15516", "15517", "15520", "15521", "15524", "15527", "15528", "15531", "15533", "15535", "15536", "15539", "15540", "15542", "15544", "15545", "15546", "15547", "15548", "15554", "15556", "15557", "15558", "15559", "15560", "15561", "15562", "15563", "15564", "15565", "15566", "15567", "15568", "15569", "15570", "15571", "15572", "15573", "15574", "15575", "15576", "15577", "15578", "15579", "15581", "15582"};
 
+        String posRegionString = this.region;
+
+        //get region
+        String region = "auto.ru";
+        String regionavito = "rossiya";
+        String regiondrom = "";
+
+
+        if(!posRegionString.equals("Вся Россия")) {
+            Cursor cursorMark = db.query("regionsTable", null, "regionuser=?", new String[]{posRegionString}, null, null, null);
+            cursorMark.moveToFirst();
+
+            region = cursorMark.getString(cursorMark.getColumnIndex("regionauto"));
+            regionavito = cursorMark.getString(cursorMark.getColumnIndex("regionavito"));
+            regiondrom = "/" + cursorMark.getString(cursorMark.getColumnIndex("regiondrom"));
+        }
+
+
 
         //constructor for auto.ru
-        String begin = "http://auto.ru/cars";
-        String end = "/all/?sort%5Bcreate_date%5D=desc&search%5Bgeo_region%5D=38%2C87";
+        String begin = "http://"+region+"/cars";
+        String end = "/all/?sort%5Bcreate_date%5D=desc";
         String year1="&search%5Byear%5D%5Bmin%5D=";
         String year2="&search%5Byear%5D%5Bmax%5D=";
         String price1="&search%5Bprice%5D%5Bmin%5D="+startPrice+"%D1%80%D1%83%D0%B1.";
@@ -424,7 +445,7 @@ class Filter {
         String probegTo = "&search%5Brun%5D%5Bmax%5D="+probeg_arr_avto[probegvalTo]+"%D0%BA%D0%BC";
 
         //constructor for avito
-        String begin_avito = "https://www.avito.ru/moskva/avtomobili";
+        String begin_avito = "https://www.avito.ru/"+regionavito+"/avtomobili";
         Map<Integer, String> map = new HashMap<Integer, String>();
         //region map create
         map.put(1970,"782");
@@ -479,7 +500,7 @@ class Filter {
         String probegaTo = probeg_arr_avito[probegvalTo];
 
         //constructor for drom
-        String begin_drom = "http://moscow.drom.ru/auto";
+        String begin_drom = "http://auto.drom.ru"+regiondrom;
         String end_drom = "/all/page@@@page/?order_d=dsc";
         String photodrom ="";
         String price1drom = "&minprice=";
@@ -603,6 +624,8 @@ class Filter {
         this.setVolume(from, to);
 
         this.mark = ((TextView) view.findViewById(R.id.search_ll_mark_text)).getText().toString();
+
+        this.region = ((TextView) view.findViewById(R.id.search_ll_region_text)).getText().toString();
         if(!this.mark.equals("Любая"))
             this.model = ((TextView) view.findViewById(R.id.search_ll_model_text)).getText().toString();
         else
@@ -922,6 +945,11 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                     if(v.getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                         mSnackBar.applyStyle(R.style.SnackBarSingleLine);
                         mSnackBar.actionTextColor(v.getContext().getResources().getColor(R.color.myPrimaryColor));
+                        mSnackBar.actionClickListener(new SnackBar.OnActionClickListener() {
+                            @Override
+                            public void onActionClick(SnackBar snackBar, int i) {
+                            }
+                        });
                         mSnackBar.show();
                         parentFragment.hideFAB(4000);
                     }
@@ -932,7 +960,13 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                         mSnackBar.text("Нет удалось подключиться к серверу. Проверьте соеденение с интернетом.")
                         .actionText("Ок")
                                 .duration(4000)
-                                .show();
+                                .actionClickListener(new SnackBar.OnActionClickListener() {
+                                    @Override
+                                    public void onActionClick(SnackBar snackBar, int i) {
+                                    }
+                                });
+
+                        mSnackBar.show();
                         parentFragment.hideFAB(4000);
                     }
 
@@ -975,6 +1009,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
         SnackBar sb = ((MainActivity)parentFragment.getActivity()).getSnackBar();
         sb.applyStyle(R.style.SnackBarSingleLine);
+        sb.actionTextColor(parentFragment.getResources().getColor(R.color.myPrimaryColor));
         sb.text("Монитор удален")
                 .actionText("Восстановить")
                 .duration(2500)

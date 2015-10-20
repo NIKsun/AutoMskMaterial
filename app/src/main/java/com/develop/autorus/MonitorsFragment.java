@@ -84,9 +84,10 @@ public class MonitorsFragment extends Fragment {
                             .actionClickListener(new SnackBar.OnActionClickListener() {
                                 @Override
                                 public void onActionClick(SnackBar snackBar, int i) {
-                                    ((MainActivity)getActivity()).onNavigationDrawerItemSelected(5);
+                                    ((MainActivity) getActivity()).onNavigationDrawerItemSelected(5);
                                 }
                             });
+                    sb.actionTextColor(getResources().getColor(R.color.myPrimaryColor));
                     sb.show();
                 }
             }
@@ -189,6 +190,7 @@ public class MonitorsFragment extends Fragment {
         SQLiteDatabase db = new DbHelper(getActivity()).getWritableDatabase();
         Cursor cursorFilters = db.query("filters", null, null, null, null, null, null);
 
+        int iRegion = cursorFilters.getColumnIndex("region");
         int iMark = cursorFilters.getColumnIndex("marka");
         int iModel = cursorFilters.getColumnIndex("model");
         int iYearFrom = cursorFilters.getColumnIndex("yearFrom");
@@ -211,6 +213,7 @@ public class MonitorsFragment extends Fragment {
                 Filter elem = new Filter();
                 elem.id = cursorFilters.getInt(cursorFilters.getColumnIndex("id"));
 
+                elem.region = cursorFilters.getString(iRegion);
                 elem.mark = cursorFilters.getString(iMark);
                 elem.model = cursorFilters.getString(iModel);
 

@@ -108,6 +108,7 @@ public class ListOfCarsActivity extends ActionBarActivity
                                         finish();
                                     }
                                 });
+                        snackBar.actionTextColor(getResources().getColor(R.color.myPrimaryColor));
                         snackBar.show();
                     }
                     Animation anim = AnimationUtils.loadAnimation(v.getContext(), R.anim.anim_translate_right);
@@ -124,6 +125,7 @@ public class ListOfCarsActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
+        mNavigationDrawerFragment.closeDrawer();
     }
 
     @Override
