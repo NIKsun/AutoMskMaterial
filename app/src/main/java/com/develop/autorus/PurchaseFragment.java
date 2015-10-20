@@ -58,12 +58,32 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
         Boolean bool = settings.getBoolean("TAG_DISABLED_ADS", false);
 
         if (bool) {
-            Toast.makeText(getActivity(), bool.toString() + "   111111" + " \n", Toast.LENGTH_LONG);
-            Log.d("In App Purchase", "1111111111111");
+            //Toast.makeText(getActivity(), bool.toString() + "   111111" + " \n", Toast.LENGTH_LONG);
+            Log.d("In App Purchase", "True. No reklama, we buy this option");
         } else {
-            Toast.makeText(getActivity(), bool.toString() + "   222222" + " \n", Toast.LENGTH_LONG);
-            Log.d("In App Purchase", "2222222222222");
+            //Toast.makeText(getActivity(), bool.toString() + "   222222" + " \n", Toast.LENGTH_LONG);
+            Log.d("In App Purchase", "False. With reklama, we don't buy this option");
         }
+
+        if(settings.getBoolean("TAG_DISABLED_ADS", false))
+        {
+            //Сделать купленным и не кликабельным одно окно с рекламой.
+        }
+        if(settings.getBoolean("TAG_MONITOR", false))
+        {
+            //Сделать купленным и не кликабельным одно окно с мониторами.
+        }
+        if(settings.getBoolean("TAG_FAVORITES", false))
+        {
+            //Сделать купленным и не кликабельным одно окно с избранными.
+        }
+        if(settings.getBoolean("TAG_BUY_ALL", false))
+        {
+            //Сделать купленным и не кликабельным все окна!!!!!!!!!!!!
+        }
+
+
+
 
         //Danger! Auchtung! Никита, Паша!!!
         String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAskc/nL1SvaOSFbHVSRQrekyfW0Qqnk1I0ld+elQyTczDMbSO57DBynG7tYcQeKFN2/oQC+rt1LvIeHrEVELl3cnTrfUQLHqaqX73C8ZuI2ygcJ/joLHtW4qjHvOOfMuDOYNwmH6APcr11cRPfuMwZPOSrpKjq193F4xpCmhsGQA7ZoAXlJNeotnglDa2uzvAOMv+6Lry/8jZRxCvmJ7crH4cGP3FqSfirq/Qy61DkhEoWy4DiUIlDRxom6IqF9cKvDn4EeVJBQAAbWCflYlfKv1sIlmr+kfLyb17Adbm6+8FFS6t0Ko9MhDo0B1kvBy19FNOtFlLPp5lLmHx0Vs5YwIDAQAB";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на

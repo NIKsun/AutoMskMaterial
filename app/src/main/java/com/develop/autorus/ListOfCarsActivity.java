@@ -143,6 +143,7 @@ public class ListOfCarsActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         // populate the navigation drawer
+        mNavigationDrawerFragment.closeDrawer();
     }
 
     @Override
