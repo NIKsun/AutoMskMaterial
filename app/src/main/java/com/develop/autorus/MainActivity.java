@@ -302,31 +302,31 @@ public class MainActivity extends ActionBarActivity
                     String signature = signatureList.get(i);
                     String sku = ownedSkus.get(i);
 
-                    if(sku == PurchaseFragment.ITEM_SKU1)
+                    if(sku.equals(PurchaseFragment.ITEM_SKU1))
                     {
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putBoolean("TAG_DISABLED_ADS", true);
                         editor.commit();
                     }
-                    if(sku == PurchaseFragment.ITEM_SKU2)
+                    if(sku.equals(PurchaseFragment.ITEM_SKU2))
                     {
                         // Ставим нужное количество мониторов.
-                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean("TAG_MONITOR", true);
-                        editor.commit();
-                    }
-
-                    if(sku == PurchaseFragment.ITEM_SKU3)
-                    {
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putBoolean("TAG_FAVORITES", true);
                         editor.commit();
                     }
 
-                    if(sku == PurchaseFragment.ITEM_SKU4)
+                    if(sku.equals(PurchaseFragment.ITEM_SKU3))
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_MONITOR", true);
+                        editor.commit();
+                    }
+
+                    if(sku.equals(PurchaseFragment.ITEM_SKU4))
                     {
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = settings.edit();
@@ -336,8 +336,7 @@ public class MainActivity extends ActionBarActivity
                 }
             }
         });
-
-        checkPurchase.run();
+        //checkPurchase.run();
 
         SharedPreferences sPrefVersion;
         sPrefVersion = getPreferences(MODE_PRIVATE);

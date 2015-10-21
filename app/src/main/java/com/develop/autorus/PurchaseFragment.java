@@ -1,8 +1,11 @@
 package com.develop.autorus;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +36,8 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
 
     // Изменить на реальные.
     static final String ITEM_SKU1 = "delete_adds";//"android.test.purchased";
-    static final String ITEM_SKU2 = "not_limit_monitors";//"android.test.purchased";
-    static final String ITEM_SKU3 = "no_limit_favorites";//"android.test.purchased";
+    static final String ITEM_SKU2 = "no_limit_favorites";//"android.test.purchased";
+    static final String ITEM_SKU3 = "not_limit_monitors";//"android.test.purchased";
     static final String ITEM_SKU4 = "god_mode";//"android.test.purchased";
 
 
@@ -132,11 +135,12 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d("checkPurchaseTest2", "3 111111");
                         try {
                             if (!MainActivity.blnBind) return;
-
+                            Log.d("checkPurchaseTest2", "3 2222222");
                             if (MainActivity.mService == null) return;
-
+                            Log.d("checkPurchaseTest2", "3 33333333333");
                             mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU3, 10001,
                                     mPurchaseFinishedListener, "mypurchasetoken");
                         } catch (Exception ex) {
@@ -153,10 +157,11 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d("checkPurchaseTest2", "4 111111");
                         if (!MainActivity.blnBind) return;
-
+                        Log.d("checkPurchaseTest2", "4 222222222");
                         if (MainActivity.mService == null) return;
-
+                        Log.d("checkPurchaseTest2", "4 333333333");
                         try {
                             mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU4, 10001,
                                     mPurchaseFinishedListener, "mypurchasetoken");
@@ -191,15 +196,15 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
             savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
             cardView1.setClickable(false);
         }
-        if(settings.getBoolean("TAG_MONITOR", false))
-        {
-            savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
-            cardView2.setClickable(false);
-        }
         if(settings.getBoolean("TAG_FAVORITES", false))
         {
             savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
             cardView3.setClickable(false);
+        }
+        if(settings.getBoolean("TAG_MONITOR", false))
+        {
+            savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
+            cardView2.setClickable(false);
         }
         if(settings.getBoolean("TAG_BUY_ALL", false))
         {
@@ -207,6 +212,131 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
             cardView4.setClickable(false);
         }
 
+        Thread checkPurchase = new Thread(new Runnable() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            public void run()
+            {
+                /*try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+                String tag = "checkPurchaseTest";
+                Log.i(tag, "111111111111");
+                if (!MainActivity.blnBind) return;
+                Log.i(tag, "2222222222");
+                if (MainActivity.mService == null) return;
+                Log.i(tag, "3333333333333");
+
+                Bundle ownedItems;
+                try {
+                    ownedItems = MainActivity.mService.getPurchases(3, savedView.getContext().getPackageName(), "inapp", null);
+
+                    //Toast.makeText(getApplicationContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
+
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+
+                    //Toast.makeText(getApplicationContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
+                int response = ownedItems.getInt("RESPONSE_CODE");
+                //Toast.makeText(getApplicationContext(), "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response), Toast.LENGTH_SHORT).show();
+                Log.i(tag, "getPurchases() - \"RESPONSE_CODE\" return " + String.valueOf(response));
+
+                if (response != 0) return;
+
+                ArrayList<String> ownedSkus = ownedItems.getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItems.getStringArrayList("INAPP_DATA_SIGNATURE");
+                String continuationToken = ownedItems.getString("INAPP_CONTINUATION_TOKEN");
+
+                Log.i(tag, "getPurchases() - \"INAPP_PURCHASE_ITEM_LIST\" return " + ownedSkus.toString());
+                Log.i(tag, "getPurchases() - \"INAPP_PURCHASE_DATA_LIST\" return " + purchaseDataList.toString());
+                Log.i(tag, "getPurchases() - \"INAPP_DATA_SIGNATURE\" return " + (signatureList != null ? signatureList.toString() : "null"));
+                Log.i(tag, "getPurchases() - \"INAPP_CONTINUATION_TOKEN\" return " + (continuationToken != null ? continuationToken : "null"));
+
+
+                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                    //String purchaseData = purchaseDataList.get(i);
+                    //String signature = signatureList.get(i);
+                    String sku = ownedSkus.get(i);
+                    Log.d("checkPurchaseTest", i + "  " + sku.toString());
+                    if(sku.equals(PurchaseFragment.ITEM_SKU1))
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_DISABLED_ADS", true);
+                        editor.commit();
+                        Log.d("checkPurchaseTest", i + "  " + sku.toString() + "   fuck the poli");
+
+                    }
+                    if(sku.equals(PurchaseFragment.ITEM_SKU2))
+                    {
+                        // Ставим нужное количество мониторов.
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_FAVORITES", true);
+                        editor.commit();
+
+                        Log.d("checkPurchaseTest", i + "  " + sku.toString() + "   fuck the poli");
+                    }
+
+                    if(sku.equals(PurchaseFragment.ITEM_SKU3))
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_MONITOR", true);
+                        editor.commit();
+
+                        Log.d("checkPurchaseTest", i + "  " + sku.toString() + "   fuck the poli");
+                    }
+
+                    if(sku.equals(PurchaseFragment.ITEM_SKU4))
+                    {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("TAG_BUY_ALL", true);
+                        editor.commit();
+
+                        Log.d("checkPurchaseTest", i + "  " + sku.toString() + "   fuck the poli");
+                    }
+                }
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                Boolean bool = settings.getBoolean("TAG_DISABLED_ADS", false);
+                android.support.v7.widget.CardView cardView1 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buyFirstItem);
+                android.support.v7.widget.CardView cardView2 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buySecondItem);
+                android.support.v7.widget.CardView cardView3 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buyThirdItem);
+                android.support.v7.widget.CardView cardView4 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buyFourthItem);
+
+                if(settings.getBoolean("TAG_DISABLED_ADS", false))
+                {
+                    savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
+                    cardView1.setClickable(false);
+                }
+                if(settings.getBoolean("TAG_FAVORITES", false))
+                {
+                    savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
+                    cardView3.setClickable(false);
+                }
+                if(settings.getBoolean("TAG_MONITOR", false))
+                {
+                    savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
+                    cardView2.setClickable(false);
+                }
+                if(settings.getBoolean("TAG_BUY_ALL", false))
+                {
+                    savedView.findViewById(R.id.purchasedAll).setVisibility(View.VISIBLE);
+                    cardView4.setClickable(false);
+                }
+
+            }
+
+        });
+
+        checkPurchase.run();
 
         return savedView;
     }
@@ -302,7 +432,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                         // Ставим нужное количество мониторов.
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean("TAG_MONITOR", true);
+                        editor.putBoolean("TAG_FAVORITES", true);
                         editor.commit();
                     }
                 /*  Изменить и сделать нужное количество. */
@@ -312,7 +442,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                         // Ставим нужное количество мониторов.
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean("TAG_FAVORITES", true);
+                        editor.putBoolean("TAG_MONITOR", true);
                         editor.commit();
                     }
                 /*  Изменить и сделать нужное количество. */
