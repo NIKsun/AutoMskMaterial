@@ -24,6 +24,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +92,16 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String themeName = pref.getString("theme", "1");
+        ImageView iv = (ImageView)view.findViewById(R.id.navigationHeader);
+        if (themeName.equals("1"))
+            iv.setImageDrawable(getResources().getDrawable(R.drawable.wallpaper));
+        else if (themeName.equals("2"))
+            iv.setImageDrawable(getResources().getDrawable(R.drawable.wallpaper3));
+
+
 
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
 

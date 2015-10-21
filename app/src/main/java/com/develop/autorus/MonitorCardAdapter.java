@@ -861,6 +861,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                             case "Изменить":
                                 Intent intent = new Intent(parentActivity, EditMonitorActivity.class);
                                 intent.putExtra("filterID",monitors.get(i).filter.id);
+                                finableRemove();
                                 parentActivity.startActivity(intent);
                                 break;
                             case "Удалить":
@@ -890,6 +891,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                             case "Изменить":
                                 Intent intent = new Intent(parentActivity, EditMonitorActivity.class);
                                 intent.putExtra("filterID",monitors.get(i).filter.id);
+                                finableRemove();
                                 parentActivity.startActivity(intent);
                                 break;
                             case "Удалить":
@@ -935,6 +937,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 if(netInfo != null && netInfo.isConnectedOrConnecting()) {
                     Intent intent = new Intent(v.getContext(), ListOfCarsActivity.class);
                     intent.putExtra("monitorID", monitors.get(i).id);
+                    finableRemove();
                     v.getContext().startActivity(intent);
                 }
                 else

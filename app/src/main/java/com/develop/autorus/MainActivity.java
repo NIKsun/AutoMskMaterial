@@ -428,6 +428,7 @@ public class MainActivity extends ActionBarActivity
             Log.d("monitor","isFromNotification");
             numberOfCallingFragment = 0;
         }
+        Log.d("monitorNOCF", String.valueOf(numberOfCallingFragment));
         if(numberOfCallingFragment != -1) {
             if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
                     (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))
@@ -453,8 +454,6 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         Log.d("monitor","position "+position);
-        Log.d("monitor", String.valueOf(itemSelectFromTabLayout));
-        Log.d("monitor", String.valueOf(isFirstLaunch));
 
         if(itemSelectFromTabLayout)
         {

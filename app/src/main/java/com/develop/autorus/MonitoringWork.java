@@ -82,7 +82,11 @@ public class MonitoringWork extends Service {
                                         isConnectedAuto = false;
                                     }
                                     if (isConnectedAuto) {
-                                        mainElems = doc.select("body > div.branding_fix > div.content.content_style > article > div.clearfix > div.b-page-wrapper > div.b-page-content").first().children();
+                                        mainElems = doc.select("body > div.branding_fix > div.content.content_style > article > div.clearfix > div.b-page-wrapper > div.b-page-content");
+                                        if(mainElems.isEmpty())
+                                            break;
+                                        else
+                                            mainElems = mainElems.first().children();
 
                                         Elements listOfCars = null;
                                         for (int i = 0; i < mainElems.size(); i++) {
