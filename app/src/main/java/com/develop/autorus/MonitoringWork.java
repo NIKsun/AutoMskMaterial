@@ -232,7 +232,7 @@ public class MonitoringWork extends Service {
         Notification notification = builder.setContentIntent(pIntent)
                 .setSmallIcon(R.drawable.status_bar).setTicker("Новые авто!")
                 .setAutoCancel(true).setContentTitle("Авто Русь")
-                .setContentText((CONC_counter > 0 ? "Более " : "") + countOfNewCars + (CONC_counter%10 == 1 ? " новый авто!" : " новых авто!")).build();
+                .setContentText((CONC_counter > 0 ? "Более " : "") + countOfNewCars + (countOfNewCars%10 == 1 ? " новый авто!" : " новых авто!")).build();
 
 
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);

@@ -208,56 +208,34 @@ public class SettingsFragment extends Fragment
     }
 
     public void showDialogTheme(final int themeNumber) {
-        AlertDialog.Builder ad;
-        setRadio_button_checked(themeNumber);
-        ad = new AlertDialog.Builder(getActivity());
-        setRadio_button_checked(themeNumber);
-        ad.setTitle("Изменение темы");
-        ad.setMessage("Для измененения темы необходимо перезапустить приложение.");
-        ad.setPositiveButton("Перезапустить приложение", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                //finish();
-                SharedPreferences pref = PreferenceManager
-                        .getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor ed = pref.edit();
 
-                switch (themeNumber) {
-                    case 1: {
-                        if(radio_button_checked == themeNumber)
-                            break;
-                        ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_2)).setChecked(false);
-                        ed.putString("theme", "1"); //etText.getText().toString()
-                        break;
-                    }
-                    case 2: {
-                        if(radio_button_checked == themeNumber)
-                            break;
-                        ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_1)).setChecked(false);
-                        ed.putString("theme", "2"); //etText.getText().toString()
-                        break;
-                    }
-                }
-                radio_button_checked=themeNumber;
-                ed.commit();
-                ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Change theme").setAction(String.valueOf(themeNumber)).setValue(1).build());
+        SharedPreferences pref = PreferenceManager
+                .getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor ed = pref.edit();
 
-                Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName() );
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+        switch (themeNumber) {
+            case 1: {
+                if(radio_button_checked == themeNumber)
+                    break;
+                ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_2)).setChecked(false);
+                ed.putString("theme", "1"); //etText.getText().toString()
+                break;
             }
-        });
-        ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                setRadio_button_checked(radio_button_checked);
+            case 2: {
+                if(radio_button_checked == themeNumber)
+                    break;
+                ((com.rey.material.widget.RadioButton) savedView.findViewById(R.id.radio_button_1)).setChecked(false);
+                ed.putString("theme", "2"); //etText.getText().toString()
+                break;
             }
-        });
-        ad.setCancelable(true);
-        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-                setRadio_button_checked(radio_button_checked);
-            }
-        });
+        }
+        radio_button_checked=themeNumber;
+        ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Change theme").setAction(String.valueOf(themeNumber)).setValue(1).build());
 
-        ad.show();
+        Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName() );
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        ed.putInt("NumberOfCallingFragment", 3);
+        ed.commit();
+        startActivity(i);
     }
 }

@@ -37,6 +37,7 @@
     <color name="myNavigationColor2">#000</color>
 
     <color name="myTransparent">@android:color/transparent</color>
+    <color name="textPurchaseColor">#000000</color>
 
     <array name="progress_colors_light">
         <item>@color/myPrimaryColor</item>

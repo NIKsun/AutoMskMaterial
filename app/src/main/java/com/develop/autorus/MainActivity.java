@@ -429,6 +429,7 @@ public class MainActivity extends ActionBarActivity
             numberOfCallingFragment = 0;
         }
         Log.d("monitorNOCF", String.valueOf(numberOfCallingFragment));
+
         if(numberOfCallingFragment != -1) {
             if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
                     (mNavigationDrawerFragment.getCurrentItemSelected() == 1 && numberOfCallingFragment == 0))

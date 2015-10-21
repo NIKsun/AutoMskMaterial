@@ -1,6 +1,7 @@
 package com.develop.autorus;
 
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.develop.autorus.inappbilling.util.Purchase;
 import com.rey.material.app.ThemeManager;
 
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -64,26 +66,6 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
             //Toast.makeText(getActivity(), bool.toString() + "   222222" + " \n", Toast.LENGTH_LONG);
             Log.d("In App Purchase", "False. With reklama, we don't buy this option");
         }
-
-        if(settings.getBoolean("TAG_DISABLED_ADS", false))
-        {
-            //Сделать купленным и не кликабельным одно окно с рекламой.
-        }
-        if(settings.getBoolean("TAG_MONITOR", false))
-        {
-            //Сделать купленным и не кликабельным одно окно с мониторами.
-        }
-        if(settings.getBoolean("TAG_FAVORITES", false))
-        {
-            //Сделать купленным и не кликабельным одно окно с избранными.
-        }
-        if(settings.getBoolean("TAG_BUY_ALL", false))
-        {
-            //Сделать купленным и не кликабельным все окна!!!!!!!!!!!!
-        }
-
-
-
 
         //Danger! Auchtung! Никита, Паша!!!
         String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAskc/nL1SvaOSFbHVSRQrekyfW0Qqnk1I0ld+elQyTczDMbSO57DBynG7tYcQeKFN2/oQC+rt1LvIeHrEVELl3cnTrfUQLHqaqX73C8ZuI2ygcJ/joLHtW4qjHvOOfMuDOYNwmH6APcr11cRPfuMwZPOSrpKjq193F4xpCmhsGQA7ZoAXlJNeotnglDa2uzvAOMv+6Lry/8jZRxCvmJ7crH4cGP3FqSfirq/Qy61DkhEoWy4DiUIlDRxom6IqF9cKvDn4EeVJBQAAbWCflYlfKv1sIlmr+kfLyb17Adbm6+8FFS6t0Ko9MhDo0B1kvBy19FNOtFlLPp5lLmHx0Vs5YwIDAQAB";//Здесь реальный наш ключ. Изменить!!! Не уверен, что нужно заливать на
@@ -203,6 +185,27 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
 */
 
         //fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);
+
+        if(settings.getBoolean("TAG_DISABLED_ADS", false))
+        {
+            savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
+            cardView1.setClickable(false);
+        }
+        if(settings.getBoolean("TAG_MONITOR", false))
+        {
+            savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
+            cardView2.setClickable(false);
+        }
+        if(settings.getBoolean("TAG_FAVORITES", false))
+        {
+            savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
+            cardView3.setClickable(false);
+        }
+        if(settings.getBoolean("TAG_BUY_ALL", false))
+        {
+            savedView.findViewById(R.id.purchasedAll).setVisibility(View.VISIBLE);
+            cardView4.setClickable(false);
+        }
 
 
         return savedView;

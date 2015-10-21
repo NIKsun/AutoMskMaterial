@@ -1050,8 +1050,11 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         PendingIntent pIntent = PendingIntent.getService(parentActivity.getApplicationContext(), 0, serviceIntent, 0);
         if(activeMonitorCounter != 0)
         {
-            int period = activeMonitorCounter * 180000;
-            am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
+            if(sPref.getBoolean("notificationIsActive",true)) {
+                int period = activeMonitorCounter * 180000;
+                am.cancel(pIntent);
+                am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
+            }
         }
         else {
             am.cancel(pIntent);
@@ -1065,11 +1068,12 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
 
 
-        if(activeMonitorCounter == 1 && sPref.getBoolean("notificationIsActive",true)) {
+        if(sPref.getBoolean("notificationIsActive",true)) {
             AlarmManager am = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);
             Intent serviceIntent = new Intent(parentActivity.getApplicationContext(), MonitoringWork.class);
             PendingIntent pIntent = PendingIntent.getService(parentActivity.getApplicationContext(), 0, serviceIntent, 0);
             int period = activeMonitorCounter * 180000;
+            am.cancel(pIntent);
             am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + period, period, pIntent);
         }
     }

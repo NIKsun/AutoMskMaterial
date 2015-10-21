@@ -177,11 +177,11 @@ public class LOCfragment extends Fragment {
                     mainElems = doc.select("body > div.branding_fix > div.content.content_style > article > div.clearfix > div.b-page-wrapper > div.b-page-content");
 
                     if(mainElems.isEmpty())
-                        isNotFound = true;
+                        isNotConnected = true;
                     else
                         mainElems = mainElems.first().children();
 
-                    if(!isNotFound) {
+                    if(!isNotConnected) {
                         Elements listOfCars = null;
                         for (int i = 0; i < mainElems.size(); i++) {
                             String className = mainElems.get(i).className();
@@ -257,7 +257,7 @@ public class LOCfragment extends Fragment {
                             mainElems = mainElems.select("table.newCatList.visitedT");
                         else {
                             if (counter == 0) {
-                                isNotFound = true;
+                                isNotConnected = true;
                                 break;
                             }
                             else
