@@ -97,7 +97,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         String themeName = pref.getString("theme", "1");
         ImageView iv = (ImageView)view.findViewById(R.id.navigationHeader);
         if (themeName.equals("1"))
-            iv.setImageDrawable(getResources().getDrawable(R.drawable.wallpaper));
+            iv.setImageDrawable(getResources().getDrawable(R.drawable.wallpaper2));
         else if (themeName.equals("2"))
             iv.setImageDrawable(getResources().getDrawable(R.drawable.wallpaper3));
 

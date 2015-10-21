@@ -2,6 +2,7 @@ package com.develop.autorus;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 
 import org.jsoup.nodes.Element;
 
@@ -84,9 +85,13 @@ public class Cars  {
             currentCar.year = elem.select("td:nth-child(4)").text();
         else
             currentCar.year = "не указан";
+
         if(!elem.select("td:nth-child(6)").text().isEmpty())
             if(!elem.select("td:nth-child(6)").text().equals("новый"))
-                currentCar.mileage = elem.select("td:nth-child(6)").text().split(",")[0]+" 000 км";
+                if(!elem.select("td:nth-child(6)").html().equals("&nbsp;"))
+                    currentCar.mileage = elem.select("td:nth-child(6)").text().split(",")[0]+" 000 км";
+                else
+                    currentCar.mileage = "не указан";
             else
                 currentCar.mileage = "новый авто";
         else
@@ -223,48 +228,7 @@ public class Cars  {
         cars[lastCar] = c;
         lastCar++;
     }
-    public static Cars merge(Cars carsAvto, Cars carsAvito, Cars carsDrom)
-    {
-        Cars result = new Cars(carsAvto.getLength() + carsAvito.getLength() + carsDrom.getLength() + 3);
-        if(carsAvto.getLength()>0)
-        {
-            result.addSeparator("Auto.ru",carsAvto.getLength());
-            int counter = 0;
-            for(int i=0;i<carsAvto.getLength();i++)
-            {
-                result.cars[result.getLength()] = carsAvto.cars[counter];
-                counter++;
-                result.lastCar++;
-            }
-        }
-        if(carsDrom.getLength()>0)
-        {
-            result.addSeparator("Drom.ru",carsDrom.getLength());
 
-            int counter = 0;
-            for(int i=0;i<carsDrom.getLength();i++)
-            {
-                result.cars[result.getLength()] = carsDrom.cars[counter];
-                counter++;
-                result.lastCar++;
-            }
-        }
-        if(carsAvito.getLength()>0)
-        {
-            result.addSeparator("Avito.ru",carsAvito.getLength());
-            int counter = 0;
-            for(int i=0;i<carsAvito.getLength();i++)
-            {
-                result.cars[result.getLength()] = carsAvito.cars[counter];
-                counter++;
-                result.lastCar++;
-            }
-        }
-        return result;
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     public boolean addFromAvito(Element elem)
     {
         Car currentCar = new Car();

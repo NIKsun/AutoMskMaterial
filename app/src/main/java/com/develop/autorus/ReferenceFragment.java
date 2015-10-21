@@ -65,7 +65,7 @@ public class ReferenceFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 // Изменить на другой адрес.
-                String packageName = "com.develop.searchmycarandroid";
+                String packageName =savedView.getContext().getPackageName(); ;//"com.develop.searchmycarandroid";
                 try {
 
 

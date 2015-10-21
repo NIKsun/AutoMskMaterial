@@ -114,7 +114,7 @@ public class SettingsFragment extends Fragment
         });
 
         final com.rey.material.widget.Switch switchVibration= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_vibration_switch_status);
-        switchVibration.setChecked(sPref.getBoolean("vibrationIsActive", false));
+        switchVibration.setChecked(sPref.getBoolean("vibrationIsActive", true));
         switchVibration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +135,7 @@ public class SettingsFragment extends Fragment
         });
 
         final com.rey.material.widget.Switch switchSound= (com.rey.material.widget.Switch) savedView.findViewById(R.id.cv_sound_switch);
-        switchSound.setChecked(sPref.getBoolean("soundIsActive", false));
+        switchSound.setChecked(sPref.getBoolean("soundIsActive", true));
         switchSound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

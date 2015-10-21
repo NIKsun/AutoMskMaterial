@@ -40,6 +40,8 @@ import com.android.vending.billing.IInAppBillingService;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.rey.material.app.DialogFragment;
+import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ThemeManager;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.SnackBar;
@@ -199,7 +201,11 @@ public class MainActivity extends ActionBarActivity
                 Document doc;
                 SharedPreferences sPref;
                 try {
-                    doc = Jsoup.connect("https://play.google.com/store/apps/details?id=com.develop.searchmycarandroid").userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").timeout(12000).get();
+                    String packageName =getApplicationContext().getPackageName();
+                    doc = Jsoup.connect("https://play.google.com/store/apps/details?id=" + packageName).
+                            userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; ru-RU; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6").
+                            timeout(12000).get();
+                            //"")
 
                     PackageManager packageManager;
                     PackageInfo packageInfo;
@@ -229,16 +235,16 @@ public class MainActivity extends ActionBarActivity
                 }
                 catch (HttpStatusException e)
                 {
-                    //bulAvito[0] =false;
                     return;
                 }
                 catch (IOException e)
                 {
-                    //connectionAvitoSuccess[0] = false;
                     return;
                 } catch (PackageManager.NameNotFoundException e) {
+
                     e.printStackTrace();
                 }
+
 
             }
         });
@@ -248,21 +254,29 @@ public class MainActivity extends ActionBarActivity
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             public void run()
             {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 String tag = "checkPurchaseTest";
+                Log.i(tag, "111111111111");
                 if (!blnBind) return;
+                Log.i(tag, "2222222222");
                 if (mService == null) return;
+                Log.i(tag, "3333333333333");
 
                 Bundle ownedItems;
                 try {
                     ownedItems = mService.getPurchases(3, getPackageName(), "inapp", null);
 
                     //Toast.makeText(getApplicationContext(), "getPurchases() - success return Bundle", Toast.LENGTH_SHORT).show();
-                    Log.i(tag, "getPurchases() - success return Bundle");
+
                 } catch (RemoteException e) {
                     e.printStackTrace();
 
                     //Toast.makeText(getApplicationContext(), "getPurchases - fail!", Toast.LENGTH_SHORT).show();
-                    Log.w(tag, "getPurchases() - fail!");
+
                     return;
                 }
 
@@ -329,13 +343,13 @@ public class MainActivity extends ActionBarActivity
         sPrefVersion = getPreferences(MODE_PRIVATE);
         Boolean isNewVersion;
         isNewVersion = sPrefVersion.getBoolean(SAVED_TEXT_WITH_VERSION, true);
+
+
         threadAvito.start();
         boolean remind=true;
         if (!isNewVersion)
         {
-
-            Log.d("aaffa", "isNewVersion= "+isNewVersion);
-            Log.d("aaffa", "не новая версия!!! Так записано. Возможно, поток еще не отработал");
+            Log.d("affa", "isNewVersion= "+isNewVersion);
             SharedPreferences sPref12;
             sPref12 = getPreferences(MODE_PRIVATE);
             String isNewVersion12;
@@ -350,8 +364,6 @@ public class MainActivity extends ActionBarActivity
 
                 if (!isNewVersion12.equals(packageInfo.versionName))
                 {
-                    Log.d("aaffa", "записанная в shared запись версии НЕ совпадает с действительной=" + isNewVersion12);
-
                     SharedPreferences sPref;
                     sPref = getPreferences(MODE_PRIVATE);
                     SharedPreferences.Editor ed = sPref.edit();
@@ -363,10 +375,7 @@ public class MainActivity extends ActionBarActivity
                     sPrefRemind.edit().putBoolean(DO_NOT_REMIND, false).commit();
                 }
                 else
-                {
                     remind = false;
-                    Log.d("aaffa", "записанная в shared запись версии  совпадает с действительной");
-                }
 
 
                 SharedPreferences sPrefRemind;
@@ -380,39 +389,42 @@ public class MainActivity extends ActionBarActivity
             sPrefRemind = getPreferences(MODE_PRIVATE);
             Boolean dontRemind;
             dontRemind = sPrefRemind.getBoolean(DO_NOT_REMIND, false);
-            Log.d("aaffa", "dontRemind= "+dontRemind.toString());
-            Log.d("aaffa", "remind= "+remind);
-
+            Log.d("affa", "dontRemind= "+dontRemind.toString());
+            Log.d("affa", "remind= "+remind);
+            Log.d("affa", "44444444444444444444444= ");
             if ((!dontRemind) && (!remind)) {
-                AlertDialog.Builder ad;
-                ad = new AlertDialog.Builder(this);
-                ad.setTitle("Обновление");
-                ad.setMessage("Вы хотите обновить приложение?");
-                ad.setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.develop.searchmycarandroid"));
+                Log.d("affa", "5555555555555555555555555= ");
+                SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+                    @Override
+                    public void onPositiveActionClicked(DialogFragment fragment) {
+                        super.onPositiveActionClicked(fragment);
+                        String packageName =getApplicationContext().getPackageName();
+                        Intent intent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=" + packageName));
                         startActivity(intent);
                     }
-                });
-                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
+
+                    @Override
+                    public void onNegativeActionClicked(DialogFragment fragment) {
+                        super.onNegativeActionClicked(fragment);
                     }
-                });
-                ad.setNeutralButton("Не напоминать", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
+
+                    @Override
+                    public void onNeutralActionClicked(DialogFragment fragment) {
+                        super.onNegativeActionClicked(fragment);
                         SharedPreferences sPrefRemind;
                         sPrefRemind = getPreferences(MODE_PRIVATE);
                         sPrefRemind.edit().putBoolean(DO_NOT_REMIND, true).commit();
                     }
-                });
-                ad.setCancelable(true);
-                ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface dialog) {
-                    }
-                });
+                };
 
-                ad.show();
+                builder.message("Вы хотите обновиться до актуальной версии приложения приложение?")
+                        .title("Вышло обновление!")
+                        .positiveAction("Обновить")
+                        .negativeAction("Отмена")
+                        .neutralAction("Не напоминать");
+                DialogFragment fragment = DialogFragment.newInstance(builder);
+                fragment.show(getSupportFragmentManager(), null);
             }
         }
     }
