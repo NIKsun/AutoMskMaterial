@@ -12,6 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -81,10 +83,22 @@ public class ListOfCarsActivity extends ActionBarActivity
         if (themeName.equals("1")) {
             tabLayout2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
+            }
         }
         else {
             tabLayout2.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
             toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor2));
+            }
         }
 
 

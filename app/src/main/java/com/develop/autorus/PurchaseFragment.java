@@ -28,8 +28,6 @@ import java.util.ArrayList;
  * Created by Alex on 12.10.2015.
  */
 public class PurchaseFragment extends android.support.v4.app.Fragment {
-    View savedView;
-
     private static final String TAG =
             "Pasha i Nikita";//
     public static IabHelper mHelper;
@@ -57,7 +55,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        savedView = inflater.inflate(R.layout.fragment_purchase, container, false);
+        final View savedView = inflater.inflate(R.layout.fragment_purchase, container, false);
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Boolean bool = settings.getBoolean("TAG_DISABLED_ADS", false);
@@ -199,12 +197,12 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
         if(settings.getBoolean("TAG_FAVORITES", false))
         {
             savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
-            cardView3.setClickable(false);
+            cardView2.setClickable(false);
         }
         if(settings.getBoolean("TAG_MONITOR", false))
         {
             savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
-            cardView2.setClickable(false);
+            cardView3.setClickable(false);
         }
         if(settings.getBoolean("TAG_BUY_ALL", false))
         {
@@ -319,12 +317,12 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 if(settings.getBoolean("TAG_FAVORITES", false))
                 {
                     savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
-                    cardView3.setClickable(false);
+                    cardView2.setClickable(false);
                 }
                 if(settings.getBoolean("TAG_MONITOR", false))
                 {
                     savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
-                    cardView2.setClickable(false);
+                    cardView3.setClickable(false);
                 }
                 if(settings.getBoolean("TAG_BUY_ALL", false))
                 {

@@ -42,33 +42,21 @@ public class ReferenceFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         savedView = inflater.inflate(R.layout.fragment_reference, container, false);
         TextView version = (TextView) savedView.findViewById(R.id.text_view_version);
-        try {
+        /*try {
             String versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
             version.setText("Номер версии: "+ versionName);
         }
         catch (PackageManager.NameNotFoundException e) {}
-        version.setText(version.getText() +"\nEmail: room530a@gmail.com" );
+        version.setText(version.getText() +"\nEmail: room530a@gmail.com" );*/
 
-        final FloatingActionButton fab = (FloatingActionButton) savedView.findViewById(R.id.add_rating);
-        final Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.anim_simple_grow);
-        fab.startAnimation(anim);
-        fab.setVisibility(View.VISIBLE);
-        fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String themeName = pref.getString("theme", "1");
-        if (themeName.equals("1")) {
-            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        }
-        else
-            fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
-        fab.setOnClickListener(new View.OnClickListener() {
+        final com.rey.material.widget.Button button =
+                (com.rey.material.widget.Button) savedView.findViewById(R.id.button_bt_flat);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Изменить на другой адрес.
                 String packageName =savedView.getContext().getPackageName(); ;//"com.develop.searchmycarandroid";
                 try {
-
-
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("market://details?id=" + packageName));
                     //id=" +getPackageName(), можно так, только тогда сейчас ничего работать не будет.

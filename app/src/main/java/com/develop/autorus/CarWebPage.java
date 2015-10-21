@@ -12,6 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
@@ -38,11 +40,28 @@ public class CarWebPage extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_web_page);
         String url = getIntent().getStringExtra("url");
-
         AnalyticsApplication application = (AnalyticsApplication) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Web Page");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        if(url.contains("drom.ru")) {
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Drom.ru").setValue(1).build());
+        }
+        else if(url.contains("avito.ru"))
+        {
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Avito.ru").setValue(1).build());
+        }
+        else {
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Auto.ru").setValue(1).build());
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window statusBar = getWindow();
+            statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            statusBar.setStatusBarColor(getResources().getColor(R.color.red));
+        }
 
         if(!getIntent().getBooleanExtra("isFromFavorites",true)) {
             final DbHelper dbHelper = new DbHelper(this);
@@ -223,13 +242,6 @@ public class CarWebPage extends Activity{
         }
 
         mWebView.loadUrl(url);
-        if(url.contains("drom.ru"))
-            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Drom.ru").setValue(1).build());
-        else if(url.contains("avito.ru"))
-            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Avito.ru").setValue(1).build());
-        else
-            mTracker.send(new HitBuilders.EventBuilder().setCategory("Web page").setAction("Auto.ru").setValue(1).build());
-
     }
 
 

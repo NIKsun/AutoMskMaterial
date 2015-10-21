@@ -106,10 +106,12 @@ public class FavoritesFragment extends Fragment {
                         .actionClickListener(new SnackBar.OnActionClickListener() {
                             @Override
                             public void onActionClick(SnackBar snackBar, int i) {
-                                adapter.insert(tempPosition, tempCar, tempImage);
-                                tempCar = null;
-                                RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_favorites);
-                                rv.scrollToPosition(tempPosition);
+                                if(tempCar != null) {
+                                    adapter.insert(tempPosition, tempCar, tempImage);
+                                    tempCar = null;
+                                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_favorites);
+                                    rv.scrollToPosition(tempPosition);
+                                }
                             }
                         });
                 sb.show();
@@ -278,10 +280,12 @@ public class FavoritesFragment extends Fragment {
                         .actionClickListener(new SnackBar.OnActionClickListener() {
                             @Override
                             public void onActionClick(SnackBar snackBar, int i) {
-                                adapter.insert(tempPosition, tempCar, tempImage);
-                                RecyclerView rv = (RecyclerView)savedView.findViewById(R.id.rv_favorites);
-                                rv.scrollToPosition(tempPosition);
-                                tempCar = null;
+                                if(tempCar != null) {
+                                    adapter.insert(tempPosition, tempCar, tempImage);
+                                    RecyclerView rv = (RecyclerView) savedView.findViewById(R.id.rv_favorites);
+                                    rv.scrollToPosition(tempPosition);
+                                    tempCar = null;
+                                }
                             }
                         });
                 sb.show();

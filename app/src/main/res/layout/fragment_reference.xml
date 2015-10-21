@@ -1,8 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:card_view="http://schemas.android.com/apk/res-auto"
-android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -19,13 +20,15 @@ android:orientation="vertical">
     android:text=""
     android:paddingLeft="8dp" />
 
-    <com.rey.material.widget.FloatingActionButton
-        android:id="@+id/add_rating"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+    <com.rey.material.widget.Button
+        android:id="@+id/button_bt_flat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="invisible"
-        style="@style/LightFlatButtonRippleStyle"
-        android:layout_marginTop="40dp" />
+        android:text="Оставить отзыв"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/myPrimaryColor"
+        style="@style/LightFlatButtonRippleStyle"/>
 
 </LinearLayout>

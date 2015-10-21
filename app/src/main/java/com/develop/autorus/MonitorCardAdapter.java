@@ -1019,13 +1019,15 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 .actionClickListener(new SnackBar.OnActionClickListener() {
                     @Override
                     public void onActionClick(SnackBar snackBar, int i) {
-                        switchValues.add(tempPosition, tempSwitchValue);
-                        monitors.add(tempPosition, tempMonitor);
-                        notifyItemInserted(tempPosition);
-                        for (int iter = tempPosition; iter < monitors.size(); iter++)
-                            notifyItemChanged(iter);
-                        rv.scrollToPosition(tempPosition);
-                        tempMonitor = null;
+                        if(tempMonitor != null) {
+                            switchValues.add(tempPosition, tempSwitchValue);
+                            monitors.add(tempPosition, tempMonitor);
+                            notifyItemInserted(tempPosition);
+                            for (int iter = tempPosition; iter < monitors.size(); iter++)
+                                notifyItemChanged(iter);
+                            rv.scrollToPosition(tempPosition);
+                            tempMonitor = null;
+                        }
                     }
                 });
         sb.show();
@@ -1066,7 +1068,6 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         activeMonitorCounter++;
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(parentActivity);
         sPref.edit().putInt("numberOfActiveMonitors", activeMonitorCounter).commit();
-
 
         if(sPref.getBoolean("notificationIsActive",true)) {
             AlarmManager am = (AlarmManager) parentActivity.getSystemService(parentActivity.ALARM_SERVICE);

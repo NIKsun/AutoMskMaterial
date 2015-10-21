@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,10 +53,25 @@ public class EditMonitorActivity extends FragmentActivity {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         String themeName = pref.getString("theme", "1");
-        if (themeName.equals("1"))
+        if (themeName.equals("1")) {
             header.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor));
+            }
+        }
         else
+        {
             header.setBackgroundColor(getResources().getColor(R.color.colorPrimary2));
+            if (android.os.Build.VERSION.SDK_INT >= 21) {
+                Window statusBar = getWindow();
+                statusBar.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                statusBar.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                statusBar.setStatusBarColor(getResources().getColor(R.color.myPrimaryDarkColor2));
+            }
+        }
 
         Log.d("filterID", String.valueOf(getIntent().getIntExtra("filterID", -1)));
         searchFragment = (SearchFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
