@@ -492,6 +492,11 @@ public class MainActivity extends ActionBarActivity
         {
             Intent i = getPackageManager().getLaunchIntentForPackage(getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            SharedPreferences pref = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            SharedPreferences.Editor ed = pref.edit();
+            ed.putInt("NumberOfCallingFragment", 1);
+            ed.commit();
             startActivity(i);
         }
         else
@@ -503,6 +508,11 @@ public class MainActivity extends ActionBarActivity
         {
             Intent i = getPackageManager().getLaunchIntentForPackage(getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            SharedPreferences pref = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            SharedPreferences.Editor ed = pref.edit();
+            ed.putInt("NumberOfCallingFragment", 1);
+            ed.commit();
             startActivity(i);
         }
         else
@@ -513,6 +523,11 @@ public class MainActivity extends ActionBarActivity
         {
             Intent i = getPackageManager().getLaunchIntentForPackage(getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            SharedPreferences pref = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            SharedPreferences.Editor ed = pref.edit();
+            ed.putInt("NumberOfCallingFragment", 1);
+            ed.commit();
             startActivity(i);
         }
         else

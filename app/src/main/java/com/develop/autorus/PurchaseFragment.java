@@ -1,6 +1,7 @@
 package com.develop.autorus;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Build;
@@ -404,6 +405,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                             mConsumeFinishedListener);
                     return;
                 }
+
             }
         }
 
@@ -462,8 +464,15 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                     }
 
 
+                    Intent i = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName() );
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    SharedPreferences pref = PreferenceManager
+                            .getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor ed = pref.edit();
+                    ed.putInt("NumberOfCallingFragment", 5);
+                    ed.commit();
+                    startActivity(i);
                 }
-
             }
         };
 
