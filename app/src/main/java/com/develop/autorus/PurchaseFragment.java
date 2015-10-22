@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -16,6 +17,8 @@ import com.develop.autorus.inappbilling.util.IabHelper;
 import com.develop.autorus.inappbilling.util.IabResult;
 import com.develop.autorus.inappbilling.util.Inventory;
 import com.develop.autorus.inappbilling.util.Purchase;
+import com.rey.material.app.DialogFragment;
+import com.rey.material.app.SimpleDialog;
 import com.rey.material.app.ThemeManager;
 
 import android.util.Log;
@@ -87,23 +90,39 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
         });
 
 
+
         android.support.v7.widget.CardView cardView1 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buyFirstItem);
         cardView1.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!MainActivity.blnBind) return;
+                        SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+                            @Override
+                            public void onPositiveActionClicked(DialogFragment fragment) {
+                                super.onPositiveActionClicked(fragment);
+                                if (!MainActivity.blnBind) return;
 
-                        if (MainActivity.mService == null) return;
+                                if (MainActivity.mService == null) return;
 
-                        try {
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU1, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        } catch (Exception ex) {
-                            mHelper.flagEndAsync();
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU1, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        }
+                                try {
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU1, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                } catch (Exception ex) {
+                                    mHelper.flagEndAsync();
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU1, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                }
+                            }
+
+                            @Override
+                            public void onNegativeActionClicked(DialogFragment fragment) {
+                                super.onNegativeActionClicked(fragment);
+                            }
+
+                        };
+                        builder.message("После совершения данной покупки вся реклама в приложении будет навсегда отключена для Вашего аккаунта Google.").title("Отключение рекламы").positiveAction("Купить").negativeAction("Отмена");
+                        DialogFragment fragment = DialogFragment.newInstance(builder);
+                        fragment.show(getActivity().getSupportFragmentManager(), null);
                     }
                 }
         );
@@ -113,18 +132,33 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        try {
-                            if (!MainActivity.blnBind) return;
+                        SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+                            @Override
+                            public void onPositiveActionClicked(DialogFragment fragment) {
+                                super.onPositiveActionClicked(fragment);
+                                try {
+                                    if (!MainActivity.blnBind) return;
 
-                            if (MainActivity.mService == null) return;
+                                    if (MainActivity.mService == null) return;
 
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU2, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        } catch (Exception ex) {
-                            mHelper.flagEndAsync();
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU2, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        }
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU2, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                } catch (Exception ex) {
+                                    mHelper.flagEndAsync();
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU2, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                }
+                            }
+
+                            @Override
+                            public void onNegativeActionClicked(DialogFragment fragment) {
+                                super.onNegativeActionClicked(fragment);
+                            }
+
+                        };
+                        builder.message("Покупка данной опции позволит Вам добовлять неограниченное количество авто в избранное.").title("Опция 'Мое избранное'").positiveAction("Купить").negativeAction("Отмена");
+                        DialogFragment fragment = DialogFragment.newInstance(builder);
+                        fragment.show(getActivity().getSupportFragmentManager(), null);
                     }
                 }
         );
@@ -134,19 +168,33 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("checkPurchaseTest2", "3 111111");
-                        try {
-                            if (!MainActivity.blnBind) return;
-                            Log.d("checkPurchaseTest2", "3 2222222");
-                            if (MainActivity.mService == null) return;
-                            Log.d("checkPurchaseTest2", "3 33333333333");
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU3, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        } catch (Exception ex) {
-                            mHelper.flagEndAsync();
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU3, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        }
+                        SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+                            @Override
+                            public void onPositiveActionClicked(DialogFragment fragment) {
+                                super.onPositiveActionClicked(fragment);
+                                try {
+                                    if (!MainActivity.blnBind) return;
+                                    Log.d("checkPurchaseTest2", "3 2222222");
+                                    if (MainActivity.mService == null) return;
+                                    Log.d("checkPurchaseTest2", "3 33333333333");
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU3, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                } catch (Exception ex) {
+                                    mHelper.flagEndAsync();
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU3, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                }
+                            }
+
+                            @Override
+                            public void onNegativeActionClicked(DialogFragment fragment) {
+                                super.onNegativeActionClicked(fragment);
+                            }
+
+                        };
+                        builder.message("Покупка данной опции позволит Вам создавать неограниченное количество мониторов.").title("Опция 'Мои мониторы'").positiveAction("Купить").negativeAction("Отмена");
+                        DialogFragment fragment = DialogFragment.newInstance(builder);
+                        fragment.show(getActivity().getSupportFragmentManager(), null);
                     }
                 }
         );
@@ -156,22 +204,40 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("checkPurchaseTest2", "4 111111");
-                        if (!MainActivity.blnBind) return;
-                        Log.d("checkPurchaseTest2", "4 222222222");
-                        if (MainActivity.mService == null) return;
-                        Log.d("checkPurchaseTest2", "4 333333333");
-                        try {
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU4, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        } catch (Exception ex) {
-                            mHelper.flagEndAsync();
-                            mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU4, 10001,
-                                    mPurchaseFinishedListener, "mypurchasetoken");
-                        }
+
+                        SimpleDialog.Builder builder = new SimpleDialog.Builder(R.style.SimpleDialogLight) {
+                            @Override
+                            public void onPositiveActionClicked(DialogFragment fragment) {
+                                super.onPositiveActionClicked(fragment);
+                                Log.d("checkPurchaseTest2", "4 111111");
+                                if (!MainActivity.blnBind) return;
+                                Log.d("checkPurchaseTest2", "4 222222222");
+                                if (MainActivity.mService == null) return;
+                                Log.d("checkPurchaseTest2", "4 333333333");
+                                try {
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU4, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                } catch (Exception ex) {
+                                    mHelper.flagEndAsync();
+                                    mHelper.launchPurchaseFlow(getActivity(), ITEM_SKU4, 10001,
+                                            mPurchaseFinishedListener, "mypurchasetoken");
+                                }
+                            }
+
+                            @Override
+                            public void onNegativeActionClicked(DialogFragment fragment) {
+                                super.onNegativeActionClicked(fragment);
+                            }
+
+                        };
+                        builder.message("При покупке данного пакета Вы получаете возможность неограниченного добавления авто в избранное и возможность создания неограниченного числа мониторов. " +
+                                "Также навсегда будет отключена реклама.").title("Пакет 'Все включено'").positiveAction("Купить").negativeAction("Отмена");
+                        DialogFragment fragment = DialogFragment.newInstance(builder);
+                        fragment.show(getActivity().getSupportFragmentManager(), null);
                     }
                 }
         );
+
 
         /*com.rey.material.widget.Button button = (com.rey.material.widget.Button) savedView.findViewById(R.id.deletePurchase);
         button.setOnClickListener(

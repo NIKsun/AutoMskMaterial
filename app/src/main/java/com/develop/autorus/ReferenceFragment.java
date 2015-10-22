@@ -41,7 +41,13 @@ public class ReferenceFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         savedView = inflater.inflate(R.layout.fragment_reference, container, false);
-        TextView version = (TextView) savedView.findViewById(R.id.text_view_version);
+        TextView reference = (TextView) savedView.findViewById(R.id.text_view_reference);
+        reference.setText("\t\tПриложение создано для того, чтобы облегчить утомительный процесс поиска Вашего будущего автомобиля.\n\n" +
+                "\t\tДля этого в нем имеются мониторы, которые будут вести поиск по указанным параметрам на ведущих автомобильных порталах России.\n\n" +
+                "\t\tМониторы, которые Вы активировали, периодически обновляют информацию по подходящим к ним объявлениям и уведомляют Вас о появлении новых авто. " +
+                "Величина периода зависит от количества мониторов. " +
+                "Неактивные мониторы выполняют функции сохранения настроек фильтрации.\n\n" +
+                "\t\tВы используете первую версию приложения, которое активно развивается, поэтому Ваши отзывы и предложения помогут нам сделать его лучше и эффективнее. Удачных покупок!\n");
         /*try {
             String versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
             version.setText("Номер версии: "+ versionName);

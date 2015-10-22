@@ -1,34 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="@drawable/shadow"
-        android:layout_gravity="top" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-<com.rey.material.widget.TextView
-    android:id="@+id/text_view_version"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/LightTitleText"
-    android:textSize="25sp"
-    android:text=""
-    android:paddingLeft="8dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@drawable/shadow"
+            android:layout_gravity="top" />
 
-    <com.rey.material.widget.Button
-        android:id="@+id/button_bt_flat"
-        android:layout_width="wrap_content"
+    <com.rey.material.widget.TextView
+        android:id="@+id/text_view_reference"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Оставить отзыв"
+        style="@style/LightTitleText"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/myPrimaryColor"
-        style="@style/LightFlatButtonRippleStyle"/>
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
-</LinearLayout>
+        <com.rey.material.widget.Button
+            android:id="@+id/button_bt_flat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Оставить отзыв"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/myPrimaryColor"
+            style="@style/LightFlatButtonRippleStyle"/>
+
+    </LinearLayout>
+</ScrollView>
