@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
@@ -231,6 +232,7 @@ public class MonitoringWork extends Service {
                 this);
         Notification notification = builder.setContentIntent(pIntent)
                 .setSmallIcon(R.drawable.status_bar).setTicker("Новые авто!")
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic0))
                 .setAutoCancel(true).setContentTitle("Авто Русь")
                 .setContentText((CONC_counter > 0 ? "Более " : "") + countOfNewCars + (countOfNewCars%10 == 1 ? " новый авто!" : " новых авто!")).build();
 

@@ -58,7 +58,7 @@ public class FeedbackFragment extends android.support.v4.app.Fragment {
                 ((MainActivity)getActivity()).getTracker().send(new HitBuilders.EventBuilder().setCategory("Feedback").setAction("open").setValue(1).build());
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "room530support@yandex.ru", null));
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке АвтоРусь");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Поддержке Авто Русь");
                 startActivity(Intent.createChooser(intent, "Выберите почтового клиента:"));
             }
         });
