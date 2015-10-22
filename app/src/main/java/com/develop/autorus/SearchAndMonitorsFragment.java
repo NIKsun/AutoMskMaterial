@@ -21,7 +21,6 @@ public class SearchAndMonitorsFragment extends Fragment {
     ViewPager viewPager;
     TabLayout tabLayout;
     private MainActivity myContext;
-    View savedView;
 
     public static SearchAndMonitorsFragment newInstance(int page) {
         SearchAndMonitorsFragment f = new SearchAndMonitorsFragment();
@@ -56,10 +55,8 @@ public class SearchAndMonitorsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(savedView != null)
-            return savedView;
 
-        savedView =  inflater.inflate(R.layout.fragment_search_and_monitors, container, false);
+        View savedView =  inflater.inflate(R.layout.fragment_search_and_monitors, container, false);
         viewPager = (ViewPager) savedView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MonitorFragmentPagerAdapter(myContext.getSupportFragmentManager(), myContext));
 
@@ -142,7 +139,10 @@ public class SearchAndMonitorsFragment extends Fragment {
     }
 
     public void updateMonitorsFragment() {
-        Log.d("now", "now");
         ((MonitorFragmentPagerAdapter)viewPager.getAdapter()).updateMonitorsFragment();
+    }
+    public void onResume()
+    {
+        super.onResume();
     }
 }

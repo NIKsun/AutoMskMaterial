@@ -4,8 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class MonitorFragmentPagerAdapter extends FragmentPagerAdapter {
+public class MonitorFragmentPagerAdapter extends FragmentStatePagerAdapter{
     final int PAGE_COUNT = 2;
     private String tabTitles[] = new String[] { "Мониторы", "Поиск"};
     private Context context;

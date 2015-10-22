@@ -326,10 +326,18 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 }
                 if(settings.getBoolean("TAG_BUY_ALL", false))
                 {
+                    savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
+                    cardView1.setClickable(false);
+
+                    savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
+                    cardView2.setClickable(false);
+
+                    savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
+                    cardView3.setClickable(false);
+
                     savedView.findViewById(R.id.purchasedAll).setVisibility(View.VISIBLE);
                     cardView4.setClickable(false);
                 }
-
             }
 
         });

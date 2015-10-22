@@ -198,11 +198,6 @@ public class MainActivity extends ActionBarActivity
         mSnackBar = (SnackBar)findViewById(R.id.main_sn);
         setSupportActionBar(mToolbar);
 
-
-
-        //TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-        //tv.setTextColor(Color.WHITE);
-
         addMonitorButton = (Button)findViewById(R.id.toolbar_add_monitor_button);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -493,14 +488,35 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onClickHandlerHidden(View v){
-        mainFragment.getSearchFragment().onClickHandlerHidden(v);
+        if(mainFragment.getSearchFragment() == null)
+        {
+            Intent i = getPackageManager().getLaunchIntentForPackage(getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        }
+        else
+            mainFragment.getSearchFragment().onClickHandlerHidden(v);
     }
 
     public void onClickClearSelection(View v){
-        mainFragment.getSearchFragment().onClickClearSelection(v);
+        if(mainFragment.getSearchFragment() == null)
+        {
+            Intent i = getPackageManager().getLaunchIntentForPackage(getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        }
+        else
+            mainFragment.getSearchFragment().onClickClearSelection(v);
     }
     public void onClickMarkorModel(View v){
-        mainFragment.getSearchFragment().onClickMarkorModelorRegion(v);
+        if(mainFragment.getSearchFragment() == null)
+        {
+            Intent i = getPackageManager().getLaunchIntentForPackage(getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        }
+        else
+            mainFragment.getSearchFragment().onClickMarkorModelorRegion(v);
     }
 
 

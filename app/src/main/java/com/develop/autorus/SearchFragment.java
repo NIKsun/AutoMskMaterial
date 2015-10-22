@@ -78,41 +78,41 @@ public class SearchFragment extends Fragment {
 
             ImageView iv;
 
-            TextView t = (TextView) getActivity().findViewById(R.id.search_ll_mark_text);
+            TextView t = (TextView) view.findViewById(R.id.search_ll_mark_text);
             t.setText(mark);
 
-            t = (TextView) getActivity().findViewById(R.id.search_ll_model_text);
+            t = (TextView) view.findViewById(R.id.search_ll_model_text);
             t.setText(model);
 
-            t = (TextView) getActivity().findViewById(R.id.search_ll_region_text);
+            t = (TextView) view.findViewById(R.id.search_ll_region_text);
             t.setText(region);
 
-            CardView ll = (CardView) getActivity().findViewById(R.id.search_ll_model_cardview);
+            CardView ll = (CardView) view.findViewById(R.id.search_ll_model_cardview);
             if (!mark.equals("Любая")) {
-                Button b = (Button) getActivity().findViewById(R.id.search_ll_mark_clear);
+                Button b = (Button) view.findViewById(R.id.search_ll_mark_clear);
                 b.setVisibility(View.VISIBLE);
-                iv = (ImageView) getActivity().findViewById(R.id.arrow_mark);
+                iv = (ImageView) view.findViewById(R.id.arrow_mark);
                 iv.setVisibility(View.INVISIBLE);
                 ll.setVisibility(View.VISIBLE);
             } else
                 ll.setVisibility(View.GONE);
 
             if (!model.equals("Любая")) {
-                Button b2 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
+                Button b2 = (Button) view.findViewById(R.id.search_ll_model_clear);
                 b2.setVisibility(View.VISIBLE);
-                iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
+                iv = (ImageView) view.findViewById(R.id.arrow_model);
                 iv.setVisibility(View.INVISIBLE);
             } else {
-                Button b3 = (Button) getActivity().findViewById(R.id.search_ll_model_clear);
+                Button b3 = (Button) view.findViewById(R.id.search_ll_model_clear);
                 b3.setVisibility(View.INVISIBLE);
-                iv = (ImageView) getActivity().findViewById(R.id.arrow_model);
+                iv = (ImageView) view.findViewById(R.id.arrow_model);
                 iv.setVisibility(View.VISIBLE);
             }
 
             if (!region.equals("Вся Россия")) {
-                Button b3 = (Button) getActivity().findViewById(R.id.search_ll_region_clear);
+                Button b3 = (Button) view.findViewById(R.id.search_ll_region_clear);
                 b3.setVisibility(View.VISIBLE);
-                iv = (ImageView) getActivity().findViewById(R.id.arrow_region);
+                iv = (ImageView) view.findViewById(R.id.arrow_region);
                 iv.setVisibility(View.INVISIBLE);
             }
 
@@ -121,6 +121,8 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("lis","onCreateView");
+        Log.d("lis", String.valueOf(butoonBlock));
         view = inflater.inflate(R.layout.fragment_search, container, false);
 
         if(!butoonBlock) {
