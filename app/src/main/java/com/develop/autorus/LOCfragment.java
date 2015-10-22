@@ -148,7 +148,6 @@ public class LOCfragment extends Fragment {
 
         @Override
         protected Boolean doInBackground(final Void... params) {
-
             Log.d("href",href);
             //РАБОТА С БД, ВЫЗОВ onProgressUpdate
             if(href.equals("###"))

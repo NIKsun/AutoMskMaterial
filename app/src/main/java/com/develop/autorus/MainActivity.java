@@ -3,6 +3,7 @@ package com.develop.autorus;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -168,21 +169,34 @@ public class MainActivity extends ActionBarActivity
 
 
         if(isFirstLaunch) {
-            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
             SQLiteDatabase db = new DbHelper(this).getWritableDatabase();
             Cursor cursorMonitors = db.query("monitors", null, null, null, null, null, null);
-            if(cursorMonitors != null && cursorMonitors.getCount()>0)
-                mainFragment = SearchAndMonitorsFragment.newInstance(0);
-            else
-                mainFragment = SearchAndMonitorsFragment.newInstance(1);
+            Boolean monitorsExist = cursorMonitors != null && cursorMonitors.getCount() > 0;
             db.close();
-            fTrans.add(R.id.container, mainFragment, "MAIN").commit();
+
+            if(getSupportFragmentManager().findFragmentByTag("MAIN") == null) {
+                FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+                if(monitorsExist)
+                    mainFragment = SearchAndMonitorsFragment.newInstance(0);
+                else
+                    mainFragment = SearchAndMonitorsFragment.newInstance(1);
+                fTrans.add(R.id.container, mainFragment, "MAIN").commit();
+            }
+            else {
+                mainFragment = (SearchAndMonitorsFragment) getSupportFragmentManager().findFragmentByTag("MAIN");
+                if(getSupportFragmentManager().findFragmentByTag("Second") != null) {
+                    FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+                    fTrans.remove(getSupportFragmentManager().findFragmentByTag("Second")).commit();
+                }
+                pref.edit().remove("NumberOfCallingFragment");
+            }
         }
+
         backToast = Toast.makeText(this,"Нажмите еще раз для выхода",Toast.LENGTH_SHORT);
         setContentView(R.layout.main_activity);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(mToolbar);
         mSnackBar = (SnackBar)findViewById(R.id.main_sn);
+        setSupportActionBar(mToolbar);
 
 
 
@@ -244,8 +258,6 @@ public class MainActivity extends ActionBarActivity
 
                     e.printStackTrace();
                 }
-
-
             }
         });
 
@@ -347,10 +359,8 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         int numberOfCallingFragment = pref.getInt("NumberOfCallingFragment", -1);
         if(getIntent().hasExtra("isFromNotification") && getIntent().getBooleanExtra("isFromNotification",false)) {
-            Log.d("monitor","isFromNotification");
             numberOfCallingFragment = 0;
         }
-        Log.d("monitorNOCF", String.valueOf(numberOfCallingFragment));
 
         if(numberOfCallingFragment != -1) {
             if((mNavigationDrawerFragment.getCurrentItemSelected() == 0 && numberOfCallingFragment == 1) ||
@@ -376,8 +386,6 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Log.d("monitor","position "+position);
-
         if(itemSelectFromTabLayout)
         {
             itemSelectFromTabLayout = false;
@@ -400,7 +408,7 @@ public class MainActivity extends ActionBarActivity
                 mainFragment.setPage(0);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);
-                    fTrans.show(mainFragment);
+                    fTrans.show(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 }
                 mainFragment.updateMonitorsFragment();
                 break;
@@ -409,40 +417,40 @@ public class MainActivity extends ActionBarActivity
                 mainFragment.setPage(1);
                 if(secondFragment != null) {
                     fTrans.remove(secondFragment);
-                    fTrans.show(mainFragment);
+                    fTrans.show(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 }
                 break;
             case 2:
                 mToolbar.setTitle("Избранное");
-                fTrans.hide(mainFragment);
+                fTrans.hide(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
                 secondFragment = new FavoritesFragment();
-                fTrans.add(R.id.container, secondFragment);
+                fTrans.add(R.id.container, secondFragment, "Second");
                 break;
             case 3:
                 mToolbar.setTitle("Настройки");
-                fTrans.hide(mainFragment);
+                fTrans.hide(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
                 secondFragment = new SettingsFragment();
-                fTrans.add(R.id.container, secondFragment);
+                fTrans.add(R.id.container, secondFragment, "Second");
                 break;
             case 4:
                 mToolbar.setTitle("Обратная связь");
-                fTrans.hide(mainFragment);
+                fTrans.hide(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
                 secondFragment = new FeedbackFragment();
-                fTrans.add(R.id.container, secondFragment);
+                fTrans.add(R.id.container, secondFragment, "Second");
                 break;
             case 5:
                 mToolbar.setTitle("Покупки");
-                fTrans.hide(mainFragment);
+                fTrans.hide(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
                 secondFragment = new PurchaseFragment();
-                fTrans.add(R.id.container, secondFragment);
+                fTrans.add(R.id.container, secondFragment, "Second");
                 break;
 
             /*ForEasyDelete
@@ -452,11 +460,11 @@ public class MainActivity extends ActionBarActivity
 */
             case 6:
                 mToolbar.setTitle("Справка");
-                fTrans.hide(mainFragment);
+                fTrans.hide(getSupportFragmentManager().findFragmentByTag("MAIN"));
                 if(secondFragment != null)
                     fTrans.remove(secondFragment);
                 secondFragment = new ReferenceFragment();
-                fTrans.add(R.id.container, secondFragment);
+                fTrans.add(R.id.container, secondFragment, "Second");
                 break;
 
         }
@@ -677,6 +685,4 @@ public class MainActivity extends ActionBarActivity
     };
 
     public Tracker getTracker(){return mTracker;}
-
-
 }

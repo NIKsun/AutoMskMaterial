@@ -31,7 +31,6 @@ public class EditMonitorActivity extends FragmentActivity {
     Tracker mTracker;
 
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("lis", "createEdit");
         SharedPreferences pref2 = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
         pref2.edit().putInt("isEditFilter",1).commit();
         super.onCreate(savedInstanceState);
@@ -73,7 +72,6 @@ public class EditMonitorActivity extends FragmentActivity {
             }
         }
 
-        Log.d("filterID", String.valueOf(getIntent().getIntExtra("filterID", -1)));
         searchFragment = (SearchFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
         pref.edit().putInt("isEditFilter",1).commit();
         filterID = getIntent().getIntExtra("filterID",-1);
@@ -358,7 +356,6 @@ public class EditMonitorActivity extends FragmentActivity {
 
     }
     public void onResume(){
-        Log.d("lis", "resumeEdit");
         super.onResume();
 
     }
@@ -371,7 +368,6 @@ public class EditMonitorActivity extends FragmentActivity {
         SharedPreferences pref = getSharedPreferences("SearchMyCarPreferences", Context.MODE_PRIVATE);
         pref.edit().putInt("isEditFilter",0).commit();
         //searchFragment.
-        Log.d("lis", "destroyEdit");
     }
 /*
     public void onPause(){

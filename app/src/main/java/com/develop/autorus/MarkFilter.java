@@ -163,7 +163,6 @@ public class MarkFilter extends Activity {
                     ed.putString("SelectedMark", String.valueOf(tv.getText()));
                     ed.putString("SelectedModel", "Любая");
                     TextView t = (TextView) findViewById(R.id.search_ll_mark_text);
-                    Log.d("Tag", String.valueOf(tv.getText()));
                 } else if(getIntent().hasExtra("Models")){
                     ed.putString("SelectedModel", String.valueOf(tv.getText()));
                     if(tv.getText().equals("A4"))
@@ -213,7 +212,6 @@ public class MarkFilter extends Activity {
                 convertView.setTag(viewHolder);
             }
             else {
-                Log.d("size", String.valueOf(position));
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.name.setText(searchResults.get(position).toString());
