@@ -23,10 +23,10 @@ android {
 
     defaultConfig {
         applicationId "com.develop.autorus"
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 20
-        versionCode 9
-        versionName "1.2"
+        versionCode 12
+        versionName "1.4"
     }
     buildTypes {
         release {

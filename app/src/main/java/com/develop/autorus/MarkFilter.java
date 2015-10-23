@@ -156,17 +156,11 @@ public class MarkFilter extends Activity {
                 SharedPreferences.Editor ed = sPref.edit();
                 TextView tv =  (TextView)v.findViewById(R.id.textViewW);
                 if (getIntent().hasExtra("Marks")) {
-
-                    //Pair<Integer, ViewHolder> pair = (Pair<Integer, ViewHolder>) v.getTag();
-                    //int id = pair.first;
-                    //ViewHolder holder = pair.second;
                     ed.putString("SelectedMark", String.valueOf(tv.getText()));
                     ed.putString("SelectedModel", "Любая");
-                    TextView t = (TextView) findViewById(R.id.search_ll_mark_text);
                 } else if(getIntent().hasExtra("Models")){
                     ed.putString("SelectedModel", String.valueOf(tv.getText()));
-                    if(tv.getText().equals("A4"))
-                        Toast.makeText(MarkFilter.this, "Хороший выбор!", Toast.LENGTH_SHORT).show();
+
 
                 }
                 else{

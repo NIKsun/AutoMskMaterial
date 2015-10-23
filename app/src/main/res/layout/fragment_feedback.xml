@@ -29,7 +29,7 @@
         style="@style/LightTitleText"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="Наши консультанты ответят на ваши вопросы и помогут решить возникшие трудности."
+        android:text="Напишите нам о возникших вопросах и появившихся трудностях. Мы с радостью Вам поможем."
         android:layout_marginTop="25dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp" />

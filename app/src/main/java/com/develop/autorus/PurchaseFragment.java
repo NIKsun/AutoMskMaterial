@@ -256,26 +256,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
 
         //fab.setIcon(getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp), false);
 
-        if(settings.getBoolean("TAG_DISABLED_ADS", false))
-        {
-            savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
-            cardView1.setClickable(false);
-        }
-        if(settings.getBoolean("TAG_FAVORITES", false))
-        {
-            savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
-            cardView2.setClickable(false);
-        }
-        if(settings.getBoolean("TAG_MONITOR", false))
-        {
-            savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
-            cardView3.setClickable(false);
-        }
-        if(settings.getBoolean("TAG_BUY_ALL", false))
-        {
-            savedView.findViewById(R.id.purchasedAll).setVisibility(View.VISIBLE);
-            cardView4.setClickable(false);
-        }
+        updateView(savedView, settings);
 
         Thread checkPurchase = new Thread(new Runnable() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -376,35 +357,7 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                 android.support.v7.widget.CardView cardView3 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buyThirdItem);
                 android.support.v7.widget.CardView cardView4 = (android.support.v7.widget.CardView) savedView.findViewById(R.id.buyFourthItem);
 
-                if(settings.getBoolean("TAG_DISABLED_ADS", false))
-                {
-                    savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
-                    cardView1.setClickable(false);
-                }
-                if(settings.getBoolean("TAG_FAVORITES", false))
-                {
-                    savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
-                    cardView2.setClickable(false);
-                }
-                if(settings.getBoolean("TAG_MONITOR", false))
-                {
-                    savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
-                    cardView3.setClickable(false);
-                }
-                if(settings.getBoolean("TAG_BUY_ALL", false))
-                {
-                    savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
-                    cardView1.setClickable(false);
 
-                    savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
-                    cardView2.setClickable(false);
-
-                    savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
-                    cardView3.setClickable(false);
-
-                    savedView.findViewById(R.id.purchasedAll).setVisibility(View.VISIBLE);
-                    cardView4.setClickable(false);
-                }
             }
 
         });
@@ -528,20 +481,44 @@ public class PurchaseFragment extends android.support.v4.app.Fragment {
                         editor.putBoolean("TAG_BUY_ALL", true);
                         editor.commit();
                     }
-
-
-                    Intent i = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName() );
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    SharedPreferences pref = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    SharedPreferences.Editor ed = pref.edit();
-                    ed.putInt("NumberOfCallingFragment", 5);
-                    ed.commit();
-                    startActivity(i);
+                    Toast.makeText(getContext(),"Поздравляем с покупкой!",Toast.LENGTH_LONG).show();
+                    updateView(getView(), PreferenceManager.getDefaultSharedPreferences(getActivity()));
                 }
             }
         };
 
+    private void updateView(View savedView, SharedPreferences settings)
+    {
+        if(settings.getBoolean("TAG_DISABLED_ADS", false))
+        {
+            savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buyFirstItem).setClickable(false);
+        }
+        if(settings.getBoolean("TAG_FAVORITES", false))
+        {
+            savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buySecondItem).setClickable(false);
+        }
+        if(settings.getBoolean("TAG_MONITOR", false))
+        {
+            savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buyThirdItem).setClickable(false);
+        }
+        if(settings.getBoolean("TAG_BUY_ALL", false))
+        {
+            savedView.findViewById(R.id.purchasedAdds).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buyFirstItem).setClickable(false);
+
+            savedView.findViewById(R.id.purchasedFavorites).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buySecondItem).setClickable(false);
+
+            savedView.findViewById(R.id.purchasedMonitors).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buyThirdItem).setClickable(false);
+
+            savedView.findViewById(R.id.purchasedAll).setVisibility(View.VISIBLE);
+            savedView.findViewById(R.id.buyFourthItem).setClickable(false);
+        }
+    }
 
 }
 
